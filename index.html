@@ -25,6 +25,10 @@
       --panel-bg-b: rgba(34,34,34,0.97);
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: "Rajdhani", Arial, sans-serif;
@@ -236,18 +240,6 @@
       color: #1f1f1f;
     }
 
-    .btn-danger {
-      background: linear-gradient(180deg, #a52a2a, #7c1e1e);
-      color: #fff;
-      max-width: 180px;
-    }
-
-    .btn-reset {
-      background: linear-gradient(180deg, #d19a1f, #9e6d11);
-      color: #1d1202;
-      max-width: 220px;
-    }
-
     .record-top {
       display: flex;
       flex-direction: column;
@@ -256,14 +248,6 @@
       gap: 16px;
       margin-bottom: 18px;
       text-align: center;
-    }
-
-    .top-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
     }
 
     .record-title {
@@ -325,6 +309,19 @@
         linear-gradient(145deg, #666 0%, #3f3f3f 48%, #2a2a2a 100%);
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.28), 0 12px 26px rgba(0,0,0,0.28);
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+    }
+
+    .part:hover,
+    .part:focus-visible {
+      transform: translateY(-2px);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.28),
+        0 16px 28px rgba(0,0,0,0.34);
+      border-color: rgba(200,155,60,0.45);
+      outline: none;
     }
 
     .part::before {
@@ -342,13 +339,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 8px;
+      padding: 6px;
       width: 100%;
       text-align: center;
-      font-size: clamp(14px, 1.8vw, 22px);
-      line-height: 1;
+      font-size: clamp(12px, 1.8vw, 22px);
+      line-height: 0.95;
       font-weight: 700;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
       color: var(--text);
       text-shadow: 0 2px 0 rgba(0,0,0,0.35);
@@ -356,6 +353,7 @@
       overflow-wrap: anywhere;
       word-break: break-word;
       hyphens: auto;
+      pointer-events: none;
     }
 
     .stamp-shadow {
@@ -517,6 +515,7 @@
       border: 1px solid rgba(255,255,255,0.14);
       box-shadow: 0 14px 28px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.12);
       padding: 22px 20px 20px;
+      scroll-margin-top: 20px;
     }
 
     .garage-card::before {
@@ -680,6 +679,38 @@
       text-align: center;
     }
 
+    .account-actions-panel .panel-inner {
+      padding-top: 26px;
+      padding-bottom: 26px;
+    }
+
+    .account-actions-wrap {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .btn-reset-small,
+    .btn-danger-small {
+      width: auto;
+      min-width: 150px;
+      max-width: none;
+      padding: 10px 16px;
+      font-size: 20px;
+      border-radius: 10px;
+    }
+
+    .btn-reset-small {
+      background: linear-gradient(180deg, #d19a1f, #9e6d11);
+      color: #1d1202;
+    }
+
+    .btn-danger-small {
+      background: linear-gradient(180deg, #a52a2a, #7c1e1e);
+      color: #fff;
+    }
+
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -777,15 +808,6 @@
     }
 
     @media (max-width: 760px) {
-      .top-actions {
-        width: 100%;
-      }
-
-      .btn-danger,
-      .btn-reset {
-        max-width: none;
-      }
-
       .hours-row {
         grid-template-columns: 78px 1fr;
       }
@@ -814,6 +836,7 @@
       }
 
       .bike-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
         gap: 8px;
       }
 
@@ -826,9 +849,31 @@
       }
 
       .part-name {
-        font-size: clamp(10px, 3vw, 16px);
-        line-height: 1;
-        padding: 6px;
+        font-size: clamp(9px, 2.6vw, 14px);
+        line-height: 0.92;
+        padding: 4px;
+      }
+
+      .garage-quip {
+        font-size: 18px;
+      }
+
+      .btn-reset-small,
+      .btn-danger-small {
+        min-width: 130px;
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .bike-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 6px;
+      }
+
+      .part-name {
+        font-size: clamp(8px, 2.8vw, 12px);
+        padding: 3px;
       }
     }
   </style>
@@ -869,10 +914,6 @@
       <div class="panel-inner">
         <div class="record-top">
           <h2 class="record-title">Restoration Record</h2>
-          <div class="top-actions">
-            <button id="resetBtn" class="btn-reset">Reset Progress</button>
-            <button id="logOutBtn" class="btn-danger">Log Out</button>
-          </div>
         </div>
 
         <div class="summary-block">
@@ -881,49 +922,49 @@
         </div>
 
         <div class="bike-grid">
-          <div class="part" id="part-engine">
+          <div class="part" id="part-engine" data-part-key="engine" tabindex="0" role="button" aria-label="Go to engine repair venue">
             <div class="part-name">Engine</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-fuel-system">
+          <div class="part" id="part-fuel-system" data-part-key="fuel-system" tabindex="0" role="button" aria-label="Go to fuel system repair venue">
             <div class="part-name">Fuel System</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-bodywork">
+          <div class="part" id="part-bodywork" data-part-key="bodywork" tabindex="0" role="button" aria-label="Go to bodywork repair venue">
             <div class="part-name">Bodywork</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-chassis">
+          <div class="part" id="part-chassis" data-part-key="chassis" tabindex="0" role="button" aria-label="Go to chassis repair venue">
             <div class="part-name">Chassis</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-lubrication">
+          <div class="part" id="part-lubrication" data-part-key="lubrication" tabindex="0" role="button" aria-label="Go to lubrication repair venue">
             <div class="part-name">Lubrication</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-cooling">
+          <div class="part" id="part-cooling" data-part-key="cooling" tabindex="0" role="button" aria-label="Go to cooling repair venue">
             <div class="part-name">Cooling</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-transmission">
+          <div class="part" id="part-transmission" data-part-key="transmission" tabindex="0" role="button" aria-label="Go to transmission repair venue">
             <div class="part-name">Transmission</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
           </div>
 
-          <div class="part" id="part-tyres">
+          <div class="part" id="part-tyres" data-part-key="tyres" tabindex="0" role="button" aria-label="Go to tyres repair venue">
             <div class="part-name">Tyres</div>
             <div class="stamp-shadow"></div>
             <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
@@ -941,8 +982,17 @@
     <div class="panel garages-panel">
       <div class="panel-inner">
         <h2 class="section-title">Recommended Garages</h2>
-        <p class="section-text">Each stop on the route repairs one part of the build. Tap your Restoration Record at any time, then visit the garages below to collect the full set of stamps.</p>
+        <p class="section-text">Each stop on the route repairs one part of the build. Tap a part in your Restoration Record to jump straight to the matching garage below.</p>
         <div id="garageGrid" class="garage-grid"></div>
+      </div>
+    </div>
+
+    <div id="accountActionsPanel" class="panel account-actions-panel hidden">
+      <div class="panel-inner">
+        <div class="account-actions-wrap">
+          <button id="resetBtn" class="btn-reset-small">Reset Progress</button>
+          <button id="logOutBtn" class="btn-danger-small">Log Out</button>
+        </div>
       </div>
     </div>
   </div>
@@ -1005,7 +1055,7 @@
       {
         name: "The Piston Club",
         website: "https://thepistonclub.co.uk/",
-        repairQuip: "Putting the punch back in your pistons and the growl back in the block.",
+        repairQuip: "Where the engine finds its spark.",
         partKey: "engine",
         partLabel: "Engine",
         aliases: ["engine", "piston-club", "the-piston-club"],
@@ -1046,7 +1096,7 @@
       {
         name: "Gilks’ Garage Café",
         website: "https://gilksgaragecafe.com/",
-        repairQuip: "Topping up the tank so the next leg of the route goes down easy.",
+        repairQuip: "Fuel for the miles ahead.",
         partKey: "fuel-system",
         partLabel: "Fuel System",
         aliases: ["fuel-system", "gilks", "gilks-garage-cafe"],
@@ -1083,7 +1133,7 @@
       {
         name: "Mr Watsons Cafe",
         website: "https://www.mrwatsonscafe.com/",
-        repairQuip: "Giving the bodywork a proper polish, with a little double-decker swagger.",
+        repairQuip: "Double-decker shine for the shell.",
         partKey: "bodywork",
         partLabel: "Bodywork",
         aliases: ["bodywork", "mr-watsons", "mr-watsons-cafe", "mr-watsons-cafe-blockley"],
@@ -1113,7 +1163,7 @@
       {
         name: "Seven Mile",
         website: "https://www.sevenmile.co.uk/",
-        repairQuip: "Straightening the backbone of the build so it’s ready for the long run.",
+        repairQuip: "A strong frame for the road ahead.",
         partKey: "chassis",
         partLabel: "Chassis",
         aliases: ["chassis", "seven-mile", "sevenmile"],
@@ -1144,7 +1194,7 @@
       {
         name: "Oily Rag",
         website: "https://www.oilyrag.com/",
-        repairQuip: "Less greasy spoon, more slick-running machine.",
+        repairQuip: "Keeping the whole build running smooth.",
         partKey: "lubrication",
         partLabel: "Lubrication",
         aliases: ["lubrication", "oily-rag", "oilyrag"],
@@ -1175,7 +1225,7 @@
       {
         name: "The Blue Lias",
         website: "https://thebluelias.com/",
-        repairQuip: "Cooling the whole build down before the temperature creeps into the red.",
+        repairQuip: "Keeping the build cool and steady.",
         partKey: "cooling",
         partLabel: "Cooling",
         aliases: ["cooling", "the-blue-lias", "blue-lias"],
@@ -1214,7 +1264,7 @@
       {
         name: "The Long Itch Diner",
         website: "https://www.longitchdiner.co.uk/",
-        repairQuip: "Keeping the gears meshing sweetly for the long stretch ahead.",
+        repairQuip: "Helping every gear click into place.",
         partKey: "transmission",
         partLabel: "Transmission",
         aliases: ["transmission", "long-itch-diner", "the-long-itch-diner"],
@@ -1245,7 +1295,7 @@
       {
         name: "Cotswold Cafe / Pats Baps",
         website: "https://www.cotswoldcafe-patsbaps.co.uk/",
-        repairQuip: "Putting fresh bite back in the tyres so the route keeps rolling.",
+        repairQuip: "Fresh grip for the next stretch.",
         partKey: "tyres",
         partLabel: "Tyres",
         aliases: ["tyres", "cotswold-cafe", "pats-baps", "cotswold-cafe-pats-baps"],
@@ -1297,6 +1347,7 @@
     const recordPanel = document.getElementById("recordPanel");
     const recordToggleBtn = document.getElementById("recordToggleBtn");
     const garageGrid = document.getElementById("garageGrid");
+    const accountActionsPanel = document.getElementById("accountActionsPanel");
 
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -1460,7 +1511,7 @@
             : `<div><a href="mailto:${escapeHtml(venue.email)}" style="color:inherit;text-decoration:none;">${escapeHtml(venue.email)}</a></div>`;
 
         return `
-          <div class="garage-card">
+          <div class="garage-card" id="garage-${venue.partKey}">
             <div class="garage-head">
               <div class="garage-part">Repairs: ${escapeHtml(venue.partLabel)}</div>
               <h3 class="garage-name">${escapeHtml(venue.name)}</h3>
@@ -1501,6 +1552,30 @@
           </div>
         `;
       }).join("");
+    }
+
+    function attachPartNavigation() {
+      const parts = document.querySelectorAll(".part");
+
+      parts.forEach((partEl) => {
+        const partKey = partEl.dataset.partKey;
+        if (!partKey) return;
+
+        const goToGarage = () => {
+          const target = document.getElementById(`garage-${partKey}`);
+          if (!target) return;
+          target.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+
+        partEl.addEventListener("click", goToGarage);
+
+        partEl.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            goToGarage();
+          }
+        });
+      });
     }
 
     async function ensureUserDocument(user) {
@@ -1611,8 +1686,7 @@
       const userRef = doc(db, "userVisits", user.uid);
       await setDoc(userRef, { visitedVenues: [] }, { merge: true });
 
-      renderVisitedState([]);
-      showStatus("Your restoration progress has been reset. Your bike is completely broken again.", "success");
+      window.location.href = "https://the-piston-club.github.io/The-Restoration-Route/";
     }
 
     signUpBtn.addEventListener("click", async () => {
@@ -1711,6 +1785,7 @@
 
       if (user) {
         authPanel.classList.add("hidden");
+        accountActionsPanel.classList.remove("hidden");
         closeResetModal();
         clearStatus();
 
@@ -1721,6 +1796,7 @@
         }
       } else {
         authPanel.classList.remove("hidden");
+        accountActionsPanel.classList.add("hidden");
         closeResetModal();
         renderVisitedState([]);
         hideRecordPanel();
@@ -1734,6 +1810,7 @@
     });
 
     renderGarageCards();
+    attachPartNavigation();
   </script>
 </body>
 </html>
