@@ -356,28 +356,19 @@
       position: absolute;
       inset: 8px;
       display: none;
-      align-items: center;
-      justify-content: center;
-      z-index: 2;
-      border-radius: 10px;
-      border: 3px solid rgba(46,157,87,0.78);
-      color: rgba(46,157,87,0.92);
-      background: rgba(220,255,230,0.12);
-      font-size: clamp(18px, 3vw, 34px);
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
+      width: calc(100% - 16px);
+      height: calc(100% - 16px);
+      object-fit: contain;
       transform: rotate(-11deg);
-      box-shadow:
-        0 0 0 1px rgba(46,157,87,0.18) inset,
-        0 8px 16px rgba(0,0,0,0.15);
+      opacity: 0.96;
+      z-index: 2;
       pointer-events: none;
-      backdrop-filter: blur(1px);
-      text-align: center;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .part.stamped .stamp-static {
-      display: flex;
+      display: block;
     }
 
     .stamp-stage {
@@ -413,27 +404,17 @@
     .stamp-anim {
       position: absolute;
       inset: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 10px;
-      border: 3px solid rgba(46,157,87,0.78);
-      color: rgba(46,157,87,0.92);
-      background: rgba(220,255,230,0.12);
-      font-size: clamp(18px, 3vw, 34px);
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      box-shadow:
-        0 0 0 1px rgba(46,157,87,0.18) inset,
-        0 8px 16px rgba(0,0,0,0.15);
-      backdrop-filter: blur(1px);
-      text-align: center;
+      width: calc(100% - 16px);
+      height: calc(100% - 16px);
+      object-fit: contain;
       transform-origin: center center;
       transform: translateY(-220%) scale(1.35) rotate(-11deg);
       opacity: 0;
       filter: blur(6px);
       animation: stampDown var(--stamp-duration) ease-out var(--stamp-delay) forwards;
+      z-index: 4;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     @keyframes stampDown {
@@ -926,8 +907,8 @@
       .stamp-static,
       .stamp-anim {
         inset: 6px;
-        font-size: clamp(14px, 4.6vw, 22px);
-        letter-spacing: 1px;
+        width: calc(100% - 12px);
+        height: calc(100% - 12px);
       }
 
       .summary-number {
@@ -985,73 +966,73 @@
         <div class="bike-grid">
           <button type="button" class="part" id="part-engine" data-scroll-target="garage-engine">
             <span class="part-name">Engine</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-fuel-system" data-scroll-target="garage-fuel-system">
             <span class="part-name">Fuel System</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-bodywork" data-scroll-target="garage-bodywork">
             <span class="part-name">Bodywork</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-chassis" data-scroll-target="garage-chassis">
             <span class="part-name">Chassis</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-lubrication" data-scroll-target="garage-lubrication">
             <span class="part-name">Lubrication</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-cooling" data-scroll-target="garage-cooling">
             <span class="part-name">Cooling</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-transmission" data-scroll-target="garage-transmission">
             <span class="part-name">Transmission</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
 
           <button type="button" class="part" id="part-tyres" data-scroll-target="garage-tyres">
             <span class="part-name">Tyres</span>
-            <span class="stamp-static">Repaired</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
               <span class="stamp-shadow"></span>
-              <span class="stamp-anim">Repaired</span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
             </span>
           </button>
         </div>
@@ -1093,7 +1074,7 @@
       <div class="warning-inner">
         <h3 class="warning-title">Warning</h3>
         <p class="warning-text">You are about to reset all of your restoration progress.</p>
-        <p class="warning-subtext">This will reset your progress, meaning that your bike will be completely broken again.</p>
+        <p class="warning-subtext">This will reset your progress, meaning that your vehicle will be completely broken again.</p>
         <div class="warning-actions">
           <button id="confirmResetBtn" class="btn-warning-yes">Yes, Reset It</button>
           <button id="cancelResetBtn" class="btn-warning-no">No, Keep It</button>
