@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Restoration Route</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f1ea;
+      color: #222;
+    }
+
+    .wrap {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+    }
+
+    h1, h2, h3, p {
+      margin-top: 0;
+    }
+
+    .brand {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .brand h1 {
+      margin-bottom: 8px;
+    }
+
+    .muted {
+      color: #666;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    input, button {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      background: #2d5a3d;
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #1f1f1f;
+      color: white;
+    }
+
+    .btn-light {
+      background: #e9e9e9;
+      color: #111;
+    }
+
+    .btn-danger {
+      background: #8f2d2d;
+      color: white;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .status {
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-weight: bold;
+      display: none;
+    }
+
+    .status.success {
+      background: #e8f6ea;
+      color: #1f6a33;
+      display: block;
+    }
+
+    .status.error {
+      background: #fdeaea;
+      color: #9b1c1c;
+      display: block;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .user-box {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .venue-box {
+      background: #f6f6f6;
+      border: 2px dashed #bbb;
+      border-radius: 12px;
+      padding: 16px;
+      min-height: 120px;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #555;
+    }
+
+    @media (max-width: 700px) {
+      .row, .route-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <h1>The Restoration Route</h1>
+      <p class="muted">Sign up, log in, and view your digital restoration card.</p>
+    </div>
+
+    <div id="statusBox" class="status"></div>
+
+    <div id="authSection" class="card">
+      <h2>Account Access</h2>
+      <p class="muted">Create an account, sign in with email, or use Google.</p>
+
+      <div class="form-grid">
+        <input type="email" id="email" placeholder="Email address" />
+        <input type="password" id="password" placeholder="Password" />
+
+        <div class="row">
+          <button id="signUpBtn" class="btn-primary">Create Account</button>
+          <button id="logInBtn" class="btn-secondary">Log In</button>
+        </div>
+
+        <button id="googleBtn" class="btn-light">Continue with Google</button>
+      </div>
+    </div>
+
+    <div id="appSection" class="hidden">
+      <div class="card">
+        <div class="user-box">
+          <div>
+            <h2>Your Digital Card</h2>
+            <p class="muted" id="userInfo">Not signed in</p>
+          </div>
+          <button id="logOutBtn" class="btn-danger" style="max-width: 180px;">Log Out</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Classic Motorcycle Restoration Progress</h3>
+        <p class="muted">
+          These are placeholder sections for now. Later, we will connect each one to a venue QR code and stamp it once only.
+        </p>
+
+        <div class="route-grid">
+          <div class="venue-box">1. Engine</div>
+          <div class="venue-box">2. Wheels</div>
+          <div class="venue-box">3. Brakes</div>
+          <div class="venue-box">4. Lubrication</div>
+          <div class="venue-box">5. Upholstery</div>
+          <div class="venue-box">6. Electrical</div>
+          <div class="venue-box">7. Exhaust</div>
+          <div class="venue-box">8. Bodywork</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBSSekdM7t9zc_ee0kQ5xSBFYNvRN53PV0",
+      authDomain: "the-restoration-route.firebaseapp.com",
+      projectId: "the-restoration-route",
+      storageBucket: "the-restoration-route.firebasestorage.app",
+      messagingSenderId: "878380399095",
+      appId: "1:878380399095:web:6a16f26fedce5f1f9c96f2",
+      measurementId: "G-0PLZQ6B8HT"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const statusBox = document.getElementById("statusBox");
+    const authSection = document.getElementById("authSection");
+    const appSection = document.getElementById("appSection");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const signUpBtn = document.getElementById("signUpBtn");
+    const logInBtn = document.getElementById("logInBtn");
+    const googleBtn = document.getElementById("googleBtn");
+    const logOutBtn = document.getElementById("logOutBtn");
+    const userInfo = document.getElementById("userInfo");
+
+    function showStatus(message, type = "success") {
+      statusBox.textContent = message;
+      statusBox.className = `status ${type}`;
+    }
+
+    function clearStatus() {
+      statusBox.textContent = "";
+      statusBox.className = "status";
+    }
+
+    signUpBtn.addEventListener("click", async () => {
+      clearStatus();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        showStatus("Enter both email and password.", "error");
+        return;
+      }
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        showStatus("Account created successfully.");
+      } catch (error) {
+        showStatus(error.message, "error");
+      }
+    });
+
+    logInBtn.addEventListener("click", async () => {
+      clearStatus();
+
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        showStatus("Enter both email and password.", "error");
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        showStatus("Logged in successfully.");
+      } catch (error) {
+        showStatus(error.message, "error");
+      }
+    });
+
+    googleBtn.addEventListener("click", async () => {
+      clearStatus();
+
+      try {
+        await signInWithPopup(auth, provider);
+        showStatus("Signed in with Google.");
+      } catch (error) {
+        showStatus(error.message, "error");
+      }
+    });
+
+    logOutBtn.addEventListener("click", async () => {
+      clearStatus();
+
+      try {
+        await signOut(auth);
+        showStatus("Logged out successfully.");
+      } catch (error) {
+        showStatus(error.message, "error");
+      }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authSection.classList.add("hidden");
+        appSection.classList.remove("hidden");
+        userInfo.textContent = `Signed in as: ${user.email || "Google user"} | User ID: ${user.uid}`;
+      } else {
+        authSection.classList.remove("hidden");
+        appSection.classList.add("hidden");
+        userInfo.textContent = "Not signed in";
+      }
+    });
+  </script>
+</body>
+</html>
