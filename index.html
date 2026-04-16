@@ -224,17 +224,20 @@
 
     .record-top {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
       gap: 16px;
-      flex-wrap: wrap;
       margin-bottom: 18px;
+      text-align: center;
     }
 
     .top-actions {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
+      justify-content: center;
+      width: 100%;
     }
 
     .record-title {
@@ -242,6 +245,8 @@
       font-size: 30px;
       text-transform: uppercase;
       letter-spacing: 1px;
+      text-align: center;
+      width: 100%;
     }
 
     .summary-block {
@@ -310,10 +315,12 @@
       align-items: center;
       justify-content: center;
       padding: 6px;
-      font-size: clamp(9px, 2.7vw, 16px);
+      width: 100%;
+      text-align: center;
+      font-size: clamp(9px, 2.6vw, 16px);
       line-height: 1.05;
       font-weight: 900;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.35px;
       text-transform: uppercase;
       color: var(--text);
       text-shadow: 0 2px 0 rgba(0,0,0,0.35);
@@ -328,20 +335,24 @@
       position: absolute;
       left: 50%;
       top: 50%;
-      transform: translate(-50%, -50%) rotate(-12deg);
+      transform: translate(-50%, -50%) rotate(-11deg);
       z-index: 2;
-      padding: 4px 7px;
+      padding: 4px 8px;
       border-radius: 999px;
-      border: 2px solid var(--green);
-      color: var(--green);
-      background: rgba(245,255,247,0.92);
+      border: 2px solid rgba(46,157,87,0.78);
+      color: rgba(46,157,87,0.88);
+      background: rgba(220,255,230,0.12);
       font-size: clamp(7px, 1.8vw, 11px);
       font-weight: 900;
       letter-spacing: 0.8px;
       text-transform: uppercase;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      box-shadow:
+        0 0 0 1px rgba(46,157,87,0.18) inset,
+        0 8px 16px rgba(0,0,0,0.15);
       pointer-events: none;
       white-space: nowrap;
+      opacity: 0.88;
+      backdrop-filter: blur(0.5px);
     }
 
     .part.stamped .stamp { display: inline-block; }
@@ -415,6 +426,7 @@
       display: block;
       margin-bottom: 14px;
       padding-top: 10px;
+      text-align: center;
     }
 
     .garage-part {
@@ -457,6 +469,13 @@
       gap: 14px;
     }
 
+    .detail-card {
+      background: rgba(255,255,255,0.04);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: center;
+    }
+
     .detail-block-title {
       margin: 0 0 6px;
       font-size: 12px;
@@ -464,12 +483,14 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #ffe2a0;
+      text-align: center;
     }
 
     .detail-lines {
       color: rgba(255,255,255,0.88);
       line-height: 1.5;
       font-size: 14px;
+      text-align: center;
     }
 
     .hours-grid {
@@ -493,12 +514,14 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       color: #ffe2a0;
+      text-align: left;
     }
 
     .hours-time {
       font-size: 14px;
       color: rgba(255,255,255,0.92);
       line-height: 1.4;
+      text-align: right;
     }
 
     .hours-food {
@@ -506,6 +529,7 @@
       font-size: 12px;
       color: rgba(255,255,255,0.68);
       line-height: 1.3;
+      text-align: right;
     }
 
     .garage-actions {
@@ -513,6 +537,7 @@
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 16px;
+      justify-content: center;
     }
 
     .garage-link {
@@ -645,7 +670,7 @@
       }
 
       .hours-row {
-        grid-template-columns: 74px 1fr;
+        grid-template-columns: 78px 1fr;
       }
     }
 
@@ -669,6 +694,29 @@
 
       .garage-name {
         font-size: 22px;
+      }
+
+      .bike-grid {
+        gap: 6px;
+      }
+
+      .part {
+        border-radius: 12px;
+      }
+
+      .part::before {
+        inset: 6px;
+      }
+
+      .part-name {
+        font-size: clamp(8px, 2.9vw, 13px);
+        line-height: 1;
+        padding: 4px;
+      }
+
+      .stamp {
+        font-size: clamp(6px, 1.9vw, 9px);
+        padding: 3px 6px;
       }
     }
   </style>
@@ -721,14 +769,14 @@
         </div>
 
         <div class="bike-grid">
-          <div class="part" id="part-engine"><div class="part-name">Engine</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-fuel-system"><div class="part-name">Fuel System</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-bodywork"><div class="part-name">Bodywork</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-chassis"><div class="part-name">Chassis</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-lubrication"><div class="part-name">Lubrication</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-cooling"><div class="part-name">Cooling</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-transmission"><div class="part-name">Transmission</div><div class="stamp">Stamped</div></div>
-          <div class="part" id="part-tyres"><div class="part-name">Tyres</div><div class="stamp">Stamped</div></div>
+          <div class="part" id="part-engine"><div class="part-name">Engine</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-fuel-system"><div class="part-name">Fuel System</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-bodywork"><div class="part-name">Bodywork</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-chassis"><div class="part-name">Chassis</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-lubrication"><div class="part-name">Lubrication</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-cooling"><div class="part-name">Cooling</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-transmission"><div class="part-name">Transmission</div><div class="stamp">Repaired</div></div>
+          <div class="part" id="part-tyres"><div class="part-name">Tyres</div><div class="stamp">Repaired</div></div>
         </div>
 
         <div id="rewardBox" class="reward-box">
@@ -1264,17 +1312,17 @@
 
             <div class="garage-layout">
               <div class="details-grid">
-                <div>
+                <div class="detail-card">
                   <div class="detail-block-title">Address</div>
                   <div class="detail-lines">${addressHtml}</div>
                 </div>
 
-                <div>
+                <div class="detail-card">
                   <div class="detail-block-title">Phone</div>
                   <div class="detail-lines">${phoneHtml}</div>
                 </div>
 
-                <div>
+                <div class="detail-card">
                   <div class="detail-block-title">Email</div>
                   <div class="detail-lines">${emailHtml}</div>
                 </div>
