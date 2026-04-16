@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>The Restoration Route</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Teko:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Teko:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <style>
     * { box-sizing: border-box; }
@@ -89,27 +90,11 @@
       text-align: center;
     }
 
-    .brand-title,
-    .section-title,
-    .record-title,
-    .reward-title,
-    .garage-name,
-    .warning-title,
-    .record-toggle-btn,
-    button,
-    .detail-block-title,
-    .hours-day,
-    .garage-part,
-    .summary-number,
-    .summary-label,
-    .part-name {
-      font-family: "Teko", Arial, sans-serif;
-    }
-
     .brand-title {
       margin: 0;
-      font-size: clamp(34px, 6vw, 68px);
-      line-height: 0.95;
+      font-family: "Teko", Arial, sans-serif;
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: 0.9;
       letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 700;
@@ -123,21 +108,28 @@
       letter-spacing: 4px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.72);
+      font-weight: 700;
     }
 
     .section-title {
       margin: 0 0 10px;
-      font-size: 32px;
+      font-family: "Teko", Arial, sans-serif;
+      font-size: 36px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      line-height: 1;
+      letter-spacing: 1.2px;
+      line-height: 0.95;
+    }
+
+    .section-title.centered,
+    .section-text.centered {
+      text-align: center;
     }
 
     .section-text {
       margin: 0 0 20px;
       color: var(--muted);
       line-height: 1.55;
-      font-size: 20px;
+      font-size: 18px;
     }
 
     .record-toggle-btn {
@@ -147,6 +139,7 @@
       border: none;
       border-radius: 18px;
       cursor: pointer;
+      font-family: "Teko", Arial, sans-serif;
       font-size: 28px;
       font-weight: 700;
       letter-spacing: 1px;
@@ -203,7 +196,7 @@
     button {
       width: 100%;
       border-radius: 12px;
-      font-size: 22px;
+      font-size: 18px;
       font-family: inherit;
     }
 
@@ -219,9 +212,8 @@
       padding: 14px 16px;
       border: none;
       cursor: pointer;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.4px;
     }
 
     .btn-primary {
@@ -240,24 +232,32 @@
       color: #1f1f1f;
     }
 
+    .btn-danger {
+      background: linear-gradient(180deg, #a52a2a, #7c1e1e);
+      color: #fff;
+      max-width: 180px;
+    }
+
+    .btn-reset {
+      background: linear-gradient(180deg, #d19a1f, #9e6d11);
+      color: #1d1202;
+      max-width: 220px;
+    }
+
     .record-top {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-bottom: 18px;
       text-align: center;
+      margin-bottom: 18px;
     }
 
     .record-title {
       margin: 0;
+      font-family: "Teko", Arial, sans-serif;
       font-size: 38px;
       text-transform: uppercase;
       letter-spacing: 1px;
       text-align: center;
       width: 100%;
-      line-height: 1;
+      line-height: 0.95;
     }
 
     .summary-block {
@@ -273,27 +273,32 @@
     }
 
     .summary-number {
-      font-size: 44px;
-      font-weight: 700;
-      line-height: 1;
+      font-size: 34px;
+      font-weight: 900;
     }
 
     .summary-label {
       margin-top: 8px;
-      font-size: 18px;
+      font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 3px;
       color: rgba(255,255,255,0.75);
+      font-weight: 700;
     }
 
     .bike-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
       gap: 12px;
+      width: 100%;
+      max-width: 720px;
+      margin: 0 auto;
     }
 
     .part {
       position: relative;
+      min-width: 0;
+      width: 100%;
       border-radius: 14px;
       overflow: hidden;
       aspect-ratio: 1 / 1;
@@ -301,6 +306,7 @@
       justify-content: center;
       align-items: center;
       text-align: center;
+      text-decoration: none;
       background:
         radial-gradient(circle at 12px 12px, #8b8b8b 0 3px, transparent 4px),
         radial-gradient(circle at calc(100% - 12px) 12px, #8b8b8b 0 3px, transparent 4px),
@@ -308,7 +314,10 @@
         radial-gradient(circle at calc(100% - 12px) calc(100% - 12px), #8b8b8b 0 3px, transparent 4px),
         linear-gradient(145deg, #666 0%, #3f3f3f 48%, #2a2a2a 100%);
       border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -1px 0 rgba(0,0,0,0.28), 0 12px 26px rgba(0,0,0,0.28);
+      box-shadow:
+        inset 0 1px 0 rgba(255,255,255,0.12),
+        inset 0 -1px 0 rgba(0,0,0,0.28),
+        0 12px 26px rgba(0,0,0,0.28);
       cursor: pointer;
       transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
     }
@@ -319,8 +328,8 @@
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.12),
         inset 0 -1px 0 rgba(0,0,0,0.28),
-        0 16px 28px rgba(0,0,0,0.34);
-      border-color: rgba(200,155,60,0.45);
+        0 16px 32px rgba(0,0,0,0.34);
+      border-color: rgba(200,155,60,0.55);
       outline: none;
     }
 
@@ -339,13 +348,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 6px;
+      padding: 8px;
       width: 100%;
       text-align: center;
-      font-size: clamp(12px, 1.8vw, 22px);
+      font-family: "Teko", Arial, sans-serif;
+      font-size: clamp(15px, 4.4vw, 24px);
       line-height: 0.95;
-      font-weight: 700;
-      letter-spacing: 0.3px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
       color: var(--text);
       text-shadow: 0 2px 0 rgba(0,0,0,0.35);
@@ -353,65 +363,6 @@
       overflow-wrap: anywhere;
       word-break: break-word;
       hyphens: auto;
-      pointer-events: none;
-    }
-
-    .stamp-shadow {
-      display: none;
-      position: absolute;
-      left: 50%;
-      bottom: 8%;
-      width: 76%;
-      height: 16%;
-      background: rgba(0, 0, 0, 0.16);
-      border-radius: 999px;
-      filter: blur(14px);
-      transform: translateX(-50%) scale(1);
-      opacity: 0;
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    .stamp {
-      display: none;
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
-      z-index: 3;
-      pointer-events: none;
-      opacity: 0.92;
-      user-select: none;
-      -webkit-user-drag: none;
-      filter: blur(0);
-      transform-origin: center center;
-      transform: translateY(0) scale(1) rotate(0deg);
-    }
-
-    .part.stamped .stamp {
-      display: block;
-    }
-
-    .part.stamp-hidden .stamp {
-      display: none !important;
-    }
-
-    .part.stamp-hidden .stamp-shadow {
-      display: none !important;
-    }
-
-    .part.stamp-animating .stamp-shadow {
-      display: block;
-      animation: shadowHitTile 0.95s ease-out forwards;
-    }
-
-    .part.stamp-animating .stamp {
-      display: block !important;
-      animation: stampDownTile 0.95s ease-out forwards;
-      opacity: 0;
-      filter: blur(7px);
-      transform: translateY(-150%) scale(1.2) rotate(0deg);
     }
 
     .part.stamped {
@@ -424,46 +375,99 @@
       border-color: rgba(200,155,60,0.45);
     }
 
-    @keyframes stampDownTile {
+    .stamp-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .stamp-shadow {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 88%;
+      height: 22%;
+      background: rgba(0, 0, 0, 0.18);
+      border-radius: 999px;
+      filter: blur(12px);
+      transform: translate(-50%, calc(-50% + 36px)) scale(0.55);
+      opacity: 0;
+    }
+
+    .stamp-image {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transform: translate(-50%, -50%) rotate(-7deg) scale(1);
+      opacity: 0;
+      filter: blur(0);
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .part.stamped.static-stamp .stamp-shadow {
+      opacity: 0.12;
+      transform: translate(-50%, calc(-50% + 36px)) scale(1);
+    }
+
+    .part.stamped.static-stamp .stamp-image {
+      opacity: 1;
+      transform: translate(-50%, -50%) rotate(-7deg) scale(1);
+      filter: blur(0);
+    }
+
+    .part.stamped.animate-stamp .stamp-shadow {
+      animation: tileStampShadow 0.95s ease-out 2s forwards;
+    }
+
+    .part.stamped.animate-stamp .stamp-image {
+      animation: tileStampDown 0.95s ease-out 2s forwards;
+    }
+
+    @keyframes tileStampDown {
       0% {
-        transform: translateY(-150%) scale(1.2) rotate(0deg);
+        transform: translate(-50%, calc(-50% - 220px)) rotate(-7deg) scale(1.55);
         opacity: 0;
         filter: blur(7px);
       }
       58% {
-        transform: translateY(4%) scale(1.02, 0.92) rotate(0deg);
+        transform: translate(-50%, calc(-50% + 5px)) rotate(-7deg) scale(1.02, 0.92);
         opacity: 1;
         filter: blur(0.3px);
       }
       72% {
-        transform: translateY(-2%) scale(0.98, 1.03) rotate(0deg);
+        transform: translate(-50%, calc(-50% - 2px)) rotate(-7deg) scale(0.97, 1.04);
         opacity: 1;
         filter: blur(0);
       }
       86% {
-        transform: translateY(1%) scale(1.01, 0.99) rotate(0deg);
+        transform: translate(-50%, calc(-50% + 1px)) rotate(-7deg) scale(1.01, 0.99);
         opacity: 1;
         filter: blur(0);
       }
       100% {
-        transform: translateY(0) scale(1) rotate(0deg);
-        opacity: 0.92;
+        transform: translate(-50%, -50%) rotate(-7deg) scale(1);
+        opacity: 1;
         filter: blur(0);
       }
     }
 
-    @keyframes shadowHitTile {
+    @keyframes tileStampShadow {
       0% {
         opacity: 0;
-        transform: translateX(-50%) scale(0.45);
+        transform: translate(-50%, calc(-50% + 10px)) scale(0.45);
       }
       58% {
         opacity: 0.2;
-        transform: translateX(-50%) scale(1.04);
+        transform: translate(-50%, calc(-50% + 36px)) scale(1.04);
       }
       100% {
-        opacity: 0.1;
-        transform: translateX(-50%) scale(1);
+        opacity: 0.12;
+        transform: translate(-50%, calc(-50% + 36px)) scale(1);
       }
     }
 
@@ -477,17 +481,18 @@
         linear-gradient(145deg, rgba(82,64,26,0.94), rgba(43,31,10,0.96));
       border: 1px solid rgba(220,186,97,0.35);
       color: #fff4d6;
-      font-size: 20px;
+      text-align: center;
     }
 
     .reward-box.show { display: block; }
 
     .reward-title {
       margin: 0 0 6px;
+      font-family: "Teko", Arial, sans-serif;
       font-size: 28px;
       text-transform: uppercase;
       letter-spacing: 1px;
-      line-height: 1;
+      line-height: 0.95;
     }
 
     .reward-code {
@@ -498,7 +503,6 @@
       background: rgba(255,255,255,0.12);
       font-weight: 900;
       letter-spacing: 1px;
-      font-size: 20px;
     }
 
     .garage-grid {
@@ -515,7 +519,7 @@
       border: 1px solid rgba(255,255,255,0.14);
       box-shadow: 0 14px 28px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.12);
       padding: 22px 20px 20px;
-      scroll-margin-top: 20px;
+      scroll-margin-top: 24px;
     }
 
     .garage-card::before {
@@ -541,28 +545,27 @@
       background: rgba(200,155,60,0.18);
       border: 1px solid rgba(200,155,60,0.35);
       color: #ffe8b0;
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 800;
       letter-spacing: 1px;
       text-transform: uppercase;
-      line-height: 1;
     }
 
     .garage-name {
       margin: 0 0 6px;
+      font-family: "Teko", Arial, sans-serif;
       font-size: 34px;
-      line-height: 1;
+      line-height: 0.95;
       text-transform: uppercase;
       letter-spacing: 1px;
     }
 
-    .garage-quip {
+    .garage-tagline {
       margin: 0;
       color: rgba(255,255,255,0.78);
-      font-size: 20px;
-      line-height: 1.35;
-      font-style: italic;
-      text-align: center;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 1.2;
     }
 
     .garage-layout {
@@ -586,19 +589,18 @@
 
     .detail-block-title {
       margin: 0 0 6px;
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 12px;
+      font-weight: 900;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #ffe2a0;
       text-align: center;
-      line-height: 1;
     }
 
     .detail-lines {
       color: rgba(255,255,255,0.88);
       line-height: 1.5;
-      font-size: 19px;
+      font-size: 16px;
       text-align: center;
     }
 
@@ -618,17 +620,16 @@
     }
 
     .hours-day {
-      font-size: 18px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 900;
       letter-spacing: 1px;
       text-transform: uppercase;
       color: #ffe2a0;
       text-align: left;
-      line-height: 1;
     }
 
     .hours-time {
-      font-size: 18px;
+      font-size: 15px;
       color: rgba(255,255,255,0.92);
       line-height: 1.4;
       text-align: right;
@@ -636,7 +637,7 @@
 
     .hours-food {
       margin-top: 2px;
-      font-size: 16px;
+      font-size: 12px;
       color: rgba(255,255,255,0.68);
       line-height: 1.3;
       text-align: right;
@@ -660,7 +661,7 @@
       border-radius: 12px;
       font-weight: 800;
       letter-spacing: 0.3px;
-      font-size: 18px;
+      font-size: 16px;
     }
 
     .garage-link.website,
@@ -674,41 +675,18 @@
       color: #1a1205;
     }
 
-    .garages-panel .section-title,
-    .garages-panel .section-text {
-      text-align: center;
-    }
-
-    .account-actions-panel .panel-inner {
-      padding-top: 26px;
-      padding-bottom: 26px;
-    }
-
-    .account-actions-wrap {
+    .account-actions {
       display: flex;
       justify-content: center;
       gap: 12px;
       flex-wrap: wrap;
     }
 
-    .btn-reset-small,
-    .btn-danger-small {
+    .account-actions button {
       width: auto;
       min-width: 150px;
-      max-width: none;
-      padding: 10px 16px;
-      font-size: 20px;
-      border-radius: 10px;
-    }
-
-    .btn-reset-small {
-      background: linear-gradient(180deg, #d19a1f, #9e6d11);
-      color: #1d1202;
-    }
-
-    .btn-danger-small {
-      background: linear-gradient(180deg, #a52a2a, #7c1e1e);
-      color: #fff;
+      padding: 12px 18px;
+      font-size: 16px;
     }
 
     .modal-overlay {
@@ -757,6 +735,7 @@
 
     .warning-title {
       margin: 0 0 16px;
+      font-family: "Teko", Arial, sans-serif;
       font-size: clamp(30px, 6vw, 52px);
       line-height: 0.95;
       font-weight: 700;
@@ -769,15 +748,15 @@
       margin: 0 auto 12px;
       max-width: 560px;
       font-size: 22px;
-      line-height: 1.5;
+      line-height: 1.2;
       color: rgba(255,255,255,0.9);
     }
 
     .warning-subtext {
       margin: 0 auto 26px;
       max-width: 560px;
-      font-size: 20px;
-      line-height: 1.5;
+      font-size: 18px;
+      line-height: 1.4;
       color: #ffd5d5;
       font-weight: 700;
     }
@@ -836,8 +815,10 @@
       }
 
       .bike-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 8px;
+        max-width: 100%;
       }
 
       .part {
@@ -849,31 +830,26 @@
       }
 
       .part-name {
-        font-size: clamp(9px, 2.6vw, 14px);
-        line-height: 0.92;
-        padding: 4px;
+        font-size: clamp(14px, 5vw, 20px);
+        line-height: 0.95;
+        padding: 6px;
       }
 
-      .garage-quip {
-        font-size: 18px;
-      }
-
-      .btn-reset-small,
-      .btn-danger-small {
-        min-width: 130px;
-        font-size: 18px;
+      .stamp-shadow {
+        width: 88%;
+        height: 18%;
       }
     }
 
     @media (max-width: 430px) {
       .bike-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
         gap: 6px;
       }
 
       .part-name {
-        font-size: clamp(8px, 2.8vw, 12px);
-        padding: 3px;
+        font-size: clamp(13px, 5.4vw, 18px);
       }
     }
   </style>
@@ -922,53 +898,69 @@
         </div>
 
         <div class="bike-grid">
-          <div class="part" id="part-engine" data-part-key="engine" tabindex="0" role="button" aria-label="Go to engine repair venue">
+          <a class="part" id="part-engine" href="#garage-engine" aria-label="View engine garage details">
             <div class="part-name">Engine</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-fuel-system" data-part-key="fuel-system" tabindex="0" role="button" aria-label="Go to fuel system repair venue">
+          <a class="part" id="part-fuel-system" href="#garage-fuel-system" aria-label="View fuel system garage details">
             <div class="part-name">Fuel System</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-bodywork" data-part-key="bodywork" tabindex="0" role="button" aria-label="Go to bodywork repair venue">
+          <a class="part" id="part-bodywork" href="#garage-bodywork" aria-label="View bodywork garage details">
             <div class="part-name">Bodywork</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-chassis" data-part-key="chassis" tabindex="0" role="button" aria-label="Go to chassis repair venue">
+          <a class="part" id="part-chassis" href="#garage-chassis" aria-label="View chassis garage details">
             <div class="part-name">Chassis</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-lubrication" data-part-key="lubrication" tabindex="0" role="button" aria-label="Go to lubrication repair venue">
+          <a class="part" id="part-lubrication" href="#garage-lubrication" aria-label="View lubrication garage details">
             <div class="part-name">Lubrication</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-cooling" data-part-key="cooling" tabindex="0" role="button" aria-label="Go to cooling repair venue">
+          <a class="part" id="part-cooling" href="#garage-cooling" aria-label="View cooling garage details">
             <div class="part-name">Cooling</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-transmission" data-part-key="transmission" tabindex="0" role="button" aria-label="Go to transmission repair venue">
+          <a class="part" id="part-transmission" href="#garage-transmission" aria-label="View transmission garage details">
             <div class="part-name">Transmission</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
 
-          <div class="part" id="part-tyres" data-part-key="tyres" tabindex="0" role="button" aria-label="Go to tyres repair venue">
+          <a class="part" id="part-tyres" href="#garage-tyres" aria-label="View tyres garage details">
             <div class="part-name">Tyres</div>
-            <div class="stamp-shadow"></div>
-            <img class="stamp" alt="Repaired stamp" src="./Repaired%20Stamp.PNG" />
-          </div>
+            <div class="stamp-layer">
+              <div class="stamp-shadow"></div>
+              <img class="stamp-image" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            </div>
+          </a>
         </div>
 
         <div id="rewardBox" class="reward-box">
@@ -979,19 +971,19 @@
       </div>
     </div>
 
-    <div class="panel garages-panel">
+    <div class="panel">
       <div class="panel-inner">
-        <h2 class="section-title">Recommended Garages</h2>
-        <p class="section-text">Each stop on the route repairs one part of the build. Tap a part in your Restoration Record to jump straight to the matching garage below.</p>
+        <h2 class="section-title centered">Recommended Garages</h2>
+        <p class="section-text centered">Each stop on the route repairs one part of the build. Tap your Restoration Record at any time, then visit the garages below to collect the full set of stamps.</p>
         <div id="garageGrid" class="garage-grid"></div>
       </div>
     </div>
 
-    <div id="accountActionsPanel" class="panel account-actions-panel hidden">
+    <div id="accountActionsPanel" class="panel hidden">
       <div class="panel-inner">
-        <div class="account-actions-wrap">
-          <button id="resetBtn" class="btn-reset-small">Reset Progress</button>
-          <button id="logOutBtn" class="btn-danger-small">Log Out</button>
+        <div class="account-actions">
+          <button id="resetBtn" class="btn-reset">Reset Progress</button>
+          <button id="logOutBtn" class="btn-danger">Log Out</button>
         </div>
       </div>
     </div>
@@ -1051,11 +1043,15 @@
       "Sunday"
     ];
 
+    const STAMP_ANIMATION_DELAY_MS = 2000;
+    const STAMP_ANIMATION_DURATION_MS = 950;
+    const RESET_REDIRECT_URL = "https://the-piston-club.github.io/The-Restoration-Route/";
+
     const ROUTE_VENUES = [
       {
         name: "The Piston Club",
+        tagline: "Where the heart of the ride fires back up.",
         website: "https://thepistonclub.co.uk/",
-        repairQuip: "Where the engine finds its spark.",
         partKey: "engine",
         partLabel: "Engine",
         aliases: ["engine", "piston-club", "the-piston-club"],
@@ -1095,8 +1091,8 @@
       },
       {
         name: "Gilks’ Garage Café",
+        tagline: "Topped up and ready for the miles ahead.",
         website: "https://gilksgaragecafe.com/",
-        repairQuip: "Fuel for the miles ahead.",
         partKey: "fuel-system",
         partLabel: "Fuel System",
         aliases: ["fuel-system", "gilks", "gilks-garage-cafe"],
@@ -1132,8 +1128,8 @@
       },
       {
         name: "Mr Watsons Cafe",
+        tagline: "Double-decker charm with the shine back on.",
         website: "https://www.mrwatsonscafe.com/",
-        repairQuip: "Double-decker shine for the shell.",
         partKey: "bodywork",
         partLabel: "Bodywork",
         aliases: ["bodywork", "mr-watsons", "mr-watsons-cafe", "mr-watsons-cafe-blockley"],
@@ -1162,8 +1158,8 @@
       },
       {
         name: "Seven Mile",
+        tagline: "Strong foundations for the road ahead.",
         website: "https://www.sevenmile.co.uk/",
-        repairQuip: "A strong frame for the road ahead.",
         partKey: "chassis",
         partLabel: "Chassis",
         aliases: ["chassis", "seven-mile", "sevenmile"],
@@ -1193,8 +1189,8 @@
       },
       {
         name: "Oily Rag",
+        tagline: "Running smooth with classic cool.",
         website: "https://www.oilyrag.com/",
-        repairQuip: "Keeping the whole build running smooth.",
         partKey: "lubrication",
         partLabel: "Lubrication",
         aliases: ["lubrication", "oily-rag", "oilyrag"],
@@ -1224,8 +1220,8 @@
       },
       {
         name: "The Blue Lias",
+        tagline: "Keeping the whole build cool under pressure.",
         website: "https://thebluelias.com/",
-        repairQuip: "Keeping the build cool and steady.",
         partKey: "cooling",
         partLabel: "Cooling",
         aliases: ["cooling", "the-blue-lias", "blue-lias"],
@@ -1263,8 +1259,8 @@
       },
       {
         name: "The Long Itch Diner",
+        tagline: "Shifting the build smoothly into gear.",
         website: "https://www.longitchdiner.co.uk/",
-        repairQuip: "Helping every gear click into place.",
         partKey: "transmission",
         partLabel: "Transmission",
         aliases: ["transmission", "long-itch-diner", "the-long-itch-diner"],
@@ -1294,8 +1290,8 @@
       },
       {
         name: "Cotswold Cafe / Pats Baps",
+        tagline: "Rolling out ready for the next stretch.",
         website: "https://www.cotswoldcafe-patsbaps.co.uk/",
-        repairQuip: "Fresh grip for the next stretch.",
         partKey: "tyres",
         partLabel: "Tyres",
         aliases: ["tyres", "cotswold-cafe", "pats-baps", "cotswold-cafe-pats-baps"],
@@ -1334,6 +1330,7 @@
 
     const VALID_PARTS = ROUTE_VENUES.map(v => v.partKey);
     const ALIAS_MAP = {};
+    const stampFinishTimers = new Map();
 
     ROUTE_VENUES.forEach((venue) => {
       ALIAS_MAP[venue.partKey] = venue.partKey;
@@ -1429,20 +1426,44 @@
       }
     }
 
-    function renderVisitedState(visitedVenues = [], options = {}) {
-      const hideStampForPart = options.hideStampForPart || null;
+    function clearPartAnimationTimer(partKey) {
+      const existingTimer = stampFinishTimers.get(partKey);
+      if (existingTimer) {
+        clearTimeout(existingTimer);
+        stampFinishTimers.delete(partKey);
+      }
+    }
+
+    function finishAnimatedStamp(partKey, partEl) {
+      clearPartAnimationTimer(partKey);
+
+      const timer = window.setTimeout(() => {
+        partEl.classList.remove("animate-stamp");
+        partEl.classList.add("static-stamp");
+        stampFinishTimers.delete(partKey);
+      }, STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS);
+
+      stampFinishTimers.set(partKey, timer);
+    }
+
+    function markCard(visitedVenues = [], options = {}) {
+      const animatedPart = options.animatedPart || null;
 
       VALID_PARTS.forEach((partKey) => {
         const part = document.getElementById(`part-${partKey}`);
         if (!part) return;
 
-        part.classList.remove("stamped", "stamp-hidden", "stamp-animating");
+        clearPartAnimationTimer(partKey);
+        part.classList.remove("stamped", "static-stamp", "animate-stamp");
 
         if (visitedVenues.includes(partKey)) {
           part.classList.add("stamped");
 
-          if (partKey === hideStampForPart) {
-            part.classList.add("stamp-hidden");
+          if (animatedPart === partKey) {
+            part.classList.add("animate-stamp");
+            finishAnimatedStamp(partKey, part);
+          } else {
+            part.classList.add("static-stamp");
           }
         }
       });
@@ -1515,7 +1536,7 @@
             <div class="garage-head">
               <div class="garage-part">Repairs: ${escapeHtml(venue.partLabel)}</div>
               <h3 class="garage-name">${escapeHtml(venue.name)}</h3>
-              <p class="garage-quip">${escapeHtml(venue.repairQuip || "")}</p>
+              <p class="garage-tagline">${escapeHtml(venue.tagline)}</p>
             </div>
 
             <div class="garage-layout">
@@ -1554,30 +1575,6 @@
       }).join("");
     }
 
-    function attachPartNavigation() {
-      const parts = document.querySelectorAll(".part");
-
-      parts.forEach((partEl) => {
-        const partKey = partEl.dataset.partKey;
-        if (!partKey) return;
-
-        const goToGarage = () => {
-          const target = document.getElementById(`garage-${partKey}`);
-          if (!target) return;
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        };
-
-        partEl.addEventListener("click", goToGarage);
-
-        partEl.addEventListener("keydown", (event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            goToGarage();
-          }
-        });
-      });
-    }
-
     async function ensureUserDocument(user) {
       const userRef = doc(db, "userVisits", user.uid);
       const snap = await getDoc(userRef);
@@ -1593,51 +1590,8 @@
 
     async function loadUserCard(user) {
       const visitedVenues = await ensureUserDocument(user);
-      renderVisitedState(visitedVenues);
+      markCard(visitedVenues);
       return visitedVenues;
-    }
-
-    function waitForNextFrame() {
-      return new Promise(resolve => requestAnimationFrame(() => resolve()));
-    }
-
-    function wait(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    function playStampAnimation(partKey) {
-      return new Promise((resolve) => {
-        const part = document.getElementById(`part-${partKey}`);
-        if (!part) {
-          resolve();
-          return;
-        }
-
-        const stamp = part.querySelector(".stamp");
-        if (!stamp) {
-          resolve();
-          return;
-        }
-
-        let finished = false;
-
-        const finish = () => {
-          if (finished) return;
-          finished = true;
-          part.classList.remove("stamp-animating");
-          part.classList.remove("stamp-hidden");
-          resolve();
-        };
-
-        part.classList.add("stamped");
-        part.classList.remove("stamp-hidden");
-        part.classList.remove("stamp-animating");
-        void part.offsetWidth;
-        part.classList.add("stamp-animating");
-
-        stamp.addEventListener("animationend", finish, { once: true });
-        window.setTimeout(finish, 1200);
-      });
     }
 
     async function processVenueFromUrl(user) {
@@ -1656,9 +1610,9 @@
       }
 
       if (visitedVenues.includes(partKey)) {
-        renderVisitedState(visitedVenues);
+        markCard(visitedVenues);
+        showStatus(`This stamp has already been added for ${getPartLabel(partKey)}.`, "info");
         showRecordPanel();
-        clearStatus();
         return;
       }
 
@@ -1670,13 +1624,9 @@
       const updatedData = updatedSnap.data();
       const updatedVenues = Array.isArray(updatedData.visitedVenues) ? updatedData.visitedVenues : [];
 
-      renderVisitedState(updatedVenues, { hideStampForPart: partKey });
-      showRecordPanel();
+      markCard(updatedVenues, { animatedPart: partKey });
       showStatus(`Stamp added successfully for ${getPartLabel(partKey)}.`, "success");
-
-      await waitForNextFrame();
-      await wait(2000);
-      await playStampAnimation(partKey);
+      showRecordPanel();
     }
 
     async function resetUserProgress() {
@@ -1686,7 +1636,7 @@
       const userRef = doc(db, "userVisits", user.uid);
       await setDoc(userRef, { visitedVenues: [] }, { merge: true });
 
-      window.location.href = "https://the-piston-club.github.io/The-Restoration-Route/";
+      window.location.href = RESET_REDIRECT_URL;
     }
 
     signUpBtn.addEventListener("click", async () => {
@@ -1798,7 +1748,7 @@
         authPanel.classList.remove("hidden");
         accountActionsPanel.classList.add("hidden");
         closeResetModal();
-        renderVisitedState([]);
+        markCard([]);
         hideRecordPanel();
 
         if (partKeyFromUrl) {
@@ -1810,7 +1760,6 @@
     });
 
     renderGarageCards();
-    attachPartNavigation();
   </script>
 </body>
 </html>
