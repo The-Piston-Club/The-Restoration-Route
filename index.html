@@ -11,17 +11,18 @@
 
     :root {
       --bg-dark: #141414;
-      --panel-dark: #2f2f2f;
-      --panel-mid: #4a4a4a;
-      --metal: #8e8e8e;
       --off-white: #f6f1e7;
+      --text-light: #f5f1e8;
+      --text-dark: #1f1f1f;
       --accent: #c89b3c;
       --accent-dark: #8a6420;
       --success: #2e9d57;
       --danger: #b22121;
       --danger-dark: #7c1e1e;
-      --text-light: #f5f1e8;
-      --text-dark: #1f1f1f;
+      --steel-1: #666666;
+      --steel-2: #3e3e3e;
+      --steel-3: #252525;
+      --panel-edge: rgba(255,255,255,0.14);
     }
 
     body {
@@ -71,7 +72,7 @@
     }
 
     .wrap {
-      max-width: 1180px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 28px 20px 40px;
       position: relative;
@@ -85,7 +86,7 @@
       overflow: hidden;
       border: 1px solid rgba(255,255,255,0.16);
       background:
-        linear-gradient(145deg, rgba(96,96,96,0.95), rgba(34,34,34,0.96));
+        linear-gradient(145deg, rgba(96,96,96,0.96), rgba(34,34,34,0.97));
       box-shadow:
         0 18px 40px rgba(0,0,0,0.35),
         inset 0 1px 0 rgba(255,255,255,0.18),
@@ -104,7 +105,7 @@
       background:
         repeating-linear-gradient(
           45deg,
-          #1b1b1b 0 14px,
+          #111 0 14px,
           #c89b3c 14px 28px
         );
       opacity: 0.95;
@@ -134,6 +135,34 @@
       letter-spacing: 4px;
       text-transform: uppercase;
       color: rgba(255,255,255,0.72);
+    }
+
+    .record-toggle-btn {
+      width: 100%;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #1a1205;
+      background:
+        linear-gradient(180deg, #d7aa43, #a9781f);
+      box-shadow:
+        0 16px 30px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.28);
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    .record-toggle-btn:hover {
+      opacity: 0.96;
+    }
+
+    .record-toggle-btn:active {
+      transform: translateY(1px);
     }
 
     .status {
@@ -171,7 +200,8 @@
     }
 
     .auth-inner,
-    .app-inner {
+    .record-inner,
+    .garages-inner {
       padding: 34px 24px 24px;
     }
 
@@ -187,7 +217,7 @@
     .section-text {
       margin: 0 0 20px;
       color: rgba(255,255,255,0.78);
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
     .form-grid {
@@ -267,7 +297,7 @@
       gap: 12px;
     }
 
-    .app-top {
+    .record-top {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -344,7 +374,7 @@
         radial-gradient(circle at calc(100% - 14px) 14px, #8b8b8b 0 3px, transparent 4px),
         radial-gradient(circle at 14px calc(100% - 14px), #8b8b8b 0 3px, transparent 4px),
         radial-gradient(circle at calc(100% - 14px) calc(100% - 14px), #8b8b8b 0 3px, transparent 4px),
-        linear-gradient(145deg, #646464 0%, #3f3f3f 48%, #2a2a2a 100%);
+        linear-gradient(145deg, var(--steel-1) 0%, var(--steel-2) 48%, var(--steel-3) 100%);
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow:
         inset 0 1px 0 rgba(255,255,255,0.12),
@@ -367,8 +397,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      line-height: 1;
+      font-size: 22px;
+      line-height: 1.1;
       font-weight: 900;
       letter-spacing: 1px;
       text-transform: uppercase;
@@ -396,6 +426,7 @@
       text-transform: uppercase;
       box-shadow: 0 8px 16px rgba(0,0,0,0.15);
       pointer-events: none;
+      white-space: nowrap;
     }
 
     .part.stamped {
@@ -451,6 +482,135 @@
       background: rgba(255,255,255,0.12);
       font-weight: 900;
       letter-spacing: 1px;
+    }
+
+    .garage-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .garage-card {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(84,84,84,0.95), rgba(30,30,30,0.96));
+      border: 1px solid var(--panel-edge);
+      box-shadow:
+        0 14px 28px rgba(0,0,0,0.24),
+        inset 0 1px 0 rgba(255,255,255,0.12);
+      padding: 22px 20px 20px;
+    }
+
+    .garage-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 8px;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          #111 0 14px,
+          #c89b3c 14px 28px
+        );
+    }
+
+    .garage-part {
+      display: inline-block;
+      margin-bottom: 12px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(200,155,60,0.18);
+      border: 1px solid rgba(200,155,60,0.35);
+      color: #ffe8b0;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .garage-name {
+      margin: 0 0 6px;
+      font-size: 26px;
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--off-white);
+    }
+
+    .garage-domain {
+      margin: 0 0 16px;
+      color: rgba(255,255,255,0.62);
+      font-size: 14px;
+    }
+
+    .garage-section {
+      margin-top: 14px;
+    }
+
+    .garage-section-title {
+      margin: 0 0 6px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #ffe2a0;
+    }
+
+    .garage-lines {
+      color: rgba(255,255,255,0.86);
+      line-height: 1.55;
+      font-size: 15px;
+    }
+
+    .garage-note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.78);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .garage-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .garage-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 128px;
+      text-decoration: none;
+      padding: 11px 14px;
+      border-radius: 12px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      transition: opacity 0.12s ease, transform 0.12s ease;
+    }
+
+    .garage-link:hover {
+      opacity: 0.96;
+    }
+
+    .garage-link:active {
+      transform: translateY(1px);
+    }
+
+    .garage-link.website {
+      background: linear-gradient(180deg, #f4f0e7, #ddd3c0);
+      color: #1f1f1f;
+    }
+
+    .garage-link.map {
+      background: linear-gradient(180deg, #c89b3c, #a8781f);
+      color: #1a1205;
     }
 
     .modal-overlay {
@@ -561,13 +721,17 @@
       color: #1f1f1f;
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 1040px) {
       .bike-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
+      .garage-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
-    @media (max-width: 720px) {
+    @media (max-width: 760px) {
       .top-actions {
         width: 100%;
       }
@@ -589,7 +753,8 @@
       }
 
       .auth-inner,
-      .app-inner {
+      .record-inner,
+      .garages-inner {
         padding: 30px 18px 18px;
       }
 
@@ -599,6 +764,10 @@
 
       .warning-inner {
         padding: 38px 18px 38px;
+      }
+
+      .record-toggle-btn {
+        font-size: 18px;
       }
     }
   </style>
@@ -611,6 +780,8 @@
         <div class="brand-subline">Workshop Ledger</div>
       </div>
     </div>
+
+    <button id="recordToggleBtn" class="record-toggle-btn">View Your Restoration Record</button>
 
     <div id="statusBox" class="status"></div>
 
@@ -633,9 +804,9 @@
       </div>
     </div>
 
-    <div id="appPanel" class="workshop-panel hidden">
-      <div class="app-inner">
-        <div class="app-top">
+    <div id="recordPanel" class="workshop-panel hidden">
+      <div class="record-inner">
+        <div class="record-top">
           <h2 class="record-title">Restoration Record</h2>
           <div class="top-actions">
             <button id="resetBtn" class="btn-reset">Reset Progress</button>
@@ -654,13 +825,18 @@
             <div class="stamp">Stamped</div>
           </div>
 
-          <div class="part" id="part-wheels">
-            <div class="part-name">Wheels</div>
+          <div class="part" id="part-fuel-system">
+            <div class="part-name">Fuel System</div>
             <div class="stamp">Stamped</div>
           </div>
 
-          <div class="part" id="part-brakes">
-            <div class="part-name">Brakes</div>
+          <div class="part" id="part-bodywork">
+            <div class="part-name">Bodywork</div>
+            <div class="stamp">Stamped</div>
+          </div>
+
+          <div class="part" id="part-chassis">
+            <div class="part-name">Chassis</div>
             <div class="stamp">Stamped</div>
           </div>
 
@@ -669,23 +845,18 @@
             <div class="stamp">Stamped</div>
           </div>
 
-          <div class="part" id="part-upholstery">
-            <div class="part-name">Upholstery</div>
+          <div class="part" id="part-cooling">
+            <div class="part-name">Cooling</div>
             <div class="stamp">Stamped</div>
           </div>
 
-          <div class="part" id="part-electrical">
-            <div class="part-name">Electrical</div>
+          <div class="part" id="part-transmission">
+            <div class="part-name">Transmission</div>
             <div class="stamp">Stamped</div>
           </div>
 
-          <div class="part" id="part-exhaust">
-            <div class="part-name">Exhaust</div>
-            <div class="stamp">Stamped</div>
-          </div>
-
-          <div class="part" id="part-bodywork">
-            <div class="part-name">Bodywork</div>
+          <div class="part" id="part-tyres">
+            <div class="part-name">Tyres</div>
             <div class="stamp">Stamped</div>
           </div>
         </div>
@@ -695,6 +866,14 @@
           <div>Your full record is complete. Present this finished build at any participating venue to claim your reward.</div>
           <div class="reward-code">RESTORATION-COMPLETE</div>
         </div>
+      </div>
+    </div>
+
+    <div class="workshop-panel">
+      <div class="garages-inner">
+        <h2 class="section-title">Participating Garages</h2>
+        <p class="section-text">Each stop on the route repairs one part of the build. Tap into your Restoration Record at any time, then visit the garages below to collect the full set of stamps.</p>
+        <div id="garageGrid" class="garage-grid"></div>
       </div>
     </div>
   </div>
@@ -744,25 +923,223 @@
       measurementId: "G-0PLZQ6B8HT"
     };
 
+    const ROUTE_VENUES = [
+      {
+        venueSlug: "the-piston-club",
+        aliases: ["piston-club", "engine"],
+        name: "The Piston Club",
+        partKey: "engine",
+        partLabel: "Engine",
+        website: "https://thepistonclub.co.uk/",
+        websiteLabel: "thepistonclub.co.uk",
+        hours: [
+          "Mon–Sat: 7:30am – 10pm",
+          "Food: 7:30am – 8:30pm",
+          "Sun: 7:30am – 8pm",
+          "Food: 7:30am – 5pm"
+        ],
+        address: [
+          "The Piston Club @ The Stag",
+          "Alcester Road",
+          "Redhill",
+          "Stratford upon Avon",
+          "Warwickshire",
+          "B49 6NQ"
+        ],
+        phone: "01789 764634",
+        email: "info@thepistonclub.co.uk",
+        note: "",
+        mapQuery: "The Piston Club @ The Stag, Alcester Road, Redhill, Stratford upon Avon, Warwickshire, B49 6NQ"
+      },
+      {
+        venueSlug: "gilks-garage-cafe",
+        aliases: ["gilks", "fuel-system"],
+        name: "Gilks’ Garage Café",
+        partKey: "fuel-system",
+        partLabel: "Fuel System",
+        website: "https://gilksgaragecafe.com/",
+        websiteLabel: "gilksgaragecafe.com",
+        hours: [
+          "Mon–Tue: Closed",
+          "Wed–Sun: 9am – 3pm",
+          "Kitchen closes at 2pm"
+        ],
+        address: [
+          "Banbury Road",
+          "Kineton",
+          "Warwickshire",
+          "CV35 0JZ"
+        ],
+        phone: "01926 640539",
+        email: "",
+        note: "The site notes occasional pop-up evening events through the year.",
+        mapQuery: "Gilks Garage Cafe, Banbury Road, Kineton, Warwickshire, CV35 0JZ"
+      },
+      {
+        venueSlug: "mr-watsons-cafe",
+        aliases: ["mr-watsons", "mr-watsons-cafe-blockley", "bodywork"],
+        name: "Mr Watsons Cafe",
+        partKey: "bodywork",
+        partLabel: "Bodywork",
+        website: "https://www.mrwatsonscafe.com/",
+        websiteLabel: "mrwatsonscafe.com",
+        hours: [
+          "Mon: 10:30am – 3pm",
+          "Tue–Fri: 8:30am – 3pm",
+          "Sat: 10am – 2pm (when open)",
+          "Sun: Closed"
+        ],
+        address: [
+          "72 Northwick Business Centre",
+          "Blockley",
+          "GL56 9RF"
+        ],
+        phone: "",
+        email: "Mrwatsonscafe@gmail.com",
+        note: "The site says to check Facebook for Saturday opening details.",
+        mapQuery: "72 Northwick Business Centre, Blockley, GL56 9RF"
+      },
+      {
+        venueSlug: "seven-mile",
+        aliases: ["sevenmile", "chassis"],
+        name: "Seven Mile",
+        partKey: "chassis",
+        partLabel: "Chassis",
+        website: "https://www.sevenmile.co.uk/",
+        websiteLabel: "sevenmile.co.uk",
+        hours: [
+          "No fixed public opening hours are listed on the site.",
+          "Contact Seven Mile before travelling."
+        ],
+        address: [
+          "Registered address listed on site:",
+          "Bell Cottage, Mill Road",
+          "Stratton Audley",
+          "OX27 9AR"
+        ],
+        phone: "07807 939952",
+        email: "hello@sevenmile.co.uk",
+        note: "Seven Mile’s website presents it as a catering and events business rather than a standard walk-in café.",
+        mapQuery: "Bell Cottage, Mill Road, Stratton Audley, OX27 9AR"
+      },
+      {
+        venueSlug: "oily-rag",
+        aliases: ["oilyrag", "lubrication"],
+        name: "Oily Rag",
+        partKey: "lubrication",
+        partLabel: "Lubrication",
+        website: "https://www.oilyrag.com/",
+        websiteLabel: "oilyrag.com",
+        hours: [
+          "Fri: 10am – 2pm",
+          "Sat: 10am – 4pm",
+          "Sun: 10am – 2:30pm"
+        ],
+        address: [
+          "Oily Rag HQ",
+          "Unit 9 Rockhaven",
+          "Triangle Park",
+          "Gloucester",
+          "GL1 1AJ"
+        ],
+        phone: "",
+        email: "info@oilyrag.com",
+        note: "",
+        mapQuery: "Oily Rag HQ, Unit 9 Rockhaven, Triangle Park, Gloucester, GL1 1AJ"
+      },
+      {
+        venueSlug: "the-blue-lias",
+        aliases: ["blue-lias", "cooling"],
+        name: "The Blue Lias",
+        partKey: "cooling",
+        partLabel: "Cooling",
+        website: "https://thebluelias.com/",
+        websiteLabel: "thebluelias.com",
+        hours: [
+          "Pub: Mon–Thu 12pm – 10pm",
+          "Pub: Fri–Sat 12pm – 11pm",
+          "Pub: Sun 12pm – 10pm",
+          "Pitstop: Sat–Sun 9am – 2pm"
+        ],
+        address: [
+          "Stockton Road",
+          "Stockton",
+          "Southam",
+          "CV47 8LD"
+        ],
+        phone: "",
+        email: "",
+        note: "The site also lists separate restaurant serving times.",
+        mapQuery: "The Blue Lias, Stockton Road, Stockton, Southam, CV47 8LD"
+      },
+      {
+        venueSlug: "long-itch-diner",
+        aliases: ["the-long-itch-diner", "long-itchington-diner", "transmission"],
+        name: "The Long Itch Diner",
+        partKey: "transmission",
+        partLabel: "Transmission",
+        website: "https://www.longitchdiner.co.uk/",
+        websiteLabel: "longitchdiner.co.uk",
+        hours: [
+          "Mon–Sat: 8:30am – 3pm",
+          "Sun: 9am – 3pm"
+        ],
+        address: [
+          "Southam Road",
+          "Long Itchington",
+          "Southam",
+          "CV47 9QZ"
+        ],
+        phone: "01926 819096",
+        email: "",
+        note: "The official site was sparse in crawlable text, so these hours/contact details were supplemented from public listings.",
+        mapQuery: "Long Itch Diner, Southam Road, Long Itchington, Southam, CV47 9QZ"
+      },
+      {
+        venueSlug: "cotswold-cafe-pats-baps",
+        aliases: ["cotswold-cafe", "pats-baps", "tyres"],
+        name: "Cotswold Cafe / Pats Baps",
+        partKey: "tyres",
+        partLabel: "Tyres",
+        website: "https://www.cotswoldcafe-patsbaps.co.uk/",
+        websiteLabel: "cotswoldcafe-patsbaps.co.uk",
+        hours: [
+          "Mon–Fri: 9am – 3pm",
+          "Sat: 9am – 1pm",
+          "Sun: Closed",
+          "Every 3rd Sunday bike meet: 9am – 1pm"
+        ],
+        address: [
+          "Unit 4, London Road",
+          "Little Compton",
+          "GL56 0RR"
+        ],
+        phone: "01608 674729",
+        email: "cotswoldcafe@hotmail.com",
+        note: "",
+        mapQuery: "Unit 4 London Road, Little Compton, GL56 0RR"
+      }
+    ];
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    const VALID_VENUES = [
-      "engine",
-      "wheels",
-      "brakes",
-      "lubrication",
-      "upholstery",
-      "electrical",
-      "exhaust",
-      "bodywork"
-    ];
+    const VALID_VENUES = ROUTE_VENUES.map((venue) => venue.partKey);
+
+    const VENUE_ALIAS_MAP = {};
+    ROUTE_VENUES.forEach((venue) => {
+      VENUE_ALIAS_MAP[venue.partKey] = venue.partKey;
+      VENUE_ALIAS_MAP[venue.venueSlug] = venue.partKey;
+      venue.aliases.forEach((alias) => {
+        VENUE_ALIAS_MAP[alias] = venue.partKey;
+      });
+    });
 
     const statusBox = document.getElementById("statusBox");
     const authPanel = document.getElementById("authPanel");
-    const appPanel = document.getElementById("appPanel");
+    const recordPanel = document.getElementById("recordPanel");
 
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -771,9 +1148,11 @@
     const googleBtn = document.getElementById("googleBtn");
     const logOutBtn = document.getElementById("logOutBtn");
     const resetBtn = document.getElementById("resetBtn");
+    const recordToggleBtn = document.getElementById("recordToggleBtn");
 
     const progressCount = document.getElementById("progressCount");
     const rewardBox = document.getElementById("rewardBox");
+    const garageGrid = document.getElementById("garageGrid");
 
     const resetModal = document.getElementById("resetModal");
     const confirmResetBtn = document.getElementById("confirmResetBtn");
@@ -789,15 +1168,50 @@
       statusBox.className = "status";
     }
 
-    function getVenueFromUrl() {
-      const params = new URLSearchParams(window.location.search);
-      const venue = params.get("venue");
-      return venue ? venue.toLowerCase().trim() : null;
+    function normalizeSlug(value) {
+      return value
+        .toLowerCase()
+        .trim()
+        .replace(/&/g, "and")
+        .replace(/[’']/g, "")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
     }
 
-    function formatVenueName(venue) {
-      if (!venue) return "";
-      return venue.charAt(0).toUpperCase() + venue.slice(1);
+    function getVenueFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const rawVenue = params.get("venue");
+      if (!rawVenue) return null;
+
+      const normalized = normalizeSlug(rawVenue);
+      return VENUE_ALIAS_MAP[normalized] || null;
+    }
+
+    function getVenueMetaByPartKey(partKey) {
+      return ROUTE_VENUES.find((venue) => venue.partKey === partKey) || null;
+    }
+
+    function getPartLabel(partKey) {
+      const match = getVenueMetaByPartKey(partKey);
+      return match ? match.partLabel : partKey;
+    }
+
+    function showRecordPanel() {
+      recordPanel.classList.remove("hidden");
+      recordToggleBtn.textContent = "Hide Your Restoration Record";
+    }
+
+    function hideRecordPanel() {
+      recordPanel.classList.add("hidden");
+      recordToggleBtn.textContent = "View Your Restoration Record";
+    }
+
+    function toggleRecordPanel() {
+      if (recordPanel.classList.contains("hidden")) {
+        showRecordPanel();
+      } else {
+        hideRecordPanel();
+      }
     }
 
     function updateProgress(visitedVenues = []) {
@@ -811,11 +1225,11 @@
     }
 
     function markCard(visitedVenues = []) {
-      VALID_VENUES.forEach((venue) => {
-        const part = document.getElementById(`part-${venue}`);
+      VALID_VENUES.forEach((venueKey) => {
+        const part = document.getElementById(`part-${venueKey}`);
         if (!part) return;
 
-        if (visitedVenues.includes(venue)) {
+        if (visitedVenues.includes(venueKey)) {
           part.classList.add("stamped");
         } else {
           part.classList.remove("stamped");
@@ -831,6 +1245,63 @@
 
     function closeResetModal() {
       resetModal.classList.remove("show");
+    }
+
+    function buildMapUrl(query) {
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    }
+
+    function renderGarageCards() {
+      garageGrid.innerHTML = ROUTE_VENUES.map((venue) => {
+        const addressHtml = venue.address.length
+          ? venue.address.map((line) => `<div>${line}</div>`).join("")
+          : `<div>Check website for location details.</div>`;
+
+        const hoursHtml = venue.hours.length
+          ? venue.hours.map((line) => `<div>${line}</div>`).join("")
+          : `<div>Check website for latest hours.</div>`;
+
+        const contactLines = [];
+        if (venue.phone) {
+          contactLines.push(`<div><a href="tel:${venue.phone.replace(/\s+/g, "")}" style="color:inherit; text-decoration:none;">${venue.phone}</a></div>`);
+        }
+        if (venue.email) {
+          contactLines.push(`<div><a href="mailto:${venue.email}" style="color:inherit; text-decoration:none;">${venue.email}</a></div>`);
+        }
+        if (!contactLines.length) {
+          contactLines.push(`<div>See website for direct contact options.</div>`);
+        }
+
+        return `
+          <div class="garage-card">
+            <div class="garage-part">Repairs: ${venue.partLabel}</div>
+            <h3 class="garage-name">${venue.name}</h3>
+            <p class="garage-domain">${venue.websiteLabel}</p>
+
+            <div class="garage-section">
+              <div class="garage-section-title">Opening Hours</div>
+              <div class="garage-lines">${hoursHtml}</div>
+            </div>
+
+            <div class="garage-section">
+              <div class="garage-section-title">Address</div>
+              <div class="garage-lines">${addressHtml}</div>
+            </div>
+
+            <div class="garage-section">
+              <div class="garage-section-title">Contact</div>
+              <div class="garage-lines">${contactLines.join("")}</div>
+            </div>
+
+            ${venue.note ? `<div class="garage-note">${venue.note}</div>` : ""}
+
+            <div class="garage-actions">
+              <a class="garage-link website" href="${venue.website}" target="_blank" rel="noopener noreferrer">Website</a>
+              <a class="garage-link map" href="${buildMapUrl(venue.mapQuery)}" target="_blank" rel="noopener noreferrer">View Map</a>
+            </div>
+          </div>
+        `;
+      }).join("");
     }
 
     async function ensureUserDocument(user) {
@@ -855,164 +1326,8 @@
     }
 
     async function processVenueFromUrl(user) {
-      const venue = getVenueFromUrl();
+      const venueKey = getVenueFromUrl();
+      if (!venueKey) return;
 
-      if (!venue) return;
-
-      if (!VALID_VENUES.includes(venue)) {
-        showStatus("That QR code uses a venue name this app does not recognise.", "error");
-        return;
-      }
-
-      const userRef = doc(db, "userVisits", user.uid);
-      const snap = await getDoc(userRef);
-
-      let visitedVenues = [];
-      if (snap.exists()) {
-        const data = snap.data();
-        visitedVenues = Array.isArray(data.visitedVenues) ? data.visitedVenues : [];
-      } else {
-        await setDoc(userRef, { visitedVenues: [] });
-      }
-
-      if (visitedVenues.includes(venue)) {
-        markCard(visitedVenues);
-        showStatus(`This stamp has already been added for ${formatVenueName(venue)}.`, "info");
-        return;
-      }
-
-      await updateDoc(userRef, {
-        visitedVenues: arrayUnion(venue)
-      });
-
-      const updatedSnap = await getDoc(userRef);
-      const updatedData = updatedSnap.data();
-      const updatedVenues = Array.isArray(updatedData.visitedVenues) ? updatedData.visitedVenues : [];
-
-      markCard(updatedVenues);
-      showStatus(`Stamp added successfully for ${formatVenueName(venue)}.`, "success");
-    }
-
-    async function resetUserProgress() {
-      const user = auth.currentUser;
-      if (!user) return;
-
-      const userRef = doc(db, "userVisits", user.uid);
-      await setDoc(userRef, { visitedVenues: [] }, { merge: true });
-
-      markCard([]);
-      showStatus("Your restoration progress has been reset. Your bike is completely broken again.", "success");
-    }
-
-    signUpBtn.addEventListener("click", async () => {
-      clearStatus();
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        showStatus("Enter both email and password.", "error");
-        return;
-      }
-
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        showStatus("Account created successfully.", "success");
-      } catch (error) {
-        showStatus(error.message, "error");
-      }
-    });
-
-    logInBtn.addEventListener("click", async () => {
-      clearStatus();
-
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        showStatus("Enter both email and password.", "error");
-        return;
-      }
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        showStatus("Logged in successfully.", "success");
-      } catch (error) {
-        showStatus(error.message, "error");
-      }
-    });
-
-    googleBtn.addEventListener("click", async () => {
-      clearStatus();
-
-      try {
-        await signInWithPopup(auth, googleProvider);
-        showStatus("Signed in with Google.", "success");
-      } catch (error) {
-        showStatus(error.message, "error");
-      }
-    });
-
-    logOutBtn.addEventListener("click", async () => {
-      clearStatus();
-
-      try {
-        await signOut(auth);
-        showStatus("Logged out successfully.", "success");
-      } catch (error) {
-        showStatus(error.message, "error");
-      }
-    });
-
-    resetBtn.addEventListener("click", () => {
-      openResetModal();
-    });
-
-    cancelResetBtn.addEventListener("click", () => {
-      closeResetModal();
-    });
-
-    confirmResetBtn.addEventListener("click", async () => {
-      closeResetModal();
-      clearStatus();
-
-      try {
-        await resetUserProgress();
-      } catch (error) {
-        showStatus(error.message, "error");
-      }
-    });
-
-    resetModal.addEventListener("click", (event) => {
-      if (event.target === resetModal) {
-        closeResetModal();
-      }
-    });
-
-    onAuthStateChanged(auth, async (user) => {
-      const venue = getVenueFromUrl();
-
-      if (user) {
-        authPanel.classList.add("hidden");
-        appPanel.classList.remove("hidden");
-        closeResetModal();
-        clearStatus();
-
-        await loadUserCard(user);
-        await processVenueFromUrl(user);
-      } else {
-        authPanel.classList.remove("hidden");
-        appPanel.classList.add("hidden");
-        updateProgress([]);
-        closeResetModal();
-
-        if (venue && VALID_VENUES.includes(venue)) {
-          showStatus(`Log in to claim your ${formatVenueName(venue)} stamp.`, "info");
-        } else {
-          clearStatus();
-        }
-      }
-    });
-  </script>
-</body>
-</html>
+      if (!VALID_VENUES.includes(venueKey)) {
+        showStatus("That
