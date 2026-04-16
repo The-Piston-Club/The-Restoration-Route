@@ -11,19 +11,17 @@
 
     :root {
       --bg-dark: #141414;
-      --bg-mid: #26211b;
-      --panel-dark: #2e2e2e;
+      --panel-dark: #2f2f2f;
       --panel-mid: #4a4a4a;
-      --panel-light: #6c6c6c;
-      --metal-edge: #8e8e8e;
-      --cream: #efe7d6;
+      --metal: #8e8e8e;
       --off-white: #f6f1e7;
       --accent: #c89b3c;
       --accent-dark: #8a6420;
-      --stamp: #b22121;
-      --success: #2f7d32;
-      --text-dark: #1f1f1f;
+      --success: #2e9d57;
+      --danger: #b22121;
+      --danger-dark: #7c1e1e;
       --text-light: #f5f1e8;
+      --text-dark: #1f1f1f;
     }
 
     body {
@@ -257,6 +255,12 @@
       max-width: 180px;
     }
 
+    .btn-reset {
+      background: linear-gradient(180deg, #d19a1f, #9e6d11);
+      color: #1d1202;
+      max-width: 220px;
+    }
+
     .two-col {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -270,6 +274,12 @@
       gap: 16px;
       flex-wrap: wrap;
       margin-bottom: 18px;
+    }
+
+    .top-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .record-title {
@@ -326,7 +336,6 @@
       padding: 20px 16px 18px;
       overflow: hidden;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
@@ -352,18 +361,12 @@
       pointer-events: none;
     }
 
-    .part-number {
-      position: absolute;
-      top: 16px;
-      left: 18px;
-      font-size: 12px;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-      font-weight: 800;
-    }
-
     .part-name {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-size: 24px;
       line-height: 1;
       font-weight: 900;
@@ -372,23 +375,27 @@
       color: var(--off-white);
       text-shadow: 0 2px 0 rgba(0,0,0,0.35);
       z-index: 1;
+      padding: 12px;
     }
 
     .stamp {
       display: none;
-      z-index: 1;
-      margin-top: 16px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%) rotate(-12deg);
+      z-index: 2;
       padding: 8px 14px;
       border-radius: 999px;
-      border: 3px solid var(--stamp);
-      color: var(--stamp);
-      background: rgba(255,248,244,0.88);
+      border: 3px solid var(--success);
+      color: var(--success);
+      background: rgba(245,255,247,0.9);
       font-size: 13px;
       font-weight: 900;
       letter-spacing: 2px;
       text-transform: uppercase;
-      transform: rotate(-11deg);
       box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      pointer-events: none;
     }
 
     .part.stamped {
@@ -446,9 +453,128 @@
       letter-spacing: 1px;
     }
 
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.72);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .modal-overlay.show {
+      display: flex;
+    }
+
+    .warning-modal {
+      width: min(100%, 720px);
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background:
+        linear-gradient(145deg, rgba(78,78,78,0.98), rgba(26,26,26,0.98));
+      border: 2px solid rgba(255,255,255,0.16);
+      box-shadow:
+        0 24px 60px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(255,255,255,0.14);
+    }
+
+    .warning-modal::before,
+    .warning-modal::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 18px;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          #0e0e0e 0 14px,
+          #f0c02e 14px 28px
+        );
+      z-index: 1;
+    }
+
+    .warning-modal::before {
+      top: 0;
+    }
+
+    .warning-modal::after {
+      bottom: 0;
+    }
+
+    .warning-inner {
+      position: relative;
+      padding: 42px 28px 42px;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .warning-title {
+      margin: 0 0 16px;
+      font-size: clamp(30px, 6vw, 52px);
+      line-height: 0.95;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #fff2cf;
+      text-shadow: 0 3px 0 rgba(0,0,0,0.4);
+    }
+
+    .warning-text {
+      margin: 0 auto 12px;
+      max-width: 560px;
+      font-size: 18px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .warning-subtext {
+      margin: 0 auto 26px;
+      max-width: 560px;
+      font-size: 16px;
+      line-height: 1.5;
+      color: #ffd5d5;
+      font-weight: 700;
+    }
+
+    .warning-actions {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .warning-actions button {
+      max-width: 220px;
+    }
+
+    .btn-warning-yes {
+      background: linear-gradient(180deg, #b22121, #7c1e1e);
+      color: #fff;
+    }
+
+    .btn-warning-no {
+      background: linear-gradient(180deg, #f4f0e7, #ddd3c0);
+      color: #1f1f1f;
+    }
+
     @media (max-width: 980px) {
       .bike-grid {
         grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .top-actions {
+        width: 100%;
+      }
+
+      .btn-danger,
+      .btn-reset {
+        max-width: none;
       }
     }
 
@@ -469,6 +595,10 @@
 
       .record-title {
         font-size: 26px;
+      }
+
+      .warning-inner {
+        padding: 38px 18px 38px;
       }
     }
   </style>
@@ -507,7 +637,10 @@
       <div class="app-inner">
         <div class="app-top">
           <h2 class="record-title">Restoration Record</h2>
-          <button id="logOutBtn" class="btn-danger">Log Out</button>
+          <div class="top-actions">
+            <button id="resetBtn" class="btn-reset">Reset Progress</button>
+            <button id="logOutBtn" class="btn-danger">Log Out</button>
+          </div>
         </div>
 
         <div class="summary-block">
@@ -517,49 +650,41 @@
 
         <div class="bike-grid">
           <div class="part" id="part-engine">
-            <div class="part-number">Part 01</div>
             <div class="part-name">Engine</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-wheels">
-            <div class="part-number">Part 02</div>
             <div class="part-name">Wheels</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-brakes">
-            <div class="part-number">Part 03</div>
             <div class="part-name">Brakes</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-lubrication">
-            <div class="part-number">Part 04</div>
             <div class="part-name">Lubrication</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-upholstery">
-            <div class="part-number">Part 05</div>
             <div class="part-name">Upholstery</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-electrical">
-            <div class="part-number">Part 06</div>
             <div class="part-name">Electrical</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-exhaust">
-            <div class="part-number">Part 07</div>
             <div class="part-name">Exhaust</div>
             <div class="stamp">Stamped</div>
           </div>
 
           <div class="part" id="part-bodywork">
-            <div class="part-number">Part 08</div>
             <div class="part-name">Bodywork</div>
             <div class="stamp">Stamped</div>
           </div>
@@ -569,6 +694,20 @@
           <h3 class="reward-title">Restoration Complete</h3>
           <div>Your full record is complete. Present this finished build at any participating venue to claim your reward.</div>
           <div class="reward-code">RESTORATION-COMPLETE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="resetModal" class="modal-overlay">
+    <div class="warning-modal">
+      <div class="warning-inner">
+        <h3 class="warning-title">Warning</h3>
+        <p class="warning-text">You are about to reset all of your restoration progress.</p>
+        <p class="warning-subtext">This will reset your progress, meaning that your bike will be completely broken again.</p>
+        <div class="warning-actions">
+          <button id="confirmResetBtn" class="btn-warning-yes">Yes, Reset It</button>
+          <button id="cancelResetBtn" class="btn-warning-no">No, Keep It</button>
         </div>
       </div>
     </div>
@@ -631,9 +770,14 @@
     const logInBtn = document.getElementById("logInBtn");
     const googleBtn = document.getElementById("googleBtn");
     const logOutBtn = document.getElementById("logOutBtn");
+    const resetBtn = document.getElementById("resetBtn");
 
     const progressCount = document.getElementById("progressCount");
     const rewardBox = document.getElementById("rewardBox");
+
+    const resetModal = document.getElementById("resetModal");
+    const confirmResetBtn = document.getElementById("confirmResetBtn");
+    const cancelResetBtn = document.getElementById("cancelResetBtn");
 
     function showStatus(message, type = "info") {
       statusBox.textContent = message;
@@ -679,6 +823,14 @@
       });
 
       updateProgress(visitedVenues);
+    }
+
+    function openResetModal() {
+      resetModal.classList.add("show");
+    }
+
+    function closeResetModal() {
+      resetModal.classList.remove("show");
     }
 
     async function ensureUserDocument(user) {
@@ -741,6 +893,17 @@
       showStatus(`Stamp added successfully for ${formatVenueName(venue)}.`, "success");
     }
 
+    async function resetUserProgress() {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const userRef = doc(db, "userVisits", user.uid);
+      await setDoc(userRef, { visitedVenues: [] }, { merge: true });
+
+      markCard([]);
+      showStatus("Your restoration progress has been reset. Your bike is completely broken again.", "success");
+    }
+
     signUpBtn.addEventListener("click", async () => {
       clearStatus();
 
@@ -801,12 +964,38 @@
       }
     });
 
+    resetBtn.addEventListener("click", () => {
+      openResetModal();
+    });
+
+    cancelResetBtn.addEventListener("click", () => {
+      closeResetModal();
+    });
+
+    confirmResetBtn.addEventListener("click", async () => {
+      closeResetModal();
+      clearStatus();
+
+      try {
+        await resetUserProgress();
+      } catch (error) {
+        showStatus(error.message, "error");
+      }
+    });
+
+    resetModal.addEventListener("click", (event) => {
+      if (event.target === resetModal) {
+        closeResetModal();
+      }
+    });
+
     onAuthStateChanged(auth, async (user) => {
       const venue = getVenueFromUrl();
 
       if (user) {
         authPanel.classList.add("hidden");
         appPanel.classList.remove("hidden");
+        closeResetModal();
         clearStatus();
 
         await loadUserCard(user);
@@ -815,6 +1004,7 @@
         authPanel.classList.remove("hidden");
         appPanel.classList.add("hidden");
         updateProgress([]);
+        closeResetModal();
 
         if (venue && VALID_VENUES.includes(venue)) {
           showStatus(`Log in to claim your ${formatVenueName(venue)} stamp.`, "info");
