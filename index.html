@@ -108,12 +108,13 @@
       text-shadow: 0 3px 0 rgba(0,0,0,0.45), 0 0 18px rgba(200,155,60,0.18);
     }
 
-    .brand-subline {
-      margin-top: 12px;
-      font-size: 16px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.72);
+    .brand-description {
+      margin: 16px auto 0;
+      max-width: 760px;
+      font-size: 18px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.82);
+      text-align: center;
     }
 
     .section-title {
@@ -516,6 +517,14 @@
       border-radius: 10px;
     }
 
+    .account-actions-title {
+      margin: 0 0 14px;
+      text-align: center;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
     .scanner-title,
     .leaderboard-title,
     .testing-title {
@@ -811,7 +820,9 @@
     <div id="brandPanel" class="panel">
       <div class="brand-inner">
         <h1 class="brand-title">The Restoration Route</h1>
-        <div class="brand-subline">Workshop Ledger</div>
+        <p class="brand-description">
+          Your vehicle is tired, scruffy, and in need of a little love, but the good news is that the garages along this route are just the sort of places that enjoy bringing old motors back to their best. Travel from stop to stop, treat yourself to something along the way, and then ask the team if they can help with your next repair. Once you have made a purchase, a member of staff can show you the QR code for that part, letting you restore your vehicle piece by piece. Enjoy the ride, soak up the summer spirit, and remember that a little kindness goes a long way with every garage crew you meet.
+        </p>
       </div>
     </div>
 
@@ -821,10 +832,12 @@
 
     <div id="scannerPanel" class="panel">
       <div class="panel-inner">
-        <h2 class="scanner-title">Scan Venue QR</h2>
-        <p class="scanner-note">Use your phone camera inside the site to scan a venue QR code and claim a stamp without leaving the page.</p>
+        <h2 class="scanner-title">Collect Your Repair Stamp</h2>
+        <p class="scanner-note">
+          These garages do seem wonderfully keen to help stranded motorists, especially once you have treated yourself to something first. Make your purchase, ask a member of staff about your next repair, then open the scanner here and point it at the QR code they show you.
+        </p>
         <div class="scanner-actions">
-          <button id="openScannerBtn" class="btn-primary">Open Camera Scanner</button>
+          <button id="openScannerBtn" class="btn-primary">Open Repair Scanner</button>
         </div>
       </div>
     </div>
@@ -961,7 +974,9 @@
     <div id="garageDirectoryPanel" class="panel">
       <div class="panel-inner">
         <h2 class="section-title centered">Garage Directory</h2>
-        <p class="section-text">Tap any part in your restoration record, or choose a garage below, to open a dedicated venue page with directions, contact details, and opening hours.</p>
+        <p class="section-text">
+          Each of these garages has a part to help you restore. Drop in, enjoy what the venue has to offer, and once you have made a purchase, ask the team if they can work a little magic on your vehicle. A friendly word, a bit of patience, and a love of the journey will take you a long way.
+        </p>
         <div id="garageDirectoryGrid" class="directory-grid"></div>
       </div>
     </div>
@@ -980,7 +995,12 @@
       <div class="panel-inner">
         <h3 class="account-actions-title">Account</h3>
         <div class="account-actions">
-          <a href="./leaderboard.html" class="button-link btn-light">Leaderboard</a>
+          <a
+            href="mailto:chip@thepistonclub.co.uk?subject=ISSUE%20WITH%20RESTORATION%20ROUTE%20APP"
+            class="button-link btn-light"
+          >
+            Report an Issue
+          </a>
           <button id="logOutBtn" class="btn-secondary">Log Out</button>
         </div>
       </div>
@@ -1034,11 +1054,11 @@
   <div id="scannerOverlay" class="scanner-overlay" aria-hidden="true">
     <div class="scanner-modal">
       <div class="scanner-inner">
-        <h3 class="scanner-title">Scan Venue QR</h3>
+        <h3 class="scanner-title">Scan Your Repair Code</h3>
         <div class="scanner-viewport">
           <div id="qr-reader"></div>
         </div>
-        <p id="scannerHelp" class="scanner-help">Point your camera at a venue QR code.</p>
+        <p id="scannerHelp" class="scanner-help">Bought something and ready for the next fix? Ask a member of staff to show you the repair QR code, then point your camera at it.</p>
         <div class="scanner-actions">
           <button id="closeScannerBtn" class="btn-secondary">Close Scanner</button>
         </div>
@@ -1365,7 +1385,7 @@
     async function closeScannerOverlay() {
       scannerOverlay.classList.remove("show");
       scannerOverlay.setAttribute("aria-hidden", "true");
-      scannerHelp.textContent = "Point your camera at a venue QR code.";
+      scannerHelp.textContent = "Bought something and ready for the next fix? Ask a member of staff to show you the repair QR code, then point your camera at it.";
       await stopScanner();
     }
 
@@ -1407,14 +1427,14 @@
       try {
         await qrScanner.start({ facingMode: { exact: "environment" } }, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
-        scannerHelp.textContent = "Point your camera at a venue QR code.";
+        scannerHelp.textContent = "Bought something and ready for the next fix? Ask a member of staff to show you the repair QR code, then point your camera at it.";
         return;
       } catch {}
 
       try {
         await qrScanner.start({ facingMode: "environment" }, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
-        scannerHelp.textContent = "Point your camera at a venue QR code.";
+        scannerHelp.textContent = "Bought something and ready for the next fix? Ask a member of staff to show you the repair QR code, then point your camera at it.";
         return;
       } catch {}
 
@@ -1428,7 +1448,7 @@
 
         await qrScanner.start(backCamera.id, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
-        scannerHelp.textContent = "Point your camera at a venue QR code.";
+        scannerHelp.textContent = "Bought something and ready for the next fix? Ask a member of staff to show you the repair QR code, then point your camera at it.";
       } catch (error) {
         await closeScannerOverlay();
         showStatus(error?.message || "Could not start the camera scanner.", "error");
