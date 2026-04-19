@@ -21,8 +21,6 @@
       --muted: rgba(255,255,255,0.78);
       --gold: #c89b3c;
       --gold-dark: #a8781f;
-      --green: #2e9d57;
-      --red: #b22121;
       --panel-border: rgba(255,255,255,0.16);
       --panel-bg-a: rgba(96,96,96,0.96);
       --panel-bg-b: rgba(34,34,34,0.97);
@@ -97,7 +95,6 @@
     .brand-title,
     .section-title,
     .record-title,
-    .garage-name,
     .record-toggle-btn,
     .account-actions-title,
     .celebration-title,
@@ -248,6 +245,11 @@
     .btn-light {
       background: linear-gradient(180deg, #f4f0e7, #ddd3c0);
       color: #1f1f1f;
+    }
+
+    .btn-danger {
+      background: linear-gradient(180deg, #b22121, #7c1e1e);
+      color: #ffffff;
     }
 
     .record-top {
@@ -491,41 +493,29 @@
       line-height: 1.35;
     }
 
-    .garage-grid {
+    .directory-grid {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 18px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
     }
 
-    .garage-card {
-      position: relative;
-      border-radius: 18px;
-      overflow: hidden;
-      background: linear-gradient(145deg, rgba(84,84,84,0.95), rgba(30,30,30,0.96));
-      border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.24), inset 0 1px 0 rgba(255,255,255,0.12);
-      padding: 22px 20px 14px;
-      scroll-margin-top: 24px;
-    }
-
-    .garage-card::before {
-      content: "";
-      position: absolute;
-      inset: 0 0 auto 0;
-      height: 8px;
-      background: repeating-linear-gradient(45deg, #111 0 14px, var(--gold) 14px 28px);
-    }
-
-    .garage-head {
+    .directory-link {
       display: block;
-      margin-bottom: 14px;
-      padding-top: 10px;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 16px;
+      padding: 18px 16px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.16)),
+        linear-gradient(145deg, rgba(80,80,80,0.88), rgba(30,30,30,0.95));
+      border: 1px solid rgba(255,255,255,0.14);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.22);
       text-align: center;
     }
 
-    .garage-part {
+    .directory-part {
       display: inline-block;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       padding: 7px 10px;
       border-radius: 999px;
       background: rgba(200,155,60,0.18);
@@ -537,152 +527,19 @@
       text-transform: uppercase;
     }
 
-    .garage-name {
-      margin: 0 0 8px;
-      font-size: 30px;
+    .directory-name {
+      font-family: "Teko", Arial, sans-serif;
+      font-size: 28px;
       line-height: 1;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .garage-quip {
-      margin: 0;
-      color: rgba(255,255,255,0.78);
-      font-size: 18px;
-      line-height: 1.3;
-      font-weight: 600;
-    }
-
-    .garage-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.15fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .details-grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .detail-card {
-      background: rgba(255,255,255,0.04);
-      border-radius: 12px;
-      padding: 10px 12px;
-      text-align: center;
-    }
-
-    .detail-block-title {
-      margin: 0 0 6px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: #ffe2a0;
-      text-align: center;
-    }
-
-    .detail-lines {
-      color: rgba(255,255,255,0.88);
-      line-height: 1.5;
-      font-size: 18px;
-      text-align: center;
-    }
-
-    .hours-grid {
-      display: grid;
-      gap: 8px;
-    }
-
-    .hours-row {
-      display: grid;
-      grid-template-columns: 88px 1fr;
-      gap: 10px;
-      align-items: start;
-      padding: 8px 10px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.04);
-    }
-
-    .hours-day {
-      font-size: 14px;
-      font-weight: 800;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: #ffe2a0;
-      text-align: left;
+      margin-bottom: 8px;
     }
 
-    .hours-time {
+    .directory-quip {
       font-size: 17px;
-      color: rgba(255,255,255,0.92);
-      line-height: 1.4;
-      text-align: right;
-    }
-
-    .hours-food {
-      margin-top: 2px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.68);
-      line-height: 1.3;
-      text-align: right;
-    }
-
-    .garage-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 16px;
-      justify-content: center;
-    }
-
-    .garage-link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 128px;
-      text-decoration: none;
-      padding: 11px 14px;
-      border-radius: 12px;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-      font-size: 16px;
-    }
-
-    .garage-link.website,
-    .garage-link.social {
-      background: linear-gradient(180deg, #f4f0e7, #ddd3c0);
-      color: #1f1f1f;
-    }
-
-    .garage-link.map {
-      background: linear-gradient(180deg, var(--gold), var(--gold-dark));
-      color: #1a1205;
-    }
-
-    .garage-back-link {
-      display: block;
-      width: 100%;
-      margin-top: 14px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      text-align: center;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-weight: 800;
-      font-size: 13px;
-      color: rgba(255,255,255,0.9);
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.08);
-      -webkit-user-select: none;
-      user-select: none;
-      touch-action: manipulation;
-    }
-
-    .garage-back-link.secret-armed {
-      outline: 2px dashed rgba(255,255,255,0.28);
-      outline-offset: 2px;
+      line-height: 1.35;
+      color: rgba(255,255,255,0.8);
     }
 
     .account-actions-panel .panel-inner {
@@ -868,7 +725,7 @@
     body.scan-claim-mode #brandPanel,
     body.scan-claim-mode #recordToggleBtn,
     body.scan-claim-mode #authPanel,
-    body.scan-claim-mode #garagesPanel,
+    body.scan-claim-mode #garageDirectoryPanel,
     body.scan-claim-mode #accountActionsPanel,
     body.scan-claim-mode #secretTestingPanel,
     body.scan-claim-mode #statusBox {
@@ -885,27 +742,10 @@
       margin-top: 0;
     }
 
-    @media (max-width: 900px) {
-      .garage-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
     @media (max-width: 760px) {
-      .hours-row {
-        grid-template-columns: 78px 1fr;
-      }
-
-      .garage-actions {
-        flex-direction: column;
-      }
-
-      .garage-link {
-        width: 100%;
-      }
-
+      .summary-grid,
       .celebration-stats,
-      .summary-grid {
+      .directory-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -922,14 +762,6 @@
 
       .record-toggle-btn {
         font-size: 20px;
-      }
-
-      .garage-card {
-        padding: 18px 16px 14px;
-      }
-
-      .garage-name {
-        font-size: 26px;
       }
 
       .bike-grid {
@@ -1024,7 +856,7 @@
         </div>
 
         <div class="bike-grid">
-          <button type="button" class="part" id="part-engine" data-scroll-target="garage-engine">
+          <button type="button" class="part" id="part-engine" data-venue-link="engine">
             <span class="part-name">Engine</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1033,7 +865,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-fuel-system" data-scroll-target="garage-fuel-system">
+          <button type="button" class="part" id="part-fuel-system" data-venue-link="fuel-system">
             <span class="part-name">Fuel System</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1042,7 +874,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-bodywork" data-scroll-target="garage-bodywork">
+          <button type="button" class="part" id="part-bodywork" data-venue-link="bodywork">
             <span class="part-name">Bodywork</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1051,7 +883,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-chassis" data-scroll-target="garage-chassis">
+          <button type="button" class="part" id="part-chassis" data-venue-link="chassis">
             <span class="part-name">Chassis</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1060,7 +892,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-lubrication" data-scroll-target="garage-lubrication">
+          <button type="button" class="part" id="part-lubrication" data-venue-link="lubrication">
             <span class="part-name">Lubrication</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1069,7 +901,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-cooling" data-scroll-target="garage-cooling">
+          <button type="button" class="part" id="part-cooling" data-venue-link="cooling">
             <span class="part-name">Cooling</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1078,7 +910,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-transmission" data-scroll-target="garage-transmission">
+          <button type="button" class="part" id="part-transmission" data-venue-link="transmission">
             <span class="part-name">Transmission</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1087,7 +919,7 @@
             </span>
           </button>
 
-          <button type="button" class="part" id="part-tyres" data-scroll-target="garage-tyres">
+          <button type="button" class="part" id="part-tyres" data-venue-link="tyres">
             <span class="part-name">Tyres</span>
             <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
             <span class="stamp-stage" aria-hidden="true">
@@ -1112,11 +944,11 @@
       </div>
     </div>
 
-    <div id="garagesPanel" class="panel">
+    <div id="garageDirectoryPanel" class="panel">
       <div class="panel-inner">
-        <h2 class="section-title centered">Recommended Garages</h2>
-        <p class="section-text">Each stop on the route repairs one part of the build. Tap your Restoration Record at any time, then visit the garages below to collect the full set of stamps.</p>
-        <div id="garageGrid" class="garage-grid"></div>
+        <h2 class="section-title centered">Garage Directory</h2>
+        <p class="section-text">Tap any part in your restoration record, or choose a garage below, to open a dedicated venue page with directions, contact details, and opening hours.</p>
+        <div id="garageDirectoryGrid" class="directory-grid"></div>
       </div>
     </div>
 
@@ -1141,7 +973,7 @@
           Hidden workshop override unlocked. <strong>Pressing this button will complete a full vehicle on this account and count toward its completed total.</strong>
         </p>
         <div class="account-actions">
-          <button id="secretTestBtn" class="btn-primary">Chip's Big Red Button</button>
+          <button id="secretTestBtn" class="btn-danger">Chip's Big Red Button</button>
         </div>
       </div>
     </div>
@@ -1199,6 +1031,15 @@
       serverTimestamp
     } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
+    import {
+      ROUTE_VENUES,
+      VALID_PARTS,
+      ALIAS_MAP,
+      TOKEN_MAP,
+      getVenueByPartKey,
+      normalizeVenueValue
+    } from "./route-data.js";
+
     const firebaseConfig = {
       apiKey: "AIzaSyBSSekdM7t9zc_ee0kQ5xSBFYNvRN53PV0",
       authDomain: "the-restoration-route.firebaseapp.com",
@@ -1215,333 +1056,18 @@
     const STAMP_HOLD_MS = 900;
     const DUPLICATE_MESSAGE_MS = 5000;
     const CELEBRATION_MS = 4200;
-    const SECRET_HOLD_MS = 10000;
-    const SECRET_PASSWORD = "watson";
-
-    const DAY_ORDER = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday"
-    ];
-
-    const ROUTE_VENUES = [
-      {
-        name: "The Piston Club",
-        quip: "Where the pistons fire and the engine comes alive.",
-        website: "https://thepistonclub.co.uk/",
-        websiteLabel: "thepistonclub.co.uk",
-        partKey: "engine",
-        partLabel: "Engine",
-        claimToken: "rr-eng-4a9k1",
-        aliases: ["engine", "piston-club", "the-piston-club"],
-        opening: {
-          Monday: "7:30 AM – 10:00 PM",
-          Tuesday: "7:30 AM – 10:00 PM",
-          Wednesday: "7:30 AM – 10:00 PM",
-          Thursday: "7:30 AM – 10:00 PM",
-          Friday: "7:30 AM – 10:00 PM",
-          Saturday: "7:30 AM – 10:00 PM",
-          Sunday: "7:30 AM – 8:00 PM"
-        },
-        food: {
-          Monday: "Food: 7:30 AM – 8:30 PM",
-          Tuesday: "Food: 7:30 AM – 8:30 PM",
-          Wednesday: "Food: 7:30 AM – 8:30 PM",
-          Thursday: "Food: 7:30 AM – 8:30 PM",
-          Friday: "Food: 7:30 AM – 8:30 PM",
-          Saturday: "Food: 7:30 AM – 8:30 PM",
-          Sunday: "Food: 7:30 AM – 5:00 PM"
-        },
-        address: [
-          "The Piston Club @ The Stag",
-          "Alcester Road",
-          "Redhill",
-          "Stratford upon Avon",
-          "Warwickshire",
-          "B49 6NQ"
-        ],
-        phone: "01789 764634",
-        email: "info@thepistonclub.co.uk",
-        mapQuery: "The Piston Club @ The Stag, Alcester Road, Redhill, Stratford upon Avon, Warwickshire, B49 6NQ",
-        socials: {
-          facebook: "https://www.facebook.com/ThePistonClubUK",
-          instagram: "https://www.instagram.com/thepistonclubhq/"
-        }
-      },
-      {
-        name: "Gilks’ Garage Café",
-        quip: "Topping up the tank for the miles ahead.",
-        website: "https://gilksgaragecafe.com/",
-        websiteLabel: "gilksgaragecafe.com",
-        partKey: "fuel-system",
-        partLabel: "Fuel System",
-        claimToken: "rr-fuel-8m2p3",
-        aliases: ["fuel-system", "gilks", "gilks-garage-cafe"],
-        opening: {
-          Monday: "Closed",
-          Tuesday: "Closed",
-          Wednesday: "9:00 AM – 3:00 PM",
-          Thursday: "9:00 AM – 3:00 PM",
-          Friday: "9:00 AM – 3:00 PM",
-          Saturday: "9:00 AM – 3:00 PM",
-          Sunday: "9:00 AM – 3:00 PM"
-        },
-        food: {
-          Wednesday: "Kitchen closes at 2:00 PM",
-          Thursday: "Kitchen closes at 2:00 PM",
-          Friday: "Kitchen closes at 2:00 PM",
-          Saturday: "Kitchen closes at 2:00 PM",
-          Sunday: "Kitchen closes at 2:00 PM"
-        },
-        address: [
-          "Banbury Road",
-          "Kineton",
-          "Warwickshire",
-          "CV35 0JZ"
-        ],
-        phone: "01926 640539",
-        email: "keith@gilksgaragecafe.com",
-        mapQuery: "Gilks Garage Cafe, Banbury Road, Kineton, Warwickshire, CV35 0JZ",
-        socials: {
-          facebook: "https://www.facebook.com/gilksgaragecafe/",
-          instagram: "https://www.instagram.com/gilksgaragecafe/"
-        }
-      },
-      {
-        name: "Mr Watsons Cafe",
-        quip: "Double-decker charm with the shell shining bright.",
-        website: "https://www.mrwatsonscafe.com/",
-        websiteLabel: "mrwatsonscafe.com",
-        partKey: "bodywork",
-        partLabel: "Bodywork",
-        claimToken: "rr-body-1q7x6",
-        aliases: ["bodywork", "mr-watsons", "mr-watsons-cafe", "mr-watsons-cafe-blockley"],
-        opening: {
-          Monday: "10:30 AM – 3:00 PM",
-          Tuesday: "8:30 AM – 3:00 PM",
-          Wednesday: "8:30 AM – 3:00 PM",
-          Thursday: "8:30 AM – 3:00 PM",
-          Friday: "8:30 AM – 3:00 PM",
-          Saturday: "Closed",
-          Sunday: "Closed"
-        },
-        food: {},
-        address: [
-          "72 Northwick Business Centre",
-          "Blockley",
-          "GL56 9RF"
-        ],
-        phone: "—",
-        email: "Mrwatsonscafe@gmail.com",
-        mapQuery: "72 Northwick Business Centre, Blockley, GL56 9RF",
-        socials: {
-          facebook: "https://www.facebook.com/p/Mr-Watsons-Cafe-100091805952631/",
-          instagram: "https://www.instagram.com/mrwatsonscafe/"
-        }
-      },
-      {
-        name: "Seven Mile",
-        quip: "A strong chassis for every mile ahead.",
-        website: "https://www.sevenmile.co.uk/",
-        websiteLabel: "sevenmile.co.uk",
-        partKey: "chassis",
-        partLabel: "Chassis",
-        claimToken: "rr-chas-6v4d2",
-        aliases: ["chassis", "seven-mile", "sevenmile"],
-        opening: {
-          Monday: "Closed",
-          Tuesday: "Closed",
-          Wednesday: "Closed",
-          Thursday: "Closed",
-          Friday: "Closed",
-          Saturday: "Closed",
-          Sunday: "Closed"
-        },
-        food: {},
-        address: [
-          "Bell Cottage",
-          "Mill Road",
-          "Stratton Audley",
-          "OX27 9AR"
-        ],
-        phone: "07807 939952",
-        email: "hello@sevenmile.co.uk",
-        mapQuery: "Bell Cottage, Mill Road, Stratton Audley, OX27 9AR",
-        socials: {
-          facebook: "https://www.facebook.com/sevenmilecande",
-          instagram: "https://www.instagram.com/sevenmilecande/"
-        }
-      },
-      {
-        name: "Oily Rag",
-        quip: "Smooth running starts where the good stuff flows.",
-        website: "https://www.oilyrag.com/",
-        websiteLabel: "oilyrag.com",
-        partKey: "lubrication",
-        partLabel: "Lubrication",
-        claimToken: "rr-lube-5n8r4",
-        aliases: ["lubrication", "oily-rag", "oilyrag"],
-        opening: {
-          Monday: "Closed",
-          Tuesday: "Closed",
-          Wednesday: "Closed",
-          Thursday: "Closed",
-          Friday: "10:00 AM – 2:00 PM",
-          Saturday: "10:00 AM – 4:00 PM",
-          Sunday: "10:00 AM – 2:30 PM"
-        },
-        food: {},
-        address: [
-          "Unit 9 Rockhaven Industrial Estate",
-          "Triangle Park",
-          "Gloucester",
-          "GL1 1AJ"
-        ],
-        phone: "—",
-        email: "info@oilyrag.com",
-        mapQuery: "Unit 9 Rockhaven Industrial Estate, Triangle Park, Gloucester, GL1 1AJ",
-        socials: {
-          facebook: "https://www.facebook.com/OilyRagClothing/",
-          instagram: "https://www.instagram.com/oilyragco/"
-        }
-      },
-      {
-        name: "The Blue Lias",
-        quip: "Keeping the whole build cool under pressure.",
-        website: "https://thebluelias.com/",
-        websiteLabel: "thebluelias.com",
-        partKey: "cooling",
-        partLabel: "Cooling",
-        claimToken: "rr-cool-9t3w7",
-        aliases: ["cooling", "the-blue-lias", "blue-lias"],
-        opening: {
-          Monday: "12:00 PM – 10:00 PM",
-          Tuesday: "12:00 PM – 10:00 PM",
-          Wednesday: "12:00 PM – 10:00 PM",
-          Thursday: "12:00 PM – 10:00 PM",
-          Friday: "12:00 PM – 11:00 PM",
-          Saturday: "12:00 PM – 11:00 PM",
-          Sunday: "12:00 PM – 10:00 PM"
-        },
-        food: {
-          Monday: "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM",
-          Tuesday: "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM",
-          Wednesday: "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM",
-          Thursday: "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM",
-          Friday: "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM",
-          Saturday: "Food: 12:00 PM – 8:00 PM",
-          Sunday: "Food: 12:00 PM – 6:00 PM"
-        },
-        address: [
-          "Stockton Road",
-          "Stockton",
-          "Southam",
-          "CV47 8LD"
-        ],
-        phone: "01926 812249",
-        email: "enquiries@thebluelias.com",
-        mapQuery: "The Blue Lias, Stockton Road, Stockton, Southam, CV47 8LD",
-        socials: {
-          facebook: "https://www.facebook.com/bluelias",
-          instagram: "https://www.instagram.com/thebluelias/"
-        }
-      },
-      {
-        name: "The Long Itch Diner",
-        quip: "Keeping the gears sweet for the road ahead.",
-        website: "https://www.longitchdiner.co.uk/",
-        websiteLabel: "longitchdiner.co.uk",
-        partKey: "transmission",
-        partLabel: "Transmission",
-        claimToken: "rr-trans-2h6m8",
-        aliases: ["transmission", "long-itch-diner", "the-long-itch-diner"],
-        opening: {
-          Monday: "8:30 AM – 2:30 PM",
-          Tuesday: "8:30 AM – 2:30 PM",
-          Wednesday: "8:30 AM – 2:30 PM",
-          Thursday: "8:30 AM – 2:30 PM",
-          Friday: "8:30 AM – 2:30 PM",
-          Saturday: "8:30 AM – 2:30 PM",
-          Sunday: "9:00 AM – 2:30 PM"
-        },
-        food: {},
-        address: [
-          "Southam Road",
-          "Long Itchington",
-          "Southam",
-          "CV47 9QZ"
-        ],
-        phone: "01926 819096",
-        email: "Use website contact form",
-        mapQuery: "Southam Road, Long Itchington, Southam, CV47 9QZ",
-        socials: {
-          facebook: "https://www.facebook.com/thelongitchdiner/",
-          instagram: ""
-        }
-      },
-      {
-        name: "Cotswold Cafe / Pats Baps",
-        quip: "Fresh grip for the road and the ride ahead.",
-        website: "https://www.cotswoldcafe-patsbaps.co.uk/",
-        websiteLabel: "cotswoldcafe-patsbaps.co.uk",
-        partKey: "tyres",
-        partLabel: "Tyres",
-        claimToken: "rr-tyres-7c5p9",
-        aliases: ["tyres", "cotswold-cafe", "pats-baps", "cotswold-cafe-pats-baps"],
-        opening: {
-          Monday: "9:00 AM – 3:00 PM",
-          Tuesday: "9:00 AM – 3:00 PM",
-          Wednesday: "9:00 AM – 3:00 PM",
-          Thursday: "9:00 AM – 3:00 PM",
-          Friday: "9:00 AM – 3:00 PM",
-          Saturday: "9:00 AM – 1:00 PM",
-          Sunday: "Closed"
-        },
-        food: {
-          Sunday: "Open every 3rd Sunday for bike meets: 9:00 AM – 1:00 PM"
-        },
-        address: [
-          "Unit 4, London Road",
-          "Little Compton",
-          "Moreton-in-Marsh",
-          "GL56 0RR"
-        ],
-        phone: "01608 674729",
-        email: "cotswoldcafe@hotmail.com",
-        mapQuery: "Unit 4 London Road, Little Compton, Moreton-in-Marsh, GL56 0RR",
-        socials: {
-          facebook: "https://www.facebook.com/CotswoldCafepatsbaps/",
-          instagram: "https://www.instagram.com/cotswoldcafepatsbaps"
-        }
-      }
-    ];
+    const SECRET_STORAGE_KEY = "chipWorkshopOverride";
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
     const googleProvider = new GoogleAuthProvider();
 
-    const VALID_PARTS = ROUTE_VENUES.map((venue) => venue.partKey);
-    const ALIAS_MAP = {};
-    const TOKEN_MAP = {};
-
-    ROUTE_VENUES.forEach((venue) => {
-      ALIAS_MAP[venue.partKey] = venue.partKey;
-      venue.aliases.forEach((alias) => {
-        ALIAS_MAP[normalizeVenueValue(alias)] = venue.partKey;
-      });
-      TOKEN_MAP[venue.partKey] = venue.claimToken;
-    });
-
     const statusBox = document.getElementById("statusBox");
     const authPanel = document.getElementById("authPanel");
     const recordPanel = document.getElementById("recordPanel");
     const recordToggleBtn = document.getElementById("recordToggleBtn");
-    const garageGrid = document.getElementById("garageGrid");
+    const garageDirectoryGrid = document.getElementById("garageDirectoryGrid");
     const accountActionsPanel = document.getElementById("accountActionsPanel");
     const secretTestingPanel = document.getElementById("secretTestingPanel");
 
@@ -1571,8 +1097,6 @@
     let currentCompletedVehicles = 0;
     let completionInProgress = false;
     let secretUnlocked = false;
-    let secretHoldTimer = null;
-    let suppressNextSecretTriggerClick = false;
 
     function showStatus(message, type = "info", autoHideMs = 0) {
       if (statusHideTimer) {
@@ -1600,16 +1124,6 @@
       statusBox.className = "status";
     }
 
-    function normalizeVenueValue(value) {
-      return String(value)
-        .toLowerCase()
-        .trim()
-        .replace(/&/g, "and")
-        .replace(/[’']/g, "")
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-+|-+$/g, "");
-    }
-
     function readScanClaimFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const rawVenue = params.get("venue");
@@ -1633,12 +1147,8 @@
       return { state: "valid", partKey: resolvedPartKey };
     }
 
-    function getVenueMetaByPartKey(partKey) {
-      return ROUTE_VENUES.find((venue) => venue.partKey === partKey) || null;
-    }
-
     function getPartLabel(partKey) {
-      const venue = getVenueMetaByPartKey(partKey);
+      const venue = getVenueByPartKey(partKey);
       return venue ? venue.partLabel : partKey;
     }
 
@@ -1738,144 +1248,32 @@
       celebrationOverlay.setAttribute("aria-hidden", "true");
     }
 
-    function buildMapUrl(query) {
-      return `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(query)}`;
-    }
-
-    function escapeHtml(text) {
-      return String(text)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-
-    function renderOpeningHours(venue) {
-      return DAY_ORDER.map((day) => {
-        const open = venue.opening[day] || "Closed";
-        const food = venue.food[day] || "";
-        return `
-          <div class="hours-row">
-            <div class="hours-day">${escapeHtml(day)}</div>
-            <div class="hours-time">
-              <div>${escapeHtml(open)}</div>
-              ${food ? `<div class="hours-food">${escapeHtml(food)}</div>` : ""}
-            </div>
-          </div>
-        `;
-      }).join("");
-    }
-
-    function renderSocialLinks(venue) {
-      const buttons = [];
-      if (venue.socials.facebook) {
-        buttons.push(`<a class="garage-link social" href="${venue.socials.facebook}" target="_blank" rel="noopener noreferrer">Facebook</a>`);
-      }
-      if (venue.socials.instagram) {
-        buttons.push(`<a class="garage-link social" href="${venue.socials.instagram}" target="_blank" rel="noopener noreferrer">Instagram</a>`);
-      }
-      return buttons.join("");
-    }
-
-    function renderGarageCards() {
-      garageGrid.innerHTML = ROUTE_VENUES.map((venue) => {
-        const addressHtml = venue.address.map((line) => `<div>${escapeHtml(line)}</div>`).join("");
-        const phoneHtml = venue.phone === "—"
-          ? `<div>—</div>`
-          : `<div><a href="tel:${venue.phone.replace(/\s+/g, "")}" style="color:inherit;text-decoration:none;">${escapeHtml(venue.phone)}</a></div>`;
-        const emailHtml = venue.email === "Use website contact form"
-          ? `<div>Use website contact form</div>`
-          : venue.email === "—"
-            ? `<div>—</div>`
-            : `<div><a href="mailto:${escapeHtml(venue.email)}" style="color:inherit;text-decoration:none;">${escapeHtml(venue.email)}</a></div>`;
-
-        const secretTriggerAttr = venue.partKey === "transmission" ? `data-secret-trigger="true"` : "";
-
-        return `
-          <div class="garage-card" id="garage-${venue.partKey}">
-            <div class="garage-head">
-              <div class="garage-part">Repairs: ${escapeHtml(venue.partLabel)}</div>
-              <h3 class="garage-name">${escapeHtml(venue.name)}</h3>
-              <p class="garage-quip">${escapeHtml(venue.quip)}</p>
-            </div>
-
-            <div class="garage-layout">
-              <div class="details-grid">
-                <div class="detail-card">
-                  <div class="detail-block-title">Address</div>
-                  <div class="detail-lines">${addressHtml}</div>
-                </div>
-
-                <div class="detail-card">
-                  <div class="detail-block-title">Phone</div>
-                  <div class="detail-lines">${phoneHtml}</div>
-                </div>
-
-                <div class="detail-card">
-                  <div class="detail-block-title">Email</div>
-                  <div class="detail-lines">${emailHtml}</div>
-                </div>
-              </div>
-
-              <div>
-                <div class="detail-block-title">Opening Hours</div>
-                <div class="hours-grid">
-                  ${renderOpeningHours(venue)}
-                </div>
-              </div>
-            </div>
-
-            <div class="garage-actions">
-              <a class="garage-link website" href="${venue.website}" target="_blank" rel="noopener noreferrer">Website</a>
-              ${venue.mapQuery ? `<a class="garage-link map" href="${buildMapUrl(venue.mapQuery)}" target="_blank" rel="noopener noreferrer">Directions</a>` : ""}
-              ${renderSocialLinks(venue)}
-            </div>
-
-            <a href="#restorationRecordTop" class="garage-back-link" data-scroll-record="true" ${secretTriggerAttr}>Back to Restoration Record</a>
-          </div>
-        `;
-      }).join("");
+    function renderGarageDirectory() {
+      garageDirectoryGrid.innerHTML = ROUTE_VENUES.map((venue) => `
+        <a class="directory-link" href="./venue.html?garage=${encodeURIComponent(venue.partKey)}">
+          <div class="directory-part">${venue.partLabel}</div>
+          <div class="directory-name">${venue.name}</div>
+          <div class="directory-quip">${venue.quip}</div>
+        </a>
+      `).join("");
     }
 
     /* CHIP SECRET BUTTON FEATURE START */
     /* Delete this whole marked JavaScript block if you want to remove the secret feature. */
     /* Search for CHIP SECRET BUTTON FEATURE START and END in the file. */
-    /* This block controls the hidden unlock, password check, and big red button flow. */
-    /* The HTML section earlier is also marked with the same label. */
+    /* This block controls the hidden unlock state and big red button flow. */
+    /* The venue page contains the long-press unlock. */
+    function syncSecretUnlockFromStorage() {
+      secretUnlocked = localStorage.getItem(SECRET_STORAGE_KEY) === "unlocked";
+    }
+
     function updateSecretPanelVisibility() {
+      syncSecretUnlockFromStorage();
+
       if (auth.currentUser && secretUnlocked) {
         secretTestingPanel.classList.remove("hidden");
       } else {
         secretTestingPanel.classList.add("hidden");
-      }
-    }
-
-    function clearSecretHold() {
-      if (secretHoldTimer) {
-        clearTimeout(secretHoldTimer);
-        secretHoldTimer = null;
-      }
-
-      document.querySelectorAll("[data-secret-trigger='true']").forEach((el) => {
-        el.classList.remove("secret-armed");
-      });
-    }
-
-    function unlockSecretPanel() {
-      const enteredPassword = window.prompt("Workshop override password:");
-      if (enteredPassword === null) {
-        showStatus("Workshop override cancelled.", "info", 2500);
-        return;
-      }
-
-      if (enteredPassword.trim().toLowerCase() === SECRET_PASSWORD) {
-        secretUnlocked = true;
-        updateSecretPanelVisibility();
-        showStatus("Workshop override unlocked.", "success", 4000);
-        secretTestingPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-      } else {
-        showStatus("Incorrect password.", "error", 4000);
       }
     }
 
@@ -1920,8 +1318,8 @@
     /* CHIP SECRET BUTTON FEATURE END */
     /* Delete this whole marked JavaScript block if you want to remove the secret feature. */
     /* Search for CHIP SECRET BUTTON FEATURE START and END in the file. */
-    /* This block controls the hidden unlock, password check, and big red button flow. */
-    /* The HTML section earlier is also marked with the same label. */
+    /* This block controls the hidden unlock state and big red button flow. */
+    /* The venue page contains the long-press unlock. */
 
     async function ensureUserDocument(user) {
       const userRef = doc(db, "userVisits", user.uid);
@@ -2178,6 +1576,8 @@
       clearStatus();
 
       try {
+        localStorage.removeItem(SECRET_STORAGE_KEY);
+        secretUnlocked = false;
         await signOut(auth);
         hideRecordPanel();
         showStatus("Logged out successfully.", "success");
@@ -2198,67 +1598,16 @@
       toggleRecordPanel();
     });
 
-    document.addEventListener("pointerdown", (event) => {
-      const trigger = event.target.closest("[data-secret-trigger='true']");
-      if (!trigger) return;
-
-      clearSecretHold();
-      trigger.classList.add("secret-armed");
-
-      secretHoldTimer = window.setTimeout(() => {
-        suppressNextSecretTriggerClick = true;
-        clearSecretHold();
-        unlockSecretPanel();
-      }, SECRET_HOLD_MS);
-    });
-
-    document.addEventListener("pointerup", clearSecretHold);
-    document.addEventListener("pointercancel", clearSecretHold);
-    document.addEventListener("pointermove", (event) => {
-      if (!secretHoldTimer) return;
-      const trigger = event.target.closest("[data-secret-trigger='true']");
-      if (!trigger) {
-        clearSecretHold();
-      }
-    });
-
     document.addEventListener("click", (event) => {
-      const partButton = event.target.closest("[data-scroll-target]");
+      const partButton = event.target.closest("[data-venue-link]");
       if (partButton) {
-        const targetId = partButton.getAttribute("data-scroll-target");
-        const target = document.getElementById(targetId);
-        if (target) {
-          target.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-        return;
-      }
-
-      const recordLink = event.target.closest("[data-scroll-record]");
-      if (recordLink) {
-        if (recordLink.hasAttribute("data-secret-trigger") && suppressNextSecretTriggerClick) {
-          event.preventDefault();
-          suppressNextSecretTriggerClick = false;
-          return;
-        }
-
-        event.preventDefault();
-
-        if (!auth.currentUser) {
-          showStatus("Sign in first to view your restoration record.", "info");
-          authPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-          return;
-        }
-
-        showRecordPanel();
-        const recordTop = document.getElementById("restorationRecordTop");
-        if (recordTop) {
-          recordTop.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
+        const partKey = partButton.getAttribute("data-venue-link");
+        window.location.href = `./venue.html?garage=${encodeURIComponent(partKey)}`;
       }
     });
 
     async function initApp() {
-      renderGarageCards();
+      renderGarageDirectory();
       await setPersistence(auth, browserLocalPersistence);
 
       onAuthStateChanged(auth, async (user) => {
@@ -2286,14 +1635,13 @@
         } else {
           authPanel.classList.remove("hidden");
           accountActionsPanel.classList.add("hidden");
-          secretUnlocked = false;
-          updateSecretPanelVisibility();
           exitScanClaimMode();
           currentVisitedVenues = [];
           currentCompletedVehicles = 0;
           markCard([]);
           updateCompletedVehicles(0);
           hideRecordPanel();
+          updateSecretPanelVisibility();
 
           if (claim.state === "valid" && claim.partKey) {
             showStatus(`Log in or continue as a guest to claim your ${getPartLabel(claim.partKey)} stamp.`, "info");
