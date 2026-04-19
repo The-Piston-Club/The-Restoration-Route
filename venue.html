@@ -17,7 +17,6 @@
 
     :root {
       --text: #f6f1e7;
-      --muted: rgba(255,255,255,0.78);
       --gold: #c89b3c;
       --gold-dark: #a8781f;
       --panel-border: rgba(255,255,255,0.16);
@@ -25,9 +24,7 @@
       --panel-bg-b: rgba(34,34,34,0.97);
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -80,21 +77,16 @@
       background: repeating-linear-gradient(45deg, #111 0 14px, var(--gold) 14px 28px);
     }
 
-    .panel-inner {
-      padding: 34px 24px 24px;
-    }
-
-    .brand-inner {
-      padding: 40px 24px 28px;
-      text-align: center;
-    }
+    .panel-inner { padding: 34px 24px 24px; }
+    .brand-inner { padding: 40px 24px 28px; text-align: center; }
 
     .brand-title,
     .venue-name,
-    .section-title,
     .back-link,
     .scanner-title,
-    button {
+    button,
+    .action-link,
+    .action-button {
       font-family: "Teko", Arial, sans-serif;
     }
 
@@ -152,10 +144,7 @@
 
     .hidden { display: none !important; }
 
-    .venue-header {
-      text-align: center;
-      margin-bottom: 22px;
-    }
+    .venue-header { text-align: center; margin-bottom: 22px; }
 
     .venue-part {
       display: inline-block;
@@ -263,7 +252,8 @@
       text-align: right;
     }
 
-    .actions {
+    .actions,
+    .scanner-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -285,12 +275,13 @@
       font-size: 16px;
       border: none;
       cursor: pointer;
-      font-family: inherit;
+      color: #1f1f1f;
     }
 
     .action-link.website,
     .action-link.social,
-    .action-button.light {
+    .action-button.light,
+    .action-link.light {
       background: linear-gradient(180deg, #f4f0e7, #ddd3c0);
       color: #1f1f1f;
     }
@@ -336,9 +327,7 @@
       z-index: 9999;
     }
 
-    .scanner-overlay.show {
-      display: flex;
-    }
+    .scanner-overlay.show { display: flex; }
 
     .scanner-modal {
       width: min(100%, 720px);
@@ -390,22 +379,13 @@
       min-height: 320px;
     }
 
-    #qr-reader {
-      width: 100%;
-    }
+    #qr-reader { width: 100%; }
 
     .scanner-help {
       margin: 0 0 18px;
       color: rgba(255,255,255,0.8);
       font-size: 16px;
       line-height: 1.45;
-    }
-
-    .scanner-actions {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
     }
 
     .error-box {
@@ -429,42 +409,27 @@
     }
 
     @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
+      .layout { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 760px) {
-      .hours-row {
-        grid-template-columns: 78px 1fr;
-      }
+      .hours-row { grid-template-columns: 78px 1fr; }
 
       .actions,
-      .scanner-actions {
-        flex-direction: column;
-      }
+      .scanner-actions { flex-direction: column; }
 
       .action-link,
       .action-button,
-      .scanner-actions button {
-        width: 100%;
-      }
+      .scanner-actions button { width: 100%; }
     }
 
     @media (max-width: 640px) {
       .brand-inner,
       .panel-inner,
-      .scanner-inner {
-        padding: 30px 18px 20px;
-      }
+      .scanner-inner { padding: 30px 18px 20px; }
 
-      .venue-quip {
-        font-size: 18px;
-      }
-
-      .back-link {
-        font-size: 20px;
-      }
+      .venue-quip { font-size: 18px; }
+      .back-link { font-size: 20px; }
     }
   </style>
 </head>
@@ -598,15 +563,12 @@
         clearTimeout(statusHideTimer);
         statusHideTimer = null;
       }
-
       statusBox.textContent = message;
       statusBox.className = `status ${type}`;
       window.scrollTo({ top: 0, behavior: "smooth" });
 
       if (autoHideMs > 0) {
-        statusHideTimer = window.setTimeout(() => {
-          clearStatus();
-        }, autoHideMs);
+        statusHideTimer = window.setTimeout(() => clearStatus(), autoHideMs);
       }
     }
 
@@ -678,9 +640,7 @@
     function normalizeScannedUrl(decodedText) {
       try {
         const resolved = new URL(decodedText, window.location.href);
-        if (resolved.protocol !== "http:" && resolved.protocol !== "https:") {
-          return null;
-        }
+        if (resolved.protocol !== "http:" && resolved.protocol !== "https:") return null;
         return resolved.href;
       } catch {
         return null;
@@ -690,15 +650,12 @@
     async function stopScanner() {
       if (qrScanner) {
         try {
-          if (qrScannerRunning) {
-            await qrScanner.stop();
-          }
+          if (qrScannerRunning) await qrScanner.stop();
         } catch {}
         try {
           await qrScanner.clear();
         } catch {}
       }
-
       qrScanner = null;
       qrScannerRunning = false;
       qrScanHandled = false;
@@ -747,24 +704,14 @@
       };
 
       try {
-        await qrScanner.start(
-          { facingMode: { exact: "environment" } },
-          config,
-          handleScanSuccess,
-          () => {}
-        );
+        await qrScanner.start({ facingMode: { exact: "environment" } }, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
         scannerHelp.textContent = "Point your camera at a venue QR code.";
         return;
       } catch {}
 
       try {
-        await qrScanner.start(
-          { facingMode: "environment" },
-          config,
-          handleScanSuccess,
-          () => {}
-        );
+        await qrScanner.start({ facingMode: "environment" }, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
         scannerHelp.textContent = "Point your camera at a venue QR code.";
         return;
@@ -772,20 +719,13 @@
 
       try {
         const cameras = await window.Html5Qrcode.getCameras();
-        if (!cameras || cameras.length === 0) {
-          throw new Error("No camera found.");
-        }
+        if (!cameras || cameras.length === 0) throw new Error("No camera found.");
 
         const backCamera =
           cameras.find((camera) => /back|rear|environment/i.test(camera.label)) ||
           cameras[cameras.length - 1];
 
-        await qrScanner.start(
-          backCamera.id,
-          config,
-          handleScanSuccess,
-          () => {}
-        );
+        await qrScanner.start(backCamera.id, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
         scannerHelp.textContent = "Point your camera at a venue QR code.";
       } catch (error) {
@@ -820,21 +760,16 @@
         <a class="action-link website" href="${venue.website}" target="_blank" rel="noopener noreferrer">Website</a>
         <a class="action-link map" href="${buildMapUrl(venue.mapQuery)}" target="_blank" rel="noopener noreferrer">Directions</a>
         <button id="openScannerBtn" class="action-button gold" type="button">Scan Venue QR</button>
+        <a class="action-link light" href="./leaderboard.html">Leaderboard</a>
         ${renderSocialLinks(venue)}
       `;
 
-      const openScannerBtn = document.getElementById("openScannerBtn");
-      openScannerBtn.addEventListener("click", startScanner);
+      document.getElementById("openScannerBtn").addEventListener("click", startScanner);
 
       venuePanel.classList.remove("hidden");
       errorPanel.classList.add("hidden");
     }
 
-    /* CHIP SECRET BUTTON FEATURE START */
-    /* Delete this whole marked JavaScript block if you want to remove the secret unlock route. */
-    /* Search for CHIP SECRET BUTTON FEATURE START and END in this file. */
-    /* This block controls the Long Itch Diner back-button hold and password unlock. */
-    /* The main page contains the visible Chip's Big Red Button panel. */
     function clearSecretHold() {
       if (secretHoldTimer) {
         clearTimeout(secretHoldTimer);
@@ -862,9 +797,7 @@
     }
 
     function wireSecretUnlockForVenue(venue) {
-      if (venue.partKey !== "transmission") {
-        return;
-      }
+      if (venue.partKey !== "transmission") return;
 
       venueBackLink.setAttribute("data-secret-trigger", "true");
 
@@ -890,11 +823,6 @@
         }
       });
     }
-    /* CHIP SECRET BUTTON FEATURE END */
-    /* Delete this whole marked JavaScript block if you want to remove the secret unlock route. */
-    /* Search for CHIP SECRET BUTTON FEATURE START and END in this file. */
-    /* This block controls the Long Itch Diner back-button hold and password unlock. */
-    /* The main page contains the visible Chip's Big Red Button panel. */
 
     closeScannerBtn.addEventListener("click", closeScannerOverlay);
 
