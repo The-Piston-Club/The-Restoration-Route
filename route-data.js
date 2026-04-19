@@ -116,7 +116,7 @@ export const ROUTE_VENUES = [
       Wednesday: "8:30 AM – 3:00 PM",
       Thursday: "8:30 AM – 3:00 PM",
       Friday: "8:30 AM – 3:00 PM",
-      Saturday: "Closed",
+      Saturday: "Check Facebook",
       Sunday: "Closed"
     },
     food: {},
