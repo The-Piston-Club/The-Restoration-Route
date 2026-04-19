@@ -97,11 +97,11 @@
     .brand-title,
     .section-title,
     .record-title,
-    .reward-title,
     .garage-name,
     .record-toggle-btn,
     .account-actions-title,
     .celebration-title,
+    .testing-title,
     button {
       font-family: "Teko", Arial, sans-serif;
     }
@@ -675,6 +675,14 @@
       color: rgba(255,255,255,0.9);
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    .garage-back-link.secret-armed {
+      outline: 2px dashed rgba(255,255,255,0.28);
+      outline-offset: 2px;
     }
 
     .account-actions-panel .panel-inner {
@@ -702,6 +710,26 @@
       padding: 10px 16px;
       font-size: 14px;
       border-radius: 10px;
+    }
+
+    .testing-title {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .testing-note {
+      margin: 0 0 18px;
+      text-align: center;
+      color: rgba(255,255,255,0.82);
+      font-size: 17px;
+      line-height: 1.45;
+    }
+
+    .testing-note strong {
+      color: #ffe8b0;
     }
 
     .modal-overlay {
@@ -842,6 +870,7 @@
     body.scan-claim-mode #authPanel,
     body.scan-claim-mode #garagesPanel,
     body.scan-claim-mode #accountActionsPanel,
+    body.scan-claim-mode #secretTestingPanel,
     body.scan-claim-mode #statusBox {
       display: none !important;
     }
@@ -1099,6 +1128,18 @@
         </div>
       </div>
     </div>
+
+    <div id="secretTestingPanel" class="panel hidden">
+      <div class="panel-inner">
+        <h3 class="testing-title">Workshop Override</h3>
+        <p class="testing-note">
+          Hidden testing control unlocked. <strong>This does not save fake completions to Firebase.</strong>
+        </p>
+        <div class="account-actions">
+          <button id="secretTestBtn" class="btn-primary">Chip's Big Button</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="celebrationOverlay" class="modal-overlay" aria-hidden="true">
@@ -1164,6 +1205,8 @@
     const STAMP_HOLD_MS = 900;
     const DUPLICATE_MESSAGE_MS = 5000;
     const CELEBRATION_MS = 4200;
+    const SECRET_HOLD_MS = 10000;
+    const SECRET_PASSWORD = "watson";
 
     const DAY_ORDER = [
       "Monday",
@@ -1490,6 +1533,7 @@
     const recordToggleBtn = document.getElementById("recordToggleBtn");
     const garageGrid = document.getElementById("garageGrid");
     const accountActionsPanel = document.getElementById("accountActionsPanel");
+    const secretTestingPanel = document.getElementById("secretTestingPanel");
 
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -1498,6 +1542,7 @@
     const googleBtn = document.getElementById("googleBtn");
     const guestBtn = document.getElementById("guestBtn");
     const logOutBtn = document.getElementById("logOutBtn");
+    const secretTestBtn = document.getElementById("secretTestBtn");
 
     const progressCount = document.getElementById("progressCount");
     const completedVehiclesCount = document.getElementById("completedVehiclesCount");
@@ -1515,6 +1560,9 @@
     let currentVisitedVenues = [];
     let currentCompletedVehicles = 0;
     let completionInProgress = false;
+    let secretUnlocked = false;
+    let secretHoldTimer = null;
+    let suppressNextSecretTriggerClick = false;
 
     function showStatus(message, type = "info", autoHideMs = 0) {
       if (statusHideTimer) {
@@ -1646,6 +1694,20 @@
       }, STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + 50);
     }
 
+    function playAllStampAnimations() {
+      VALID_PARTS.forEach((partKey) => {
+        const part = partElements[partKey];
+        if (!part) return;
+
+        part.classList.add("stamped");
+        part.classList.add("animate-stamp");
+
+        window.setTimeout(() => {
+          part.classList.remove("animate-stamp");
+        }, STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + 50);
+      });
+    }
+
     function enterScanClaimMode() {
       document.body.classList.add("scan-claim-mode");
       showRecordPanel();
@@ -1718,6 +1780,8 @@
             ? `<div>—</div>`
             : `<div><a href="mailto:${escapeHtml(venue.email)}" style="color:inherit;text-decoration:none;">${escapeHtml(venue.email)}</a></div>`;
 
+        const secretTriggerAttr = venue.partKey === "transmission" ? `data-secret-trigger="true"` : "";
+
         return `
           <div class="garage-card" id="garage-${venue.partKey}">
             <div class="garage-head">
@@ -1758,10 +1822,46 @@
               ${renderSocialLinks(venue)}
             </div>
 
-            <a href="#restorationRecordTop" class="garage-back-link" data-scroll-record="true">Back to Restoration Record</a>
+            <a href="#restorationRecordTop" class="garage-back-link" data-scroll-record="true" ${secretTriggerAttr}>Back to Restoration Record</a>
           </div>
         `;
       }).join("");
+    }
+
+    function updateSecretPanelVisibility() {
+      if (auth.currentUser && secretUnlocked) {
+        secretTestingPanel.classList.remove("hidden");
+      } else {
+        secretTestingPanel.classList.add("hidden");
+      }
+    }
+
+    function clearSecretHold() {
+      if (secretHoldTimer) {
+        clearTimeout(secretHoldTimer);
+        secretHoldTimer = null;
+      }
+
+      document.querySelectorAll("[data-secret-trigger='true']").forEach((el) => {
+        el.classList.remove("secret-armed");
+      });
+    }
+
+    function unlockSecretPanel() {
+      const enteredPassword = window.prompt("Workshop override password:");
+      if (enteredPassword === null) {
+        showStatus("Workshop override cancelled.", "info", 2500);
+        return;
+      }
+
+      if (enteredPassword.trim().toLowerCase() === SECRET_PASSWORD) {
+        secretUnlocked = true;
+        updateSecretPanelVisibility();
+        showStatus("Workshop override unlocked.", "success", 4000);
+        secretTestingPanel.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        showStatus("Incorrect password.", "error", 4000);
+      }
     }
 
     async function ensureUserDocument(user) {
@@ -1785,7 +1885,9 @@
       }
 
       const data = snap.data();
-      const visitedVenues = Array.isArray(data.visitedVenues) ? data.visitedVenues.filter((value) => VALID_PARTS.includes(value)) : [];
+      const visitedVenues = Array.isArray(data.visitedVenues)
+        ? data.visitedVenues.filter((value) => VALID_PARTS.includes(value))
+        : [];
       const completedVehicles = Number.isFinite(data.completedVehicles) ? data.completedVehicles : 0;
 
       await setDoc(userRef, {
@@ -1859,7 +1961,9 @@
       let visitedVenues = [];
       if (snap.exists()) {
         const data = snap.data();
-        visitedVenues = Array.isArray(data.visitedVenues) ? data.visitedVenues.filter((value) => VALID_PARTS.includes(value)) : [];
+        visitedVenues = Array.isArray(data.visitedVenues)
+          ? data.visitedVenues.filter((value) => VALID_PARTS.includes(value))
+          : [];
       } else {
         await setDoc(userRef, {
           visitedVenues: [],
@@ -1913,6 +2017,51 @@
 
       window.setTimeout(() => {
         window.location.replace(RESET_REDIRECT_URL);
+      }, postStampDelay);
+    }
+
+    async function runSecretCompletionTest() {
+      if (!auth.currentUser) {
+        showStatus("Sign in first to use the workshop override.", "info", 3000);
+        return;
+      }
+
+      if (completionInProgress) {
+        return;
+      }
+
+      completionInProgress = true;
+      clearStatus();
+
+      const originalVisitedVenues = [...currentVisitedVenues];
+      const originalCompletedVehicles = currentCompletedVehicles;
+      const previewCompletedVehicles = originalCompletedVehicles + 1;
+
+      showRecordPanel();
+      enterScanClaimMode();
+      currentVisitedVenues = [...VALID_PARTS];
+      markCard(currentVisitedVenues);
+      updateCompletedVehicles(previewCompletedVehicles);
+      playAllStampAnimations();
+
+      const postStampDelay = STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + STAMP_HOLD_MS;
+
+      window.setTimeout(() => {
+        showCelebrationOverlay(previewCompletedVehicles);
+
+        window.setTimeout(() => {
+          hideCelebrationOverlay();
+          exitScanClaimMode();
+
+          currentVisitedVenues = originalVisitedVenues;
+          currentCompletedVehicles = originalCompletedVehicles;
+          markCard(currentVisitedVenues);
+          updateCompletedVehicles(currentCompletedVehicles);
+
+          completionInProgress = false;
+          showRecordPanel();
+          showStatus("Secret test complete. Live progress restored.", "success", 4000);
+        }, CELEBRATION_MS);
       }, postStampDelay);
     }
 
@@ -2023,6 +2172,8 @@
       }
     });
 
+    secretTestBtn.addEventListener("click", runSecretCompletionTest);
+
     recordToggleBtn.addEventListener("click", () => {
       if (!auth.currentUser) {
         showStatus("Sign in first to view your restoration record.", "info");
@@ -2031,6 +2182,30 @@
       }
 
       toggleRecordPanel();
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      const trigger = event.target.closest("[data-secret-trigger='true']");
+      if (!trigger) return;
+
+      clearSecretHold();
+      trigger.classList.add("secret-armed");
+
+      secretHoldTimer = window.setTimeout(() => {
+        suppressNextSecretTriggerClick = true;
+        clearSecretHold();
+        unlockSecretPanel();
+      }, SECRET_HOLD_MS);
+    });
+
+    document.addEventListener("pointerup", clearSecretHold);
+    document.addEventListener("pointercancel", clearSecretHold);
+    document.addEventListener("pointermove", (event) => {
+      if (!secretHoldTimer) return;
+      const trigger = event.target.closest("[data-secret-trigger='true']");
+      if (!trigger) {
+        clearSecretHold();
+      }
     });
 
     document.addEventListener("click", (event) => {
@@ -2046,6 +2221,12 @@
 
       const recordLink = event.target.closest("[data-scroll-record]");
       if (recordLink) {
+        if (recordLink.hasAttribute("data-secret-trigger") && suppressNextSecretTriggerClick) {
+          event.preventDefault();
+          suppressNextSecretTriggerClick = false;
+          return;
+        }
+
         event.preventDefault();
 
         if (!auth.currentUser) {
@@ -2074,6 +2255,7 @@
         if (user) {
           authPanel.classList.add("hidden");
           accountActionsPanel.classList.remove("hidden");
+          updateSecretPanelVisibility();
           exitScanClaimMode();
           clearStatus();
 
@@ -2090,6 +2272,8 @@
         } else {
           authPanel.classList.remove("hidden");
           accountActionsPanel.classList.add("hidden");
+          secretUnlocked = false;
+          updateSecretPanelVisibility();
           exitScanClaimMode();
           currentVisitedVenues = [];
           currentCompletedVehicles = 0;
