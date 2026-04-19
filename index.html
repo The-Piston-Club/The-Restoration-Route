@@ -189,6 +189,7 @@
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
     input,
+    select,
     button {
       width: 100%;
       border-radius: 12px;
@@ -196,7 +197,8 @@
       font-family: inherit;
     }
 
-    input {
+    input,
+    select {
       padding: 14px 15px;
       border: 1px solid rgba(255,255,255,0.18);
       background: rgba(255,255,255,0.94);
@@ -733,6 +735,7 @@
     body.scan-claim-mode #recordToggleBtn,
     body.scan-claim-mode #authPanel,
     body.scan-claim-mode #usernameSetupPanel,
+    body.scan-claim-mode #reasonSetupPanel,
     body.scan-claim-mode #garageDirectoryPanel,
     body.scan-claim-mode #leaderboardPanel,
     body.scan-claim-mode #scannerPanel,
@@ -845,12 +848,19 @@
     <div id="authPanel" class="panel">
       <div class="panel-inner">
         <h2 class="section-title">Open Your Record</h2>
-        <p class="section-text">Create an account, sign in, or continue as a guest. Usernames are required for registered accounts and are used on the leaderboard.</p>
+        <p class="section-text">Create an account, sign in, or continue as a guest. Registered users can choose a public username and tell us what brings them to the route.</p>
 
         <div class="form-grid">
           <input type="text" id="username" placeholder="Username (for new registered accounts)" maxlength="20" autocomplete="username" />
           <input type="email" id="email" placeholder="Email address" autocomplete="email" />
           <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+
+          <select id="trailReason">
+            <option value="">Why are you joining the route?</option>
+            <option value="motorbikes">I love motorbikes</option>
+            <option value="cars">I love cars</option>
+            <option value="hot-drinks">I love hot drinks</option>
+          </select>
 
           <div class="two-col">
             <button id="signUpBtn" class="btn-primary">Create Account</button>
@@ -872,6 +882,22 @@
         <div class="form-grid">
           <input type="text" id="usernameSetupInput" placeholder="Choose a username" maxlength="20" autocomplete="nickname" />
           <button id="saveUsernameBtn" class="btn-primary">Save Username</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="reasonSetupPanel" class="panel hidden">
+      <div class="panel-inner">
+        <h2 class="section-title">What Brings You To The Route?</h2>
+        <p class="section-text">Pick the reason that suits you best. We will keep it with your account and may use it to shape your ending later on.</p>
+        <div class="form-grid">
+          <select id="reasonSetupSelect">
+            <option value="">Choose your reason</option>
+            <option value="motorbikes">I love motorbikes</option>
+            <option value="cars">I love cars</option>
+            <option value="hot-drinks">I love hot drinks</option>
+          </select>
+          <button id="saveReasonBtn" class="btn-primary">Save Reason</button>
         </div>
       </div>
     </div>
@@ -1123,6 +1149,12 @@
     const CELEBRATION_MS = 4200;
     const SECRET_STORAGE_KEY = "chipWorkshopOverride";
 
+    const TRAIL_REASONS = {
+      "motorbikes": "I love motorbikes",
+      "cars": "I love cars",
+      "hot-drinks": "I love hot drinks"
+    };
+
     const BANNED_USERNAME_FRAGMENTS = [
       "admin",
       "moderator",
@@ -1153,6 +1185,7 @@
     const statusBox = document.getElementById("statusBox");
     const authPanel = document.getElementById("authPanel");
     const usernameSetupPanel = document.getElementById("usernameSetupPanel");
+    const reasonSetupPanel = document.getElementById("reasonSetupPanel");
     const recordPanel = document.getElementById("recordPanel");
     const recordToggleBtn = document.getElementById("recordToggleBtn");
     const garageDirectoryGrid = document.getElementById("garageDirectoryGrid");
@@ -1162,9 +1195,13 @@
     const usernameInput = document.getElementById("username");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
+    const trailReasonSelect = document.getElementById("trailReason");
 
     const usernameSetupInput = document.getElementById("usernameSetupInput");
     const saveUsernameBtn = document.getElementById("saveUsernameBtn");
+
+    const reasonSetupSelect = document.getElementById("reasonSetupSelect");
+    const saveReasonBtn = document.getElementById("saveReasonBtn");
 
     const signUpBtn = document.getElementById("signUpBtn");
     const logInBtn = document.getElementById("logInBtn");
@@ -1195,6 +1232,8 @@
     let currentCompletedVehicles = 0;
     let currentUsername = "";
     let currentUsernameLower = "";
+    let currentTrailReasonKey = "";
+    let currentTrailReasonLabel = "";
     let completionInProgress = false;
     let secretUnlocked = false;
 
@@ -1482,12 +1521,24 @@
       return { clean, lower };
     }
 
+    function parseTrailReason(rawValue) {
+      const key = String(rawValue || "").trim();
+      const label = TRAIL_REASONS[key];
+
+      if (!label) {
+        throw new Error("Choose why you are joining the route.");
+      }
+
+      return { key, label };
+    }
+
     function setAuthButtonsDisabled(isDisabled) {
       signUpBtn.disabled = isDisabled;
       logInBtn.disabled = isDisabled;
       googleBtn.disabled = isDisabled;
       guestBtn.disabled = isDisabled;
       saveUsernameBtn.disabled = isDisabled;
+      saveReasonBtn.disabled = isDisabled;
     }
 
     function syncSecretUnlockFromStorage() {
@@ -1518,8 +1569,26 @@
       }
     }
 
-    async function reserveUsernameForUser(user, rawUsername) {
+    function updateReasonSetupVisibility(user) {
+      const needsReason = !!user && !user.isAnonymous && !currentTrailReasonKey;
+
+      if (needsReason) {
+        reasonSetupPanel.classList.remove("hidden");
+        if (!reasonSetupSelect.value) {
+          reasonSetupSelect.value = "";
+        }
+      } else {
+        reasonSetupPanel.classList.add("hidden");
+      }
+    }
+
+    async function reserveUsernameForUser(user, rawUsername, rawReasonValue = null) {
       const { clean, lower } = validateUsername(rawUsername);
+
+      let reasonToStore = null;
+      if (rawReasonValue) {
+        reasonToStore = parseTrailReason(rawReasonValue);
+      }
 
       const userRef = doc(db, "userVisits", user.uid);
       const usernameRef = doc(db, "usernames", lower);
@@ -1553,13 +1622,20 @@
           updatedAt: serverTimestamp()
         }, { merge: true });
 
-        transaction.set(userRef, {
+        const userDataToMerge = {
           username: clean,
           usernameLower: lower,
           displayName: clean,
           isRegistered: !user.isAnonymous,
           updatedAt: serverTimestamp()
-        }, { merge: true });
+        };
+
+        if (reasonToStore) {
+          userDataToMerge.trailReasonKey = reasonToStore.key;
+          userDataToMerge.trailReasonLabel = reasonToStore.label;
+        }
+
+        transaction.set(userRef, userDataToMerge, { merge: true });
 
         transaction.set(leaderboardRef, {
           uid: user.uid,
@@ -1571,11 +1647,39 @@
         }, { merge: true });
       });
 
-      await updateProfile(user, { displayName: clean });
+      try {
+        await updateProfile(user, { displayName: clean });
+      } catch {}
 
       currentUsername = clean;
       currentUsernameLower = lower;
+
+      if (reasonToStore) {
+        currentTrailReasonKey = reasonToStore.key;
+        currentTrailReasonLabel = reasonToStore.label;
+      }
+
       updateUsernameSetupVisibility(user);
+      updateReasonSetupVisibility(user);
+    }
+
+    async function saveTrailReasonForUser(user, rawReasonValue) {
+      if (!user || user.isAnonymous) {
+        throw new Error("Only registered accounts can save a route reason.");
+      }
+
+      const { key, label } = parseTrailReason(rawReasonValue);
+      const userRef = doc(db, "userVisits", user.uid);
+
+      await setDoc(userRef, {
+        trailReasonKey: key,
+        trailReasonLabel: label,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      currentTrailReasonKey = key;
+      currentTrailReasonLabel = label;
+      updateReasonSetupVisibility(user);
     }
 
     async function ensureUserDocument(user) {
@@ -1597,7 +1701,9 @@
           visitedVenues: [],
           completedVehicles: 0,
           username: "",
-          usernameLower: ""
+          usernameLower: "",
+          trailReasonKey: "",
+          trailReasonLabel: ""
         };
       }
 
@@ -1609,6 +1715,8 @@
       const completedVehicles = Number.isFinite(data.completedVehicles) ? data.completedVehicles : 0;
       const username = typeof data.username === "string" ? data.username : "";
       const usernameLower = typeof data.usernameLower === "string" ? data.usernameLower : "";
+      const trailReasonKey = typeof data.trailReasonKey === "string" ? data.trailReasonKey : "";
+      const trailReasonLabel = typeof data.trailReasonLabel === "string" ? data.trailReasonLabel : "";
 
       await setDoc(userRef, {
         visitedVenues,
@@ -1619,7 +1727,7 @@
         updatedAt: serverTimestamp()
       }, { merge: true });
 
-      return { visitedVenues, completedVehicles, username, usernameLower };
+      return { visitedVenues, completedVehicles, username, usernameLower, trailReasonKey, trailReasonLabel };
     }
 
     async function loadUserCard(user) {
@@ -1628,6 +1736,8 @@
       currentCompletedVehicles = userData.completedVehicles;
       currentUsername = userData.username || "";
       currentUsernameLower = userData.usernameLower || "";
+      currentTrailReasonKey = userData.trailReasonKey || "";
+      currentTrailReasonLabel = userData.trailReasonLabel || "";
       markCard(currentVisitedVenues);
       updateCompletedVehicles(currentCompletedVehicles);
     }
@@ -1750,19 +1860,21 @@
       const email = emailInput.value.trim();
       const password = passwordInput.value.trim();
       const username = usernameInput.value.trim();
+      const trailReason = trailReasonSelect.value;
 
       if (!email || !password || !username) {
         throw new Error("Enter a username, email, and password.");
       }
 
       validateUsername(username);
+      parseTrailReason(trailReason);
 
       let createdUser = null;
 
       try {
         const cred = await createUserWithEmailAndPassword(auth, email, password);
         createdUser = cred.user;
-        await reserveUsernameForUser(createdUser, username);
+        await reserveUsernameForUser(createdUser, username, trailReason);
       } catch (error) {
         if (createdUser) {
           try { await deleteUser(createdUser); } catch {}
@@ -1908,6 +2020,28 @@
       }
     });
 
+    saveReasonBtn.addEventListener("click", async () => {
+      if (authBusy) return;
+      if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        showStatus("Only registered accounts can save a route reason.", "error");
+        return;
+      }
+
+      authBusy = true;
+      setAuthButtonsDisabled(true);
+      clearStatus();
+
+      try {
+        await saveTrailReasonForUser(auth.currentUser, reasonSetupSelect.value);
+        showStatus("Route reason saved successfully.", "success");
+      } catch (error) {
+        showStatus(error.message || "Could not save route reason.", "error");
+      } finally {
+        authBusy = false;
+        setAuthButtonsDisabled(false);
+      }
+    });
+
     logOutBtn.addEventListener("click", async () => {
       clearStatus();
       try {
@@ -1915,6 +2049,8 @@
         secretUnlocked = false;
         currentUsername = "";
         currentUsernameLower = "";
+        currentTrailReasonKey = "";
+        currentTrailReasonLabel = "";
         await signOut(auth);
         hideRecordPanel();
         showStatus("Logged out successfully.", "success");
@@ -1972,6 +2108,7 @@
 
           await loadUserCard(user);
           updateUsernameSetupVisibility(user);
+          updateReasonSetupVisibility(user);
 
           if (claim.state === "valid") {
             await processVenueFromUrl(user);
@@ -1989,11 +2126,14 @@
           currentCompletedVehicles = 0;
           currentUsername = "";
           currentUsernameLower = "";
+          currentTrailReasonKey = "";
+          currentTrailReasonLabel = "";
           markCard([]);
           updateCompletedVehicles(0);
           hideRecordPanel();
           updateSecretPanelVisibility();
           updateUsernameSetupVisibility(null);
+          updateReasonSetupVisibility(null);
 
           if (claim.state === "valid" && claim.partKey) {
             showStatus(`Log in or continue as a guest to claim your ${getPartLabel(claim.partKey)} stamp.`, "info");
