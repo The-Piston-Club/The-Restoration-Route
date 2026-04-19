@@ -99,6 +99,7 @@
     .account-actions-title,
     .celebration-title,
     .testing-title,
+    .scanner-title,
     button {
       font-family: "Teko", Arial, sans-serif;
     }
@@ -569,6 +570,7 @@
       border-radius: 10px;
     }
 
+    .scanner-title,
     .testing-title {
       margin: 0 0 10px;
       text-align: center;
@@ -577,6 +579,7 @@
       letter-spacing: 1px;
     }
 
+    .scanner-note,
     .testing-note {
       margin: 0 0 18px;
       text-align: center;
@@ -585,23 +588,84 @@
       line-height: 1.45;
     }
 
+    .scanner-note strong,
     .testing-note strong {
       color: #ffe8b0;
     }
 
-    .modal-overlay {
+    .scanner-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.82);
+      background: rgba(0,0,0,0.86);
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       z-index: 9999;
     }
 
-    .modal-overlay.show {
+    .scanner-overlay.show {
       display: flex;
+    }
+
+    .scanner-modal {
+      width: min(100%, 720px);
+      border-radius: 22px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(90,90,90,0.98), rgba(26,26,26,0.98));
+      border: 2px solid rgba(255,255,255,0.16);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.14);
+      position: relative;
+    }
+
+    .scanner-modal::before,
+    .scanner-modal::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 18px;
+      background: repeating-linear-gradient(45deg, #0e0e0e 0 14px, #f0c02e 14px 28px);
+      z-index: 1;
+    }
+
+    .scanner-modal::before { top: 0; }
+    .scanner-modal::after { bottom: 0; }
+
+    .scanner-inner {
+      position: relative;
+      z-index: 2;
+      padding: 40px 20px 28px;
+      text-align: center;
+    }
+
+    .scanner-viewport {
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.14);
+      min-height: 320px;
+    }
+
+    #qr-reader {
+      width: 100%;
+    }
+
+    .scanner-help {
+      margin: 0 0 18px;
+      color: rgba(255,255,255,0.8);
+      font-size: 16px;
+      line-height: 1.45;
+    }
+
+    .scanner-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .celebration-modal {
@@ -726,6 +790,7 @@
     body.scan-claim-mode #recordToggleBtn,
     body.scan-claim-mode #authPanel,
     body.scan-claim-mode #garageDirectoryPanel,
+    body.scan-claim-mode #scannerPanel,
     body.scan-claim-mode #accountActionsPanel,
     body.scan-claim-mode #secretTestingPanel,
     body.scan-claim-mode #statusBox {
@@ -747,6 +812,14 @@
       .celebration-stats,
       .directory-grid {
         grid-template-columns: 1fr;
+      }
+
+      .scanner-actions {
+        flex-direction: column;
+      }
+
+      .scanner-actions button {
+        width: 100%;
       }
     }
 
@@ -802,8 +875,9 @@
         width: 100%;
       }
 
-      .celebration-inner {
-        padding: 36px 18px;
+      .celebration-inner,
+      .scanner-inner {
+        padding: 36px 18px 24px;
       }
 
       .celebration-text {
@@ -828,6 +902,16 @@
     <button id="recordToggleBtn" class="record-toggle-btn">View Your Restoration Record</button>
 
     <div id="statusBox" class="status"></div>
+
+    <div id="scannerPanel" class="panel">
+      <div class="panel-inner">
+        <h2 class="scanner-title">Scan Venue QR</h2>
+        <p class="scanner-note">Use your phone camera inside the site to scan a venue QR code and claim a stamp without leaving the page.</p>
+        <div class="account-actions">
+          <button id="openScannerBtn" class="btn-primary">Open Camera Scanner</button>
+        </div>
+      </div>
+    </div>
 
     <div id="authPanel" class="panel">
       <div class="panel-inner">
@@ -984,7 +1068,7 @@
     <!-- The JavaScript section later is also marked with the same label. -->
   </div>
 
-  <div id="celebrationOverlay" class="modal-overlay" aria-hidden="true">
+  <div id="celebrationOverlay" class="scanner-overlay" aria-hidden="true">
     <div class="celebration-modal">
       <div class="celebration-inner">
         <div class="celebration-badge">Vehicle Restored</div>
@@ -1005,6 +1089,23 @@
       </div>
     </div>
   </div>
+
+  <div id="scannerOverlay" class="scanner-overlay" aria-hidden="true">
+    <div class="scanner-modal">
+      <div class="scanner-inner">
+        <h3 class="scanner-title">Scan Venue QR</h3>
+        <div class="scanner-viewport">
+          <div id="qr-reader"></div>
+        </div>
+        <p id="scannerHelp" class="scanner-help">Point your camera at a venue QR code.</p>
+        <div class="scanner-actions">
+          <button id="closeScannerBtn" class="btn-secondary">Close Scanner</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
@@ -1086,6 +1187,11 @@
     const celebrationOverlay = document.getElementById("celebrationOverlay");
     const celebrationVehicleCount = document.getElementById("celebrationVehicleCount");
 
+    const scannerOverlay = document.getElementById("scannerOverlay");
+    const openScannerBtn = document.getElementById("openScannerBtn");
+    const closeScannerBtn = document.getElementById("closeScannerBtn");
+    const scannerHelp = document.getElementById("scannerHelp");
+
     const partElements = {};
     VALID_PARTS.forEach((partKey) => {
       partElements[partKey] = document.getElementById(`part-${partKey}`);
@@ -1097,6 +1203,10 @@
     let currentCompletedVehicles = 0;
     let completionInProgress = false;
     let secretUnlocked = false;
+
+    let qrScanner = null;
+    let qrScannerRunning = false;
+    let qrScanHandled = false;
 
     function showStatus(message, type = "info", autoHideMs = 0) {
       if (statusHideTimer) {
@@ -1256,6 +1366,129 @@
           <div class="directory-quip">${venue.quip}</div>
         </a>
       `).join("");
+    }
+
+    function scannerSupported() {
+      return window.isSecureContext && !!navigator.mediaDevices?.getUserMedia && typeof window.Html5Qrcode === "function";
+    }
+
+    function normalizeScannedUrl(decodedText) {
+      try {
+        const resolved = new URL(decodedText, window.location.href);
+        if (resolved.protocol !== "http:" && resolved.protocol !== "https:") {
+          return null;
+        }
+        return resolved.href;
+      } catch {
+        return null;
+      }
+    }
+
+    async function stopScanner() {
+      if (qrScanner) {
+        try {
+          if (qrScannerRunning) {
+            await qrScanner.stop();
+          }
+        } catch {}
+        try {
+          await qrScanner.clear();
+        } catch {}
+      }
+
+      qrScanner = null;
+      qrScannerRunning = false;
+      qrScanHandled = false;
+    }
+
+    async function closeScannerOverlay() {
+      scannerOverlay.classList.remove("show");
+      scannerOverlay.setAttribute("aria-hidden", "true");
+      scannerHelp.textContent = "Point your camera at a venue QR code.";
+      await stopScanner();
+    }
+
+    async function handleScanSuccess(decodedText) {
+      if (qrScanHandled) return;
+      qrScanHandled = true;
+
+      const targetUrl = normalizeScannedUrl(decodedText);
+      if (!targetUrl) {
+        qrScanHandled = false;
+        scannerHelp.textContent = "That QR code did not contain a valid web link.";
+        return;
+      }
+
+      scannerHelp.textContent = "QR code captured. Opening…";
+      await closeScannerOverlay();
+      window.location.href = targetUrl;
+    }
+
+    async function startScanner() {
+      if (!scannerSupported()) {
+        showStatus("Camera scanning needs HTTPS and a supported browser camera API.", "error");
+        return;
+      }
+
+      scannerOverlay.classList.add("show");
+      scannerOverlay.setAttribute("aria-hidden", "false");
+      scannerHelp.textContent = "Starting camera…";
+
+      await stopScanner();
+
+      qrScanner = new window.Html5Qrcode("qr-reader");
+      const config = {
+        fps: 10,
+        qrbox: { width: 250, height: 250 },
+        aspectRatio: 1
+      };
+
+      try {
+        await qrScanner.start(
+          { facingMode: { exact: "environment" } },
+          config,
+          handleScanSuccess,
+          () => {}
+        );
+        qrScannerRunning = true;
+        scannerHelp.textContent = "Point your camera at a venue QR code.";
+        return;
+      } catch {}
+
+      try {
+        await qrScanner.start(
+          { facingMode: "environment" },
+          config,
+          handleScanSuccess,
+          () => {}
+        );
+        qrScannerRunning = true;
+        scannerHelp.textContent = "Point your camera at a venue QR code.";
+        return;
+      } catch {}
+
+      try {
+        const cameras = await window.Html5Qrcode.getCameras();
+        if (!cameras || cameras.length === 0) {
+          throw new Error("No camera found.");
+        }
+
+        const backCamera =
+          cameras.find((camera) => /back|rear|environment/i.test(camera.label)) ||
+          cameras[cameras.length - 1];
+
+        await qrScanner.start(
+          backCamera.id,
+          config,
+          handleScanSuccess,
+          () => {}
+        );
+        qrScannerRunning = true;
+        scannerHelp.textContent = "Point your camera at a venue QR code.";
+      } catch (error) {
+        await closeScannerOverlay();
+        showStatus(error?.message || "Could not start the camera scanner.", "error");
+      }
     }
 
     /* CHIP SECRET BUTTON FEATURE START */
@@ -1587,6 +1820,14 @@
     });
 
     secretTestBtn.addEventListener("click", runSecretCompletionTest);
+    openScannerBtn.addEventListener("click", startScanner);
+    closeScannerBtn.addEventListener("click", closeScannerOverlay);
+
+    scannerOverlay.addEventListener("click", async (event) => {
+      if (event.target === scannerOverlay) {
+        await closeScannerOverlay();
+      }
+    });
 
     recordToggleBtn.addEventListener("click", () => {
       if (!auth.currentUser) {
@@ -1604,6 +1845,10 @@
         const partKey = partButton.getAttribute("data-venue-link");
         window.location.href = `./venue.html?garage=${encodeURIComponent(partKey)}`;
       }
+    });
+
+    window.addEventListener("beforeunload", () => {
+      stopScanner();
     });
 
     async function initApp() {
