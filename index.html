@@ -16,7 +16,6 @@
     * { box-sizing: border-box; }
 
     :root {
-      --bg-dark: #141414;
       --text: #f6f1e7;
       --muted: rgba(255,255,255,0.78);
       --gold: #c89b3c;
@@ -28,9 +27,7 @@
       --stamp-duration: 0.95s;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -83,14 +80,8 @@
       background: repeating-linear-gradient(45deg, #111 0 14px, var(--gold) 14px 28px);
     }
 
-    .panel-inner {
-      padding: 34px 24px 24px;
-    }
-
-    .brand-inner {
-      padding: 40px 24px 28px;
-      text-align: center;
-    }
+    .panel-inner { padding: 34px 24px 24px; }
+    .brand-inner { padding: 40px 24px 28px; text-align: center; }
 
     .brand-title,
     .section-title,
@@ -100,7 +91,9 @@
     .celebration-title,
     .testing-title,
     .scanner-title,
-    button {
+    .leaderboard-title,
+    button,
+    .button-link {
       font-family: "Teko", Arial, sans-serif;
     }
 
@@ -130,9 +123,7 @@
       letter-spacing: 1px;
     }
 
-    .section-title.centered {
-      text-align: center;
-    }
+    .section-title.centered { text-align: center; }
 
     .section-text {
       margin: 0 0 20px;
@@ -193,16 +184,8 @@
 
     .hidden { display: none !important; }
 
-    .form-grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    .form-grid { display: grid; gap: 12px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
     input,
     button {
@@ -223,13 +206,20 @@
       font-weight: 600;
     }
 
-    button {
+    button,
+    .button-link {
       padding: 14px 16px;
       border: none;
       cursor: pointer;
       font-weight: 700;
       letter-spacing: 0.6px;
       text-transform: uppercase;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      width: 100%;
     }
 
     .btn-primary {
@@ -361,9 +351,7 @@
       -webkit-user-drag: none;
     }
 
-    .part.stamped .stamp-static {
-      display: block;
-    }
+    .part.stamped .stamp-static { display: block; }
 
     .stamp-stage {
       position: absolute;
@@ -373,13 +361,8 @@
       pointer-events: none;
     }
 
-    .part.animate-stamp .stamp-stage {
-      display: block;
-    }
-
-    .part.animate-stamp .stamp-static {
-      display: none !important;
-    }
+    .part.animate-stamp .stamp-stage { display: block; }
+    .part.animate-stamp .stamp-static { display: none !important; }
 
     .stamp-shadow {
       position: absolute;
@@ -412,46 +395,17 @@
     }
 
     @keyframes stampDown {
-      0% {
-        transform: translateY(-220%) scale(1.35) rotate(-11deg);
-        opacity: 0;
-        filter: blur(6px);
-      }
-      58% {
-        transform: translateY(4%) scale(1.03, 0.92) rotate(-11deg);
-        opacity: 1;
-        filter: blur(0.3px);
-      }
-      74% {
-        transform: translateY(-2%) scale(0.98, 1.03) rotate(-11deg);
-        opacity: 1;
-        filter: blur(0);
-      }
-      88% {
-        transform: translateY(1%) scale(1.01, 0.99) rotate(-11deg);
-        opacity: 1;
-        filter: blur(0);
-      }
-      100% {
-        transform: translateY(0) scale(1) rotate(-11deg);
-        opacity: 1;
-        filter: blur(0);
-      }
+      0% { transform: translateY(-220%) scale(1.35) rotate(-11deg); opacity: 0; filter: blur(6px); }
+      58% { transform: translateY(4%) scale(1.03, 0.92) rotate(-11deg); opacity: 1; filter: blur(0.3px); }
+      74% { transform: translateY(-2%) scale(0.98, 1.03) rotate(-11deg); opacity: 1; filter: blur(0); }
+      88% { transform: translateY(1%) scale(1.01, 0.99) rotate(-11deg); opacity: 1; filter: blur(0); }
+      100% { transform: translateY(0) scale(1) rotate(-11deg); opacity: 1; filter: blur(0); }
     }
 
     @keyframes stampShadowHit {
-      0% {
-        opacity: 0;
-        transform: translateY(18px) scale(0.45);
-      }
-      58% {
-        opacity: 0.2;
-        transform: translateY(0) scale(1.04);
-      }
-      100% {
-        opacity: 0.12;
-        transform: translateY(0) scale(1);
-      }
+      0% { opacity: 0; transform: translateY(18px) scale(0.45); }
+      58% { opacity: 0.2; transform: translateY(0) scale(1.04); }
+      100% { opacity: 0.12; transform: translateY(0) scale(1); }
     }
 
     .summary-grid {
@@ -543,26 +497,18 @@
       color: rgba(255,255,255,0.8);
     }
 
-    .account-actions-panel .panel-inner {
-      padding-top: 26px;
-    }
-
-    .account-actions-title {
-      margin: 0 0 14px;
-      text-align: center;
-      font-size: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .account-actions {
+    .account-actions,
+    .scanner-actions {
       display: flex;
       gap: 10px;
       justify-content: center;
       flex-wrap: wrap;
     }
 
-    .account-actions button {
+    .account-actions button,
+    .account-actions .button-link,
+    .scanner-actions button,
+    .scanner-actions .button-link {
       width: auto;
       min-width: 180px;
       padding: 10px 16px;
@@ -571,6 +517,7 @@
     }
 
     .scanner-title,
+    .leaderboard-title,
     .testing-title {
       margin: 0 0 10px;
       text-align: center;
@@ -580,7 +527,9 @@
     }
 
     .scanner-note,
-    .testing-note {
+    .leaderboard-note,
+    .testing-note,
+    .small-note {
       margin: 0 0 18px;
       text-align: center;
       color: rgba(255,255,255,0.82);
@@ -589,7 +538,9 @@
     }
 
     .scanner-note strong,
-    .testing-note strong {
+    .leaderboard-note strong,
+    .testing-note strong,
+    .small-note strong {
       color: #ffe8b0;
     }
 
@@ -604,9 +555,7 @@
       z-index: 9999;
     }
 
-    .scanner-overlay.show {
-      display: flex;
-    }
+    .scanner-overlay.show { display: flex; }
 
     .scanner-modal {
       width: min(100%, 720px);
@@ -650,22 +599,13 @@
       min-height: 320px;
     }
 
-    #qr-reader {
-      width: 100%;
-    }
+    #qr-reader { width: 100%; }
 
     .scanner-help {
       margin: 0 0 18px;
       color: rgba(255,255,255,0.8);
       font-size: 16px;
       line-height: 1.45;
-    }
-
-    .scanner-actions {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      flex-wrap: wrap;
     }
 
     .celebration-modal {
@@ -776,21 +716,17 @@
     }
 
     @keyframes celebrationPop {
-      0% {
-        opacity: 0;
-        transform: scale(0.94) translateY(20px);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      0% { opacity: 0; transform: scale(0.94) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     body.scan-claim-mode #brandPanel,
     body.scan-claim-mode #recordToggleBtn,
     body.scan-claim-mode #authPanel,
+    body.scan-claim-mode #usernameSetupPanel,
     body.scan-claim-mode #garageDirectoryPanel,
     body.scan-claim-mode #scannerPanel,
+    body.scan-claim-mode #leaderboardPanel,
     body.scan-claim-mode #accountActionsPanel,
     body.scan-claim-mode #secretTestingPanel,
     body.scan-claim-mode #statusBox {
@@ -814,41 +750,36 @@
         grid-template-columns: 1fr;
       }
 
-      .scanner-actions {
+      .scanner-actions,
+      .account-actions {
         flex-direction: column;
       }
 
-      .scanner-actions button {
+      .scanner-actions button,
+      .account-actions button,
+      .account-actions .button-link,
+      .scanner-actions .button-link {
         width: 100%;
       }
     }
 
     @media (max-width: 640px) {
-      .two-col {
-        grid-template-columns: 1fr;
-      }
+      .two-col { grid-template-columns: 1fr; }
 
       .brand-inner,
       .panel-inner {
         padding: 30px 18px 20px;
       }
 
-      .record-toggle-btn {
-        font-size: 20px;
-      }
+      .record-toggle-btn { font-size: 20px; }
 
       .bike-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 8px;
       }
 
-      .part {
-        border-radius: 12px;
-      }
-
-      .part::before {
-        inset: 6px;
-      }
+      .part { border-radius: 12px; }
+      .part::before { inset: 6px; }
 
       .part-name {
         font-size: clamp(12px, 4vw, 18px);
@@ -863,30 +794,15 @@
         height: calc(100% - 12px);
       }
 
-      .summary-number {
-        font-size: 34px;
-      }
-
-      .account-actions {
-        flex-direction: column;
-      }
-
-      .account-actions button {
-        width: 100%;
-      }
+      .summary-number { font-size: 34px; }
 
       .celebration-inner,
       .scanner-inner {
         padding: 36px 18px 24px;
       }
 
-      .celebration-text {
-        font-size: 20px;
-      }
-
-      .celebration-subtext {
-        font-size: 17px;
-      }
+      .celebration-text { font-size: 20px; }
+      .celebration-subtext { font-size: 17px; }
     }
   </style>
 </head>
@@ -907,8 +823,18 @@
       <div class="panel-inner">
         <h2 class="scanner-title">Scan Venue QR</h2>
         <p class="scanner-note">Use your phone camera inside the site to scan a venue QR code and claim a stamp without leaving the page.</p>
-        <div class="account-actions">
+        <div class="scanner-actions">
           <button id="openScannerBtn" class="btn-primary">Open Camera Scanner</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="leaderboardPanel" class="panel">
+      <div class="panel-inner">
+        <h2 class="leaderboard-title">Leaderboard</h2>
+        <p class="leaderboard-note">Registered users with approved usernames can appear on the public leaderboard.</p>
+        <div class="scanner-actions">
+          <a href="./leaderboard.html" class="button-link btn-light">View Leaderboard</a>
         </div>
       </div>
     </div>
@@ -916,11 +842,12 @@
     <div id="authPanel" class="panel">
       <div class="panel-inner">
         <h2 class="section-title">Open Your Record</h2>
-        <p class="section-text">Create an account, sign in, or continue as a guest. If you have just scanned a venue QR code, your stamp will be added as soon as you are logged in.</p>
+        <p class="section-text">Create an account, sign in, or continue as a guest. Usernames are required for registered accounts and are used on the leaderboard.</p>
 
         <div class="form-grid">
-          <input type="email" id="email" placeholder="Email address" />
-          <input type="password" id="password" placeholder="Password" />
+          <input type="text" id="username" placeholder="Username (for new registered accounts)" maxlength="20" autocomplete="username" />
+          <input type="email" id="email" placeholder="Email address" autocomplete="email" />
+          <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
 
           <div class="two-col">
             <button id="signUpBtn" class="btn-primary">Create Account</button>
@@ -929,6 +856,19 @@
 
           <button id="googleBtn" class="btn-light">Continue with Google</button>
           <button id="guestBtn" class="btn-secondary">Continue as Guest</button>
+        </div>
+
+        <p class="small-note" style="margin-top:16px;">Usernames must be 3–20 characters and use only letters, numbers, or underscores.</p>
+      </div>
+    </div>
+
+    <div id="usernameSetupPanel" class="panel hidden">
+      <div class="panel-inner">
+        <h2 class="section-title">Choose Your Public Username</h2>
+        <p class="section-text">Pick a unique username for the leaderboard. This is only needed for registered accounts.</p>
+        <div class="form-grid">
+          <input type="text" id="usernameSetupInput" placeholder="Choose a username" maxlength="20" autocomplete="nickname" />
+          <button id="saveUsernameBtn" class="btn-primary">Save Username</button>
         </div>
       </div>
     </div>
@@ -1036,11 +976,12 @@
       </div>
     </div>
 
-    <div id="accountActionsPanel" class="panel hidden account-actions-panel">
+    <div id="accountActionsPanel" class="panel hidden">
       <div class="panel-inner">
         <h3 class="account-actions-title">Account</h3>
         <div class="account-actions">
-          <button id="logOutBtn" class="btn-light">Log Out</button>
+          <a href="./leaderboard.html" class="button-link btn-light">Leaderboard</a>
+          <button id="logOutBtn" class="btn-secondary">Log Out</button>
         </div>
       </div>
     </div>
@@ -1119,7 +1060,9 @@
       onAuthStateChanged,
       setPersistence,
       browserLocalPersistence,
-      signInAnonymously
+      signInAnonymously,
+      deleteUser,
+      updateProfile
     } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
     import {
       getFirestore,
@@ -1129,7 +1072,8 @@
       arrayUnion,
       writeBatch,
       increment,
-      serverTimestamp
+      serverTimestamp,
+      runTransaction
     } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 
     import {
@@ -1159,6 +1103,28 @@
     const CELEBRATION_MS = 4200;
     const SECRET_STORAGE_KEY = "chipWorkshopOverride";
 
+    const BANNED_USERNAME_FRAGMENTS = [
+      "admin",
+      "moderator",
+      "mod",
+      "owner",
+      "staff",
+      "support",
+      "official",
+      "fuck",
+      "shit",
+      "bitch",
+      "cunt",
+      "twat",
+      "wank",
+      "arsehole",
+      "bollock",
+      "dick",
+      "porn",
+      "rape",
+      "naz"
+    ];
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
@@ -1166,14 +1132,20 @@
 
     const statusBox = document.getElementById("statusBox");
     const authPanel = document.getElementById("authPanel");
+    const usernameSetupPanel = document.getElementById("usernameSetupPanel");
     const recordPanel = document.getElementById("recordPanel");
     const recordToggleBtn = document.getElementById("recordToggleBtn");
     const garageDirectoryGrid = document.getElementById("garageDirectoryGrid");
     const accountActionsPanel = document.getElementById("accountActionsPanel");
     const secretTestingPanel = document.getElementById("secretTestingPanel");
 
+    const usernameInput = document.getElementById("username");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
+
+    const usernameSetupInput = document.getElementById("usernameSetupInput");
+    const saveUsernameBtn = document.getElementById("saveUsernameBtn");
+
     const signUpBtn = document.getElementById("signUpBtn");
     const logInBtn = document.getElementById("logInBtn");
     const googleBtn = document.getElementById("googleBtn");
@@ -1201,6 +1173,8 @@
     let authBusy = false;
     let currentVisitedVenues = [];
     let currentCompletedVehicles = 0;
+    let currentUsername = "";
+    let currentUsernameLower = "";
     let completionInProgress = false;
     let secretUnlocked = false;
 
@@ -1219,9 +1193,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
 
       if (autoHideMs > 0) {
-        statusHideTimer = window.setTimeout(() => {
-          clearStatus();
-        }, autoHideMs);
+        statusHideTimer = window.setTimeout(() => clearStatus(), autoHideMs);
       }
     }
 
@@ -1239,20 +1211,13 @@
       const rawVenue = params.get("venue");
       const rawToken = params.get("token");
 
-      if (!rawVenue) {
-        return { state: "none", partKey: null };
-      }
+      if (!rawVenue) return { state: "none", partKey: null };
 
       const normalizedVenue = normalizeVenueValue(rawVenue);
       const resolvedPartKey = ALIAS_MAP[normalizedVenue] || null;
 
-      if (!resolvedPartKey) {
-        return { state: "invalid", partKey: null };
-      }
-
-      if (!rawToken || rawToken !== TOKEN_MAP[resolvedPartKey]) {
-        return { state: "invalid", partKey: resolvedPartKey };
-      }
+      if (!resolvedPartKey) return { state: "invalid", partKey: null };
+      if (!rawToken || rawToken !== TOKEN_MAP[resolvedPartKey]) return { state: "invalid", partKey: resolvedPartKey };
 
       return { state: "valid", partKey: resolvedPartKey };
     }
@@ -1263,6 +1228,7 @@
     }
 
     function getUserDisplayName(user) {
+      if (currentUsername) return currentUsername;
       if (!user) return "Guest";
       if (user.displayName && user.displayName.trim()) return user.displayName.trim();
       if (user.email) return user.email.split("@")[0];
@@ -1375,9 +1341,7 @@
     function normalizeScannedUrl(decodedText) {
       try {
         const resolved = new URL(decodedText, window.location.href);
-        if (resolved.protocol !== "http:" && resolved.protocol !== "https:") {
-          return null;
-        }
+        if (resolved.protocol !== "http:" && resolved.protocol !== "https:") return null;
         return resolved.href;
       } catch {
         return null;
@@ -1387,15 +1351,12 @@
     async function stopScanner() {
       if (qrScanner) {
         try {
-          if (qrScannerRunning) {
-            await qrScanner.stop();
-          }
+          if (qrScannerRunning) await qrScanner.stop();
         } catch {}
         try {
           await qrScanner.clear();
         } catch {}
       }
-
       qrScanner = null;
       qrScannerRunning = false;
       qrScanHandled = false;
@@ -1444,24 +1405,14 @@
       };
 
       try {
-        await qrScanner.start(
-          { facingMode: { exact: "environment" } },
-          config,
-          handleScanSuccess,
-          () => {}
-        );
+        await qrScanner.start({ facingMode: { exact: "environment" } }, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
         scannerHelp.textContent = "Point your camera at a venue QR code.";
         return;
       } catch {}
 
       try {
-        await qrScanner.start(
-          { facingMode: "environment" },
-          config,
-          handleScanSuccess,
-          () => {}
-        );
+        await qrScanner.start({ facingMode: "environment" }, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
         scannerHelp.textContent = "Point your camera at a venue QR code.";
         return;
@@ -1469,20 +1420,13 @@
 
       try {
         const cameras = await window.Html5Qrcode.getCameras();
-        if (!cameras || cameras.length === 0) {
-          throw new Error("No camera found.");
-        }
+        if (!cameras || cameras.length === 0) throw new Error("No camera found.");
 
         const backCamera =
           cameras.find((camera) => /back|rear|environment/i.test(camera.label)) ||
           cameras[cameras.length - 1];
 
-        await qrScanner.start(
-          backCamera.id,
-          config,
-          handleScanSuccess,
-          () => {}
-        );
+        await qrScanner.start(backCamera.id, config, handleScanSuccess, () => {});
         qrScannerRunning = true;
         scannerHelp.textContent = "Point your camera at a venue QR code.";
       } catch (error) {
@@ -1491,11 +1435,41 @@
       }
     }
 
-    /* CHIP SECRET BUTTON FEATURE START */
-    /* Delete this whole marked JavaScript block if you want to remove the secret feature. */
-    /* Search for CHIP SECRET BUTTON FEATURE START and END in the file. */
-    /* This block controls the hidden unlock state and big red button flow. */
-    /* The venue page contains the long-press unlock. */
+    function sanitizeSuggestedUsername(text) {
+      return String(text || "").replace(/[^A-Za-z0-9_]/g, "").slice(0, 20);
+    }
+
+    function getSuggestedUsername(user) {
+      let candidate = sanitizeSuggestedUsername(user?.displayName || user?.email?.split("@")[0] || "Driver");
+      if (candidate.length < 3) {
+        candidate = `Driver${String(user?.uid || "1234").slice(0, 4)}`;
+      }
+      return candidate.slice(0, 20);
+    }
+
+    function validateUsername(rawValue) {
+      const clean = String(rawValue || "").trim();
+      const lower = clean.toLowerCase();
+
+      if (!/^[A-Za-z0-9_]{3,20}$/.test(clean)) {
+        throw new Error("Usernames must be 3–20 characters and use only letters, numbers, or underscores.");
+      }
+
+      if (BANNED_USERNAME_FRAGMENTS.some((fragment) => lower.includes(fragment))) {
+        throw new Error("That username is not allowed. Please choose another.");
+      }
+
+      return { clean, lower };
+    }
+
+    function setAuthButtonsDisabled(isDisabled) {
+      signUpBtn.disabled = isDisabled;
+      logInBtn.disabled = isDisabled;
+      googleBtn.disabled = isDisabled;
+      guestBtn.disabled = isDisabled;
+      saveUsernameBtn.disabled = isDisabled;
+    }
+
     function syncSecretUnlockFromStorage() {
       secretUnlocked = localStorage.getItem(SECRET_STORAGE_KEY) === "unlocked";
     }
@@ -1510,49 +1484,79 @@
       }
     }
 
-    async function runSecretCompletionTest() {
-      if (!auth.currentUser) {
-        showStatus("Sign in first to use the workshop override.", "info", 3000);
-        return;
-      }
+    function updateUsernameSetupVisibility(user) {
+      const needsUsername = !!user && !user.isAnonymous && !currentUsername;
 
-      if (completionInProgress) {
-        return;
-      }
-
-      completionInProgress = true;
-      clearStatus();
-
-      try {
-        showRecordPanel();
-        enterScanClaimMode();
-
-        currentVisitedVenues = [...VALID_PARTS];
-        markCard(currentVisitedVenues);
-        playAllStampAnimations();
-
-        const postStampDelay = STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + STAMP_HOLD_MS;
-
-        window.setTimeout(async () => {
-          try {
-            await finalizeCompletedVehicle(auth.currentUser);
-          } catch (error) {
-            completionInProgress = false;
-            exitScanClaimMode();
-            showStatus(error.message || "Could not run workshop override completion.", "error");
-          }
-        }, postStampDelay);
-      } catch (error) {
-        completionInProgress = false;
-        exitScanClaimMode();
-        showStatus(error.message || "Could not run workshop override completion.", "error");
+      if (needsUsername) {
+        usernameSetupPanel.classList.remove("hidden");
+        if (!usernameSetupInput.value.trim()) {
+          usernameSetupInput.value = getSuggestedUsername(user);
+        }
+      } else {
+        usernameSetupPanel.classList.add("hidden");
+        usernameSetupInput.value = "";
       }
     }
-    /* CHIP SECRET BUTTON FEATURE END */
-    /* Delete this whole marked JavaScript block if you want to remove the secret feature. */
-    /* Search for CHIP SECRET BUTTON FEATURE START and END in the file. */
-    /* This block controls the hidden unlock state and big red button flow. */
-    /* The venue page contains the long-press unlock. */
+
+    async function reserveUsernameForUser(user, rawUsername) {
+      const { clean, lower } = validateUsername(rawUsername);
+
+      const userRef = doc(db, "userVisits", user.uid);
+      const usernameRef = doc(db, "usernames", lower);
+      const leaderboardRef = doc(db, "leaderboard", user.uid);
+
+      await runTransaction(db, async (transaction) => {
+        const usernameSnap = await transaction.get(usernameRef);
+        const userSnap = await transaction.get(userRef);
+
+        const existingUserData = userSnap.exists() ? userSnap.data() : {};
+        const oldLower = typeof existingUserData.usernameLower === "string" ? existingUserData.usernameLower : null;
+        const existingCompleted = Number.isFinite(existingUserData.completedVehicles) ? existingUserData.completedVehicles : currentCompletedVehicles;
+
+        if (usernameSnap.exists()) {
+          const ownerUid = usernameSnap.data()?.uid;
+          if (ownerUid !== user.uid) {
+            throw new Error("That username has already been used.");
+          }
+        }
+
+        if (oldLower && oldLower !== lower) {
+          const oldUsernameRef = doc(db, "usernames", oldLower);
+          transaction.delete(oldUsernameRef);
+        }
+
+        transaction.set(usernameRef, {
+          uid: user.uid,
+          username: clean,
+          usernameLower: lower,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        transaction.set(userRef, {
+          username: clean,
+          usernameLower: lower,
+          displayName: clean,
+          isRegistered: !user.isAnonymous,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        transaction.set(leaderboardRef, {
+          uid: user.uid,
+          username: clean,
+          usernameLower: lower,
+          completedVehicles: existingCompleted,
+          updatedAt: serverTimestamp(),
+          isRegistered: !user.isAnonymous
+        }, { merge: true });
+      });
+
+      await updateProfile(user, { displayName: clean });
+
+      currentUsername = clean;
+      currentUsernameLower = lower;
+      updateUsernameSetupVisibility(user);
+    }
 
     async function ensureUserDocument(user) {
       const userRef = doc(db, "userVisits", user.uid);
@@ -1562,15 +1566,18 @@
         await setDoc(userRef, {
           visitedVenues: [],
           completedVehicles: 0,
-          displayName: getUserDisplayName(user),
+          displayName: user.displayName || "",
           isAnonymous: !!user.isAnonymous,
+          isRegistered: !user.isAnonymous,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp()
         });
 
         return {
           visitedVenues: [],
-          completedVehicles: 0
+          completedVehicles: 0,
+          username: "",
+          usernameLower: ""
         };
       }
 
@@ -1578,26 +1585,29 @@
       const visitedVenues = Array.isArray(data.visitedVenues)
         ? data.visitedVenues.filter((value) => VALID_PARTS.includes(value))
         : [];
+
       const completedVehicles = Number.isFinite(data.completedVehicles) ? data.completedVehicles : 0;
+      const username = typeof data.username === "string" ? data.username : "";
+      const usernameLower = typeof data.usernameLower === "string" ? data.usernameLower : "";
 
       await setDoc(userRef, {
         visitedVenues,
         completedVehicles,
-        displayName: getUserDisplayName(user),
         isAnonymous: !!user.isAnonymous,
+        isRegistered: !user.isAnonymous,
+        displayName: username || user.displayName || data.displayName || "",
         updatedAt: serverTimestamp()
       }, { merge: true });
 
-      return {
-        visitedVenues,
-        completedVehicles
-      };
+      return { visitedVenues, completedVehicles, username, usernameLower };
     }
 
     async function loadUserCard(user) {
       const userData = await ensureUserDocument(user);
       currentVisitedVenues = userData.visitedVenues;
       currentCompletedVehicles = userData.completedVehicles;
+      currentUsername = userData.username || "";
+      currentUsernameLower = userData.usernameLower || "";
       markCard(currentVisitedVenues);
       updateCompletedVehicles(currentCompletedVehicles);
     }
@@ -1605,7 +1615,6 @@
     async function finalizeCompletedVehicle(user) {
       const userRef = doc(db, "userVisits", user.uid);
       const leaderboardRef = doc(db, "leaderboard", user.uid);
-      const displayName = getUserDisplayName(user);
       const nextCompletedVehiclesTotal = currentCompletedVehicles + 1;
 
       const batch = writeBatch(db);
@@ -1613,18 +1622,23 @@
       batch.set(userRef, {
         visitedVenues: [],
         completedVehicles: increment(1),
-        displayName,
+        displayName: currentUsername || getUserDisplayName(user),
         isAnonymous: !!user.isAnonymous,
+        isRegistered: !user.isAnonymous,
         lastCompletedAt: serverTimestamp(),
         updatedAt: serverTimestamp()
       }, { merge: true });
 
-      batch.set(leaderboardRef, {
-        uid: user.uid,
-        displayName,
-        completedVehicles: increment(1),
-        updatedAt: serverTimestamp()
-      }, { merge: true });
+      if (!user.isAnonymous && currentUsername && currentUsernameLower) {
+        batch.set(leaderboardRef, {
+          uid: user.uid,
+          username: currentUsername,
+          usernameLower: currentUsernameLower,
+          completedVehicles: increment(1),
+          updatedAt: serverTimestamp(),
+          isRegistered: true
+        }, { merge: true });
+      }
 
       await batch.commit();
 
@@ -1660,6 +1674,7 @@
           completedVehicles: 0,
           displayName: getUserDisplayName(user),
           isAnonymous: !!user.isAnonymous,
+          isRegistered: !user.isAnonymous,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp()
         });
@@ -1681,8 +1696,9 @@
 
       await setDoc(userRef, {
         visitedVenues: arrayUnion(claim.partKey),
-        displayName: getUserDisplayName(user),
+        displayName: currentUsername || getUserDisplayName(user),
         isAnonymous: !!user.isAnonymous,
+        isRegistered: !user.isAnonymous,
         updatedAt: serverTimestamp()
       }, { merge: true });
 
@@ -1710,11 +1726,66 @@
       }, postStampDelay);
     }
 
-    function setAuthButtonsDisabled(isDisabled) {
-      signUpBtn.disabled = isDisabled;
-      logInBtn.disabled = isDisabled;
-      googleBtn.disabled = isDisabled;
-      guestBtn.disabled = isDisabled;
+    async function createRegisteredAccount() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const username = usernameInput.value.trim();
+
+      if (!email || !password || !username) {
+        throw new Error("Enter a username, email, and password.");
+      }
+
+      validateUsername(username);
+
+      let createdUser = null;
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        createdUser = cred.user;
+        await reserveUsernameForUser(createdUser, username);
+      } catch (error) {
+        if (createdUser) {
+          try { await deleteUser(createdUser); } catch {}
+        }
+        throw error;
+      }
+    }
+
+    async function runSecretCompletionTest() {
+      if (!auth.currentUser) {
+        showStatus("Sign in first to use the workshop override.", "info", 3000);
+        return;
+      }
+
+      if (completionInProgress) return;
+
+      completionInProgress = true;
+      clearStatus();
+
+      try {
+        showRecordPanel();
+        enterScanClaimMode();
+
+        currentVisitedVenues = [...VALID_PARTS];
+        markCard(currentVisitedVenues);
+        playAllStampAnimations();
+
+        const postStampDelay = STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + STAMP_HOLD_MS;
+
+        window.setTimeout(async () => {
+          try {
+            await finalizeCompletedVehicle(auth.currentUser);
+          } catch (error) {
+            completionInProgress = false;
+            exitScanClaimMode();
+            showStatus(error.message || "Could not run workshop override completion.", "error");
+          }
+        }, postStampDelay);
+      } catch (error) {
+        completionInProgress = false;
+        exitScanClaimMode();
+        showStatus(error.message || "Could not run workshop override completion.", "error");
+      }
     }
 
     signUpBtn.addEventListener("click", async () => {
@@ -1723,21 +1794,11 @@
       setAuthButtonsDisabled(true);
       clearStatus();
 
-      const email = emailInput.value.trim();
-      const password = passwordInput.value.trim();
-
-      if (!email || !password) {
-        showStatus("Enter both email and password.", "error");
-        authBusy = false;
-        setAuthButtonsDisabled(false);
-        return;
-      }
-
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        await createRegisteredAccount();
         showStatus("Account created successfully.", "success");
       } catch (error) {
-        showStatus(error.message, "error");
+        showStatus(error.message || "Could not create account.", "error");
       } finally {
         authBusy = false;
         setAuthButtonsDisabled(false);
@@ -1764,7 +1825,7 @@
         await signInWithEmailAndPassword(auth, email, password);
         showStatus("Logged in successfully.", "success");
       } catch (error) {
-        showStatus(error.message, "error");
+        showStatus(error.message || "Could not log in.", "error");
       } finally {
         authBusy = false;
         setAuthButtonsDisabled(false);
@@ -1781,7 +1842,7 @@
         await signInWithPopup(auth, googleProvider);
         showStatus("Signed in with Google.", "success");
       } catch (error) {
-        showStatus(error.message, "error");
+        showStatus(error.message || "Could not sign in with Google.", "error");
       } finally {
         authBusy = false;
         setAuthButtonsDisabled(false);
@@ -1798,7 +1859,29 @@
         await signInAnonymously(auth);
         showStatus("Continuing as guest.", "success");
       } catch (error) {
-        showStatus(error.message, "error");
+        showStatus(error.message || "Could not continue as guest.", "error");
+      } finally {
+        authBusy = false;
+        setAuthButtonsDisabled(false);
+      }
+    });
+
+    saveUsernameBtn.addEventListener("click", async () => {
+      if (authBusy) return;
+      if (!auth.currentUser || auth.currentUser.isAnonymous) {
+        showStatus("Only registered accounts can set a leaderboard username.", "error");
+        return;
+      }
+
+      authBusy = true;
+      setAuthButtonsDisabled(true);
+      clearStatus();
+
+      try {
+        await reserveUsernameForUser(auth.currentUser, usernameSetupInput.value);
+        showStatus("Username saved successfully.", "success");
+      } catch (error) {
+        showStatus(error.message || "Could not save username.", "error");
       } finally {
         authBusy = false;
         setAuthButtonsDisabled(false);
@@ -1807,15 +1890,16 @@
 
     logOutBtn.addEventListener("click", async () => {
       clearStatus();
-
       try {
         localStorage.removeItem(SECRET_STORAGE_KEY);
         secretUnlocked = false;
+        currentUsername = "";
+        currentUsernameLower = "";
         await signOut(auth);
         hideRecordPanel();
         showStatus("Logged out successfully.", "success");
       } catch (error) {
-        showStatus(error.message, "error");
+        showStatus(error.message || "Could not log out.", "error");
       }
     });
 
@@ -1835,7 +1919,6 @@
         authPanel.scrollIntoView({ behavior: "smooth", block: "start" });
         return;
       }
-
       toggleRecordPanel();
     });
 
@@ -1868,6 +1951,7 @@
           clearStatus();
 
           await loadUserCard(user);
+          updateUsernameSetupVisibility(user);
 
           if (claim.state === "valid") {
             await processVenueFromUrl(user);
@@ -1883,10 +1967,13 @@
           exitScanClaimMode();
           currentVisitedVenues = [];
           currentCompletedVehicles = 0;
+          currentUsername = "";
+          currentUsernameLower = "";
           markCard([]);
           updateCompletedVehicles(0);
           hideRecordPanel();
           updateSecretPanelVisibility();
+          updateUsernameSetupVisibility(null);
 
           if (claim.state === "valid" && claim.partKey) {
             showStatus(`Log in or continue as a guest to claim your ${getPartLabel(claim.partKey)} stamp.`, "info");
