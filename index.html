@@ -1129,17 +1129,27 @@
       </div>
     </div>
 
+    <!-- CHIP SECRET BUTTON FEATURE START -->
+    <!-- Delete this whole marked HTML block if you want to remove the secret panel. -->
+    <!-- Search for CHIP SECRET BUTTON FEATURE START and END in the file. -->
+    <!-- This block only controls the visible secret panel and button. -->
+    <!-- The JavaScript section later is also marked with the same label. -->
     <div id="secretTestingPanel" class="panel hidden">
       <div class="panel-inner">
         <h3 class="testing-title">Workshop Override</h3>
         <p class="testing-note">
-          Hidden testing control unlocked. <strong>This does not save fake completions to Firebase.</strong>
+          Hidden workshop override unlocked. <strong>Pressing this button will complete a full vehicle on this account and count toward its completed total.</strong>
         </p>
         <div class="account-actions">
-          <button id="secretTestBtn" class="btn-primary">Chip's Big Button</button>
+          <button id="secretTestBtn" class="btn-primary">Chip's Big Red Button</button>
         </div>
       </div>
     </div>
+    <!-- CHIP SECRET BUTTON FEATURE END -->
+    <!-- Delete this whole marked HTML block if you want to remove the secret panel. -->
+    <!-- Search for CHIP SECRET BUTTON FEATURE START and END in the file. -->
+    <!-- This block only controls the visible secret panel and button. -->
+    <!-- The JavaScript section later is also marked with the same label. -->
   </div>
 
   <div id="celebrationOverlay" class="modal-overlay" aria-hidden="true">
@@ -1828,6 +1838,11 @@
       }).join("");
     }
 
+    /* CHIP SECRET BUTTON FEATURE START */
+    /* Delete this whole marked JavaScript block if you want to remove the secret feature. */
+    /* Search for CHIP SECRET BUTTON FEATURE START and END in the file. */
+    /* This block controls the hidden unlock, password check, and big red button flow. */
+    /* The HTML section earlier is also marked with the same label. */
     function updateSecretPanelVisibility() {
       if (auth.currentUser && secretUnlocked) {
         secretTestingPanel.classList.remove("hidden");
@@ -1863,6 +1878,50 @@
         showStatus("Incorrect password.", "error", 4000);
       }
     }
+
+    async function runSecretCompletionTest() {
+      if (!auth.currentUser) {
+        showStatus("Sign in first to use the workshop override.", "info", 3000);
+        return;
+      }
+
+      if (completionInProgress) {
+        return;
+      }
+
+      completionInProgress = true;
+      clearStatus();
+
+      try {
+        showRecordPanel();
+        enterScanClaimMode();
+
+        currentVisitedVenues = [...VALID_PARTS];
+        markCard(currentVisitedVenues);
+        playAllStampAnimations();
+
+        const postStampDelay = STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + STAMP_HOLD_MS;
+
+        window.setTimeout(async () => {
+          try {
+            await finalizeCompletedVehicle(auth.currentUser);
+          } catch (error) {
+            completionInProgress = false;
+            exitScanClaimMode();
+            showStatus(error.message || "Could not run workshop override completion.", "error");
+          }
+        }, postStampDelay);
+      } catch (error) {
+        completionInProgress = false;
+        exitScanClaimMode();
+        showStatus(error.message || "Could not run workshop override completion.", "error");
+      }
+    }
+    /* CHIP SECRET BUTTON FEATURE END */
+    /* Delete this whole marked JavaScript block if you want to remove the secret feature. */
+    /* Search for CHIP SECRET BUTTON FEATURE START and END in the file. */
+    /* This block controls the hidden unlock, password check, and big red button flow. */
+    /* The HTML section earlier is also marked with the same label. */
 
     async function ensureUserDocument(user) {
       const userRef = doc(db, "userVisits", user.uid);
@@ -2017,51 +2076,6 @@
 
       window.setTimeout(() => {
         window.location.replace(RESET_REDIRECT_URL);
-      }, postStampDelay);
-    }
-
-    async function runSecretCompletionTest() {
-      if (!auth.currentUser) {
-        showStatus("Sign in first to use the workshop override.", "info", 3000);
-        return;
-      }
-
-      if (completionInProgress) {
-        return;
-      }
-
-      completionInProgress = true;
-      clearStatus();
-
-      const originalVisitedVenues = [...currentVisitedVenues];
-      const originalCompletedVehicles = currentCompletedVehicles;
-      const previewCompletedVehicles = originalCompletedVehicles + 1;
-
-      showRecordPanel();
-      enterScanClaimMode();
-      currentVisitedVenues = [...VALID_PARTS];
-      markCard(currentVisitedVenues);
-      updateCompletedVehicles(previewCompletedVehicles);
-      playAllStampAnimations();
-
-      const postStampDelay = STAMP_ANIMATION_DELAY_MS + STAMP_ANIMATION_DURATION_MS + STAMP_HOLD_MS;
-
-      window.setTimeout(() => {
-        showCelebrationOverlay(previewCompletedVehicles);
-
-        window.setTimeout(() => {
-          hideCelebrationOverlay();
-          exitScanClaimMode();
-
-          currentVisitedVenues = originalVisitedVenues;
-          currentCompletedVehicles = originalCompletedVehicles;
-          markCard(currentVisitedVenues);
-          updateCompletedVehicles(currentCompletedVehicles);
-
-          completionInProgress = false;
-          showRecordPanel();
-          showStatus("Secret test complete. Live progress restored.", "success", 4000);
-        }, CELEBRATION_MS);
       }, postStampDelay);
     }
 
