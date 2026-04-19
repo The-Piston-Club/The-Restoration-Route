@@ -51,6 +51,28 @@
         repeating-linear-gradient(180deg, transparent 0, transparent 58px, rgba(255,255,255,0.03) 59px, transparent 60px);
     }
 
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.34;
+      background:
+        radial-gradient(260px 140px at 12% 14%, rgba(20,12,8,0.34) 0%, rgba(20,12,8,0.18) 38%, transparent 72%),
+        radial-gradient(320px 180px at 86% 18%, rgba(18,12,8,0.28) 0%, rgba(18,12,8,0.14) 34%, transparent 74%),
+        radial-gradient(300px 180px at 18% 84%, rgba(15,10,7,0.24) 0%, rgba(15,10,7,0.12) 35%, transparent 72%),
+        radial-gradient(320px 200px at 88% 82%, rgba(22,14,9,0.28) 0%, rgba(22,14,9,0.12) 34%, transparent 74%),
+        repeating-linear-gradient(
+          115deg,
+          rgba(24,16,10,0.06) 0 8px,
+          transparent 8px 34px,
+          rgba(0,0,0,0.05) 34px 38px,
+          transparent 38px 74px
+        );
+      mix-blend-mode: multiply;
+      filter: blur(7px);
+    }
+
     .wrap {
       max-width: 1200px;
       margin: 0 auto;
@@ -80,8 +102,40 @@
       background: repeating-linear-gradient(45deg, #111 0 14px, var(--gold) 14px 28px);
     }
 
-    .panel-inner { padding: 34px 24px 24px; }
-    .brand-inner { padding: 40px 24px 28px; text-align: center; }
+    .panel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.82;
+      background:
+        radial-gradient(130px 70px at 14% 16%, rgba(22,14,9,0.16) 0%, transparent 72%),
+        radial-gradient(110px 64px at 86% 22%, rgba(20,12,8,0.18) 0%, transparent 72%),
+        radial-gradient(150px 80px at 22% 88%, rgba(16,10,7,0.14) 0%, transparent 72%),
+        linear-gradient(
+          160deg,
+          transparent 0 22%,
+          rgba(0,0,0,0.06) 34%,
+          transparent 50%,
+          rgba(30,20,12,0.05) 68%,
+          transparent 100%
+        );
+      mix-blend-mode: multiply;
+    }
+
+    .panel-inner {
+      position: relative;
+      z-index: 2;
+      padding: 34px 24px 24px;
+    }
+
+    .brand-inner {
+      position: relative;
+      z-index: 2;
+      padding: 40px 24px 28px;
+      text-align: center;
+    }
 
     .brand-title,
     .section-title,
@@ -306,6 +360,20 @@
       z-index: 0;
     }
 
+    .part::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.55;
+      background:
+        radial-gradient(80px 44px at 22% 20%, rgba(18,12,8,0.12) 0%, transparent 72%),
+        radial-gradient(90px 48px at 78% 80%, rgba(18,12,8,0.10) 0%, transparent 72%),
+        linear-gradient(140deg, transparent 0 36%, rgba(0,0,0,0.05) 52%, transparent 70%);
+      mix-blend-mode: multiply;
+    }
+
     .part-name {
       position: absolute;
       inset: 0;
@@ -420,6 +488,8 @@
     }
 
     .summary-block {
+      position: relative;
+      overflow: hidden;
       text-align: center;
       padding: 18px 16px;
       border-radius: 16px;
@@ -427,6 +497,18 @@
         linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.16)),
         linear-gradient(145deg, rgba(80,80,80,0.88), rgba(30,30,30,0.95));
       border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .summary-block::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background:
+        radial-gradient(70px 34px at 18% 24%, rgba(24,16,10,0.18) 0%, transparent 72%),
+        linear-gradient(155deg, transparent 0 50%, rgba(0,0,0,0.06) 66%, transparent 82%);
+      mix-blend-mode: multiply;
     }
 
     .summary-number {
@@ -458,6 +540,8 @@
     }
 
     .directory-link {
+      position: relative;
+      overflow: hidden;
       display: block;
       text-decoration: none;
       color: inherit;
@@ -469,6 +553,18 @@
       border: 1px solid rgba(255,255,255,0.14);
       box-shadow: 0 12px 24px rgba(0,0,0,0.22);
       text-align: center;
+    }
+
+    .directory-link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background:
+        radial-gradient(70px 34px at 18% 24%, rgba(24,16,10,0.18) 0%, transparent 72%),
+        linear-gradient(155deg, transparent 0 50%, rgba(0,0,0,0.06) 66%, transparent 82%);
+      mix-blend-mode: multiply;
     }
 
     .directory-part {
@@ -553,6 +649,25 @@
     .testing-note strong,
     .small-note strong {
       color: #ffe8b0;
+    }
+
+    button,
+    .button-link {
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::after,
+    .button-link::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.18;
+      background:
+        radial-gradient(70px 34px at 18% 24%, rgba(24,16,10,0.18) 0%, transparent 72%),
+        linear-gradient(155deg, transparent 0 50%, rgba(0,0,0,0.06) 66%, transparent 82%);
+      mix-blend-mode: multiply;
     }
 
     .scanner-overlay {
