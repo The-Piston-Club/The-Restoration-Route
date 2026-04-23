@@ -146,6 +146,7 @@
     .testing-title,
     .scanner-title,
     .leaderboard-title,
+    .donation-title,
     button,
     .button-link {
       font-family: "Teko", Arial, sans-serif;
@@ -633,6 +634,27 @@
       letter-spacing: 1px;
     }
 
+    .donation-title {
+      margin: 0 0 10px;
+      text-align: center;
+      font-size: 28px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .donation-note {
+      margin: 0 auto 18px;
+      max-width: 760px;
+      text-align: center;
+      color: rgba(255,255,255,0.82);
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .donation-note strong {
+      color: #ffe8b0;
+    }
+
     .scanner-note,
     .leaderboard-note,
     .testing-note,
@@ -852,6 +874,7 @@
     body.scan-claim-mode #usernameSetupPanel,
     body.scan-claim-mode #reasonSetupPanel,
     body.scan-claim-mode #garageDirectoryPanel,
+    body.scan-claim-mode #donationPanel,
     body.scan-claim-mode #leaderboardPanel,
     body.scan-claim-mode #scannerPanel,
     body.scan-claim-mode #accountActionsPanel,
@@ -1119,6 +1142,25 @@
           Each of these garages has a part to help you restore. Drop in, enjoy what the venue has to offer, and once you have made a purchase, ask the team if they can work a little magic on your vehicle. A friendly word, a bit of patience, and a love of the journey will take you a long way.
         </p>
         <div id="garageDirectoryGrid" class="directory-grid"></div>
+      </div>
+    </div>
+
+    <div id="donationPanel" class="panel">
+      <div class="panel-inner">
+        <h2 class="donation-title">Do It For The Banter</h2>
+        <p class="donation-note">
+          This incredible place is a <strong>non-profit venue</strong>, and it has had a really rough run. Not only was it hit with a massive increase in rates from the government, but their roof also fell through last year. If you are able to spare anything at all, please consider donating to help keep this place going.
+        </p>
+        <div class="scanner-actions">
+          <a
+            href="https://www.justgiving.com/crowdfunding/burtonbanter?fbclid=IwQ0xDSwKnmTNleHRuA2FlbQIxMAABHhMPS--feYqFnUaqN-xlKIUFKgdmYX2fxEqOixjQn6xnBWkvexvfjloxeKcD_aem_GrKfXLcpZ59_NuleKdotsw"
+            class="button-link btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Do it for the Banter
+          </a>
+        </div>
       </div>
     </div>
 
@@ -1670,6 +1712,12 @@
       }
     }
 
+    function clearSecretOverride() {
+      localStorage.removeItem(SECRET_STORAGE_KEY);
+      secretUnlocked = false;
+      updateSecretPanelVisibility();
+    }
+
     function updateUsernameSetupVisibility(user) {
       const needsUsername = !!user && !user.isAnonymous && !currentUsername;
 
@@ -2008,6 +2056,7 @@
 
       completionInProgress = true;
       clearStatus();
+      secretTestBtn.disabled = true;
 
       try {
         showRecordPanel();
@@ -2022,15 +2071,18 @@
         window.setTimeout(async () => {
           try {
             await finalizeCompletedVehicle(auth.currentUser);
+            clearSecretOverride();
           } catch (error) {
             completionInProgress = false;
             exitScanClaimMode();
+            secretTestBtn.disabled = false;
             showStatus(error.message || "Could not run workshop override completion.", "error");
           }
         }, postStampDelay);
       } catch (error) {
         completionInProgress = false;
         exitScanClaimMode();
+        secretTestBtn.disabled = false;
         showStatus(error.message || "Could not run workshop override completion.", "error");
       }
     }
