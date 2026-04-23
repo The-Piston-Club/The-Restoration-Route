@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    function validUsernameDoc(usernameLower) {
+      return request.resource.data.uid == request.auth.uid
+        && request.resource.data.username is string
+        && request.resource.data.usernameLower is string
+        && request.resource.data.username.matches('^[A-Za-z0-9_]{3,20}$')
+        && request.resource.data.usernameLower.matches('^[a-z0-9_]{3,20}$')
+        && request.resource.data.usernameLower == usernameLower;
+    }
+
+    function usernameLinkedToUser(uid) {
+      return (
+        request.resource.data.username == null
+        && request.resource.data.usernameLower == null
+      ) || (
+        request.resource.data.username is string
+        && request.resource.data.usernameLower is string
+        && existsAfter(/databases/$(database)/documents/usernames/$(request.resource.data.usernameLower))
+        && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.usernameLower)).data.uid == uid
+        && getAfter(/databases/$(database)/documents/usernames/$(request.resource.data.usernameLower)).data.username == request.resource.data.username
+      );
+    }
+
+    function leaderboardMatchesUser(uid) {
+      return request.resource.data.uid == uid
+        && (
+          request.resource.data.username == null
+          || (
+            getAfter(/databases/$(database)/documents/userVisits/$(uid)).data.username == request.resource.data.username
+            && getAfter(/databases/$(database)/documents/userVisits/$(uid)).data.usernameLower == request.resource.data.usernameLower
+          )
+        );
+    }
+
+    match /userVisits/{userId} {
+      allow read: if isOwner(userId);
+      allow create, update: if isOwner(userId) && usernameLinkedToUser(userId);
+      allow delete: if false;
+    }
+
+    match /usernames/{usernameLower} {
+      allow read: if signedIn();
+
+      allow create: if isOwner(request.resource.data.uid)
+        && validUsernameDoc(usernameLower)
+        && !exists(/databases/$(database)/documents/usernames/$(usernameLower))
+        && getAfter(/databases/$(database)/documents/userVisits/$(request.auth.uid)).data.usernameLower == usernameLower
+        && getAfter(/databases/$(database)/documents/userVisits/$(request.auth.uid)).data.username == request.resource.data.username;
+
+      allow update: if signedIn()
+        && resource.data.uid == request.auth.uid
+        && validUsernameDoc(usernameLower)
+        && getAfter(/databases/$(database)/documents/userVisits/$(request.auth.uid)).data.usernameLower == usernameLower
+        && getAfter(/databases/$(database)/documents/userVisits/$(request.auth.uid)).data.username == request.resource.data.username;
+
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    match /leaderboard/{userId} {
+      allow read: if true;
+      allow create, update: if isOwner(userId) && leaderboardMatchesUser(userId);
+      allow delete: if isOwner(userId);
+    }
+  }
+}

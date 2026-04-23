@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Restoration Route</title>
+
+  <meta name="theme-color" content="#1a1713" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Teko:wght@500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/effects.css" />
+  <link rel="stylesheet" href="./css/dashboard.css" />
+</head>
+<body class="rotate-lock">
+  <div class="page-frame" aria-hidden="true"></div>
+
+  <div id="rotatePrompt" class="rotate-prompt" aria-live="polite">
+    <div class="rotate-card">
+      <div class="rotate-icon" aria-hidden="true">↻</div>
+      <h2 class="rotate-title">Rotate Your Phone</h2>
+      <p class="rotate-text">This app works best in landscape. Turn your phone sideways to open the full restoration dashboard.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div id="brandPanel" class="panel hero-panel">
+      <div class="brand-inner compact-brand-inner">
+        <h1 class="brand-title">The Restoration Route</h1>
+        <p class="brand-description compact-brand-copy">
+          Create an account, sign in, or continue as a guest. Once you are in, your restoration record becomes the whole screen.
+        </p>
+      </div>
+    </div>
+
+    <div id="statusBox" class="status"></div>
+
+    <div id="authPanel" class="panel auth-panel">
+      <div class="panel-inner compact-auth-inner">
+        <h2 class="section-title">Open Your Record</h2>
+        <p class="section-text compact-section-text">
+          New registered users choose their display name here. Existing users can just log in.
+        </p>
+
+        <div class="form-grid compact-form-grid">
+          <input type="text" id="username" placeholder="Display name for new registered accounts" maxlength="24" autocomplete="username" />
+          <input type="email" id="email" placeholder="Email address" autocomplete="email" />
+          <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+
+          <select id="trailReason">
+            <option value="">What brings you to the route?</option>
+            <option value="cars">I love cars</option>
+            <option value="motorbikes">I love motorbikes</option>
+            <option value="good-food-and-drink">I love good food and drink</option>
+          </select>
+
+          <div class="two-col compact-auth-actions">
+            <button id="signUpBtn" class="btn-primary">Create Account</button>
+            <button id="logInBtn" class="btn-secondary">Log In</button>
+          </div>
+
+          <button id="googleBtn" class="btn-light">Continue with Google</button>
+          <button id="guestBtn" class="btn-secondary">Continue as Guest</button>
+        </div>
+
+        <p class="small-note auth-note">Display names can use letters, numbers, and spaces.</p>
+      </div>
+    </div>
+
+    <div id="recordPanel" class="panel hidden main-record-panel">
+      <div class="panel-inner dashboard-shell">
+        <div class="dashboard-topbar">
+          <div class="dashboard-heading">
+            <h2 class="record-title">Restoration Record</h2>
+            <p class="record-intro">Visit a garage, enjoy what is on offer, then ask the team for your next repair QR code.</p>
+          </div>
+
+          <div id="accountActionsPanel" class="profile-menu-wrap hidden">
+            <button id="profileMenuBtn" class="profile-toggle" type="button" aria-expanded="false" aria-controls="profileDropdown" aria-label="Open profile menu">
+              <span class="profile-toggle-icon" aria-hidden="true"></span>
+            </button>
+
+            <div id="profileDropdown" class="profile-dropdown hidden">
+              <div class="profile-dropdown-title">Your Account</div>
+
+              <div class="profile-summary">
+                <div class="profile-stat">
+                  <div id="progressCount" class="profile-stat-number">0 of 8</div>
+                  <div class="profile-stat-label">Parts Restored</div>
+                </div>
+                <div class="profile-stat">
+                  <div id="accountCompletedVehiclesCount" class="profile-stat-number">0</div>
+                  <div class="profile-stat-label">Completed Vehicles</div>
+                </div>
+              </div>
+
+              <div class="profile-links">
+                <a href="./leaderboard.html" class="button-link btn-light">View Leaderboard</a>
+                <a
+                  href="https://www.gofundme.com/f/banter-needs-you/donate?source=btn_donate"
+                  class="button-link btn-light"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Donate Directly To The Banter
+                </a>
+                <a
+                  href="mailto:chip@thepistonclub.co.uk?subject=ISSUE%20WITH%20RESTORATION%20ROUTE%20APP"
+                  class="button-link btn-light"
+                >
+                  Report an Issue
+                </a>
+                <button id="logOutBtn" class="btn-secondary">Log Out</button>
+              </div>
+
+              <div id="secretTestingPanel" class="profile-secret hidden">
+                <div class="profile-secret-title">Workshop Override</div>
+                <p class="profile-secret-note">
+                  Hidden workshop override unlocked. <strong>Pressing this button will complete a full vehicle on this account and count toward its completed total.</strong>
+                </p>
+                <button id="secretTestBtn" class="btn-danger">Chip's Big Red Button</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="record-utility-row compact-utility-row">
+          <button id="garageDirectoryBtn" class="utility-btn btn-secondary" type="button">Garage Directory</button>
+
+          <div class="utility-pair">
+            <a href="./leaderboard.html" class="button-link utility-btn btn-light">View Leaderboard</a>
+            <div class="metric-chip">
+              <span id="completedVehiclesCount" class="metric-number">0</span>
+              <span class="metric-label">Completed Vehicles</span>
+            </div>
+          </div>
+
+          <button id="openScannerBtn" class="scan-launch-btn" type="button" aria-label="Open Repair Scanner">
+            <span class="scan-launch-icon" aria-hidden="true"></span>
+            <span class="scan-launch-text">Scan</span>
+          </button>
+        </div>
+
+        <div class="bike-grid compact-bike-grid">
+          <button type="button" class="part" id="part-engine" data-venue-link="engine">
+            <span class="part-name">Engine</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-fuel-system" data-venue-link="fuel-system">
+            <span class="part-name">Fuel System</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-bodywork" data-venue-link="bodywork">
+            <span class="part-name">Bodywork</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-chassis" data-venue-link="chassis">
+            <span class="part-name">Chassis</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-lubrication" data-venue-link="lubrication">
+            <span class="part-name">Lubrication</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-cooling" data-venue-link="cooling">
+            <span class="part-name">Cooling</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-transmission" data-venue-link="transmission">
+            <span class="part-name">Transmission</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+
+          <button type="button" class="part" id="part-tyres" data-venue-link="tyres">
+            <span class="part-name">Tyres</span>
+            <img class="stamp-static" src="./Repaired%20Stamp.PNG" alt="Repaired stamp" />
+            <span class="stamp-stage" aria-hidden="true">
+              <span class="stamp-shadow"></span>
+              <img class="stamp-anim" src="./Repaired%20Stamp.PNG" alt="" />
+            </span>
+          </button>
+        </div>
+
+        <div class="donation-strip compact-donation-strip">
+          <p class="donation-strip-text">Tap here to donate to this incredible nonprofit venue that has gone through some really rough times over the last year or so. Anything you can spare would be a massive help.</p>
+          <a
+            href="https://www.gofundme.com/f/banter-needs-you"
+            class="button-link donate-inline-btn btn-primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Do It For The Banter
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div id="garageDirectoryPanel" class="modal-overlay hidden" aria-hidden="true">
+      <div class="modal-panel compact-modal-panel">
+        <div class="modal-header compact-modal-header">
+          <h2 class="section-title centered">Garage Directory</h2>
+          <button id="closeGarageDirectoryBtn" class="modal-close btn-secondary" type="button">Close</button>
+        </div>
+        <p class="section-text compact-panel-copy">
+          Tap any venue to open its garage page.
+        </p>
+        <div id="garageDirectoryGrid" class="directory-grid compact-directory-grid"></div>
+      </div>
+    </div>
+
+    <div id="celebrationOverlay" class="scanner-overlay" aria-hidden="true">
+      <div class="celebration-modal">
+        <div class="celebration-inner">
+          <div class="celebration-badge">Vehicle Restored</div>
+          <h3 class="celebration-title">Congratulations</h3>
+          <p class="celebration-text">You have successfully restored your vehicle.</p>
+          <p class="celebration-subtext">Fancy another one? There are always more vehicles that need bringing back to life.</p>
+
+          <div class="celebration-stats">
+            <div class="celebration-stat">
+              <div id="celebrationVehicleCount" class="celebration-number">1</div>
+              <div class="celebration-label">Completed Vehicles</div>
+            </div>
+            <div class="celebration-stat">
+              <div class="celebration-number">1</div>
+              <div class="celebration-label">Prize Draw Entry Added</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="scannerOverlay" class="scanner-overlay" aria-hidden="true">
+      <div class="scanner-modal">
+        <div class="scanner-inner">
+          <h3 class="scanner-title">Scan Your Repair Code</h3>
+          <div class="scanner-viewport">
+            <div id="qr-reader"></div>
+          </div>
+          <p id="scannerHelp" class="scanner-help">Bought something and ready for the next fix? Ask a member of staff to show you the repair QR code, then point your camera at it.</p>
+          <div class="scanner-actions">
+            <button id="closeScannerBtn" class="btn-secondary">Close Scanner</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <script type="module" src="./app/main.js"></script>
+</body>
+</html>
