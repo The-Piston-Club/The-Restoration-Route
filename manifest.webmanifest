@@ -1,0 +1,18 @@
+{
+  "name": "The Restoration Route",
+  "short_name": "Restoration Route",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "landscape",
+  "background_color": "#1a1713",
+  "theme_color": "#1a1713",
+  "icons": [
+    {
+      "src": "./Repaired%20Stamp.PNG",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
