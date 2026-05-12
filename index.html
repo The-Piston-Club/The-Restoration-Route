@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0c0b08" />
+  <title>The Restoration Route</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root {
+      --cream:#f5edd8; --paper:#f1dfb9; --ink:#2b2118; --green:#a7ff68; --amber:#f2b45b; --red:#ff6d54; --gold:#d9b463;
+      --shadow:0 20px 42px rgba(0,0,0,.55);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; min-height:100%; background:#050504; color:var(--cream); overflow:hidden; }
+    button,input,a { font:inherit; -webkit-tap-highlight-color:transparent; }
+    button { cursor:pointer; }
+    .app { position:fixed; inset:0; overflow:hidden; background:#050504; }
+    .screen { position:absolute; inset:0; overflow:hidden; display:none; }
+    .screen.active { display:block; }
+
+    .bg-img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; object-position:top center; user-select:none; pointer-events:none; }
+    .home-shade { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.52) 0%,rgba(0,0,0,.16) 20%,rgba(0,0,0,.08) 52%,rgba(0,0,0,.62) 100%); pointer-events:none; }
+
+    .topbar { position:absolute; left:0; right:0; top:max(10px,env(safe-area-inset-top)); z-index:20; display:grid; grid-template-columns:50px 1fr 58px; gap:8px; align-items:start; padding:0 14px; }
+    .icon-btn { border:1px solid rgba(245,237,216,.22); color:var(--cream); background:rgba(0,0,0,.34); backdrop-filter:blur(10px); border-radius:999px; min-width:44px; height:44px; display:grid; place-items:center; box-shadow:0 12px 24px rgba(0,0,0,.35); }
+    .menu-lines span { display:block; width:22px; height:2px; margin:3px 0; background:currentColor; border-radius:99px; }
+    .horn { color:#f5cd75; border-color:rgba(245,205,117,.4); line-height:1; }
+    .horn svg { width:25px; height:25px; }
+    .horn small { font-size:8px; letter-spacing:.16em; margin-top:2px; }
+    .brand { text-align:center; text-transform:uppercase; letter-spacing:.2em; text-shadow:0 4px 20px rgba(0,0,0,.82); pointer-events:none; }
+    .brand .small { display:block; font-weight:900; font-size:10px; letter-spacing:.42em; margin-left:.42em; opacity:.82; }
+    .brand .big { display:block; font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; font-size:clamp(32px,10vw,68px); line-height:.9; letter-spacing:.035em; }
+    .brand .route { display:block; font-size:clamp(15px,4.8vw,28px); font-weight:950; letter-spacing:.38em; margin-left:.38em; opacity:.88; }
+
+    .progress { position:absolute; z-index:18; top:max(118px,calc(env(safe-area-inset-top) + 104px)); left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:10px; padding:7px 15px; border-radius:999px; background:rgba(0,0,0,.30); border:1px solid rgba(167,255,104,.26); backdrop-filter:blur(8px); box-shadow:0 14px 28px rgba(0,0,0,.22); text-transform:uppercase; letter-spacing:.12em; font-weight:900; white-space:nowrap; }
+    .progress strong { color:var(--green); font-size:22px; }
+    .progress span { font-size:12px; opacity:.86; }
+    .wrench-mark { width:33px; height:33px; border-radius:50%; display:grid; place-items:center; color:var(--green); border:1px solid rgba(167,255,104,.45); box-shadow:0 0 18px rgba(167,255,104,.2), inset 0 0 8px rgba(167,255,104,.1); }
+
+    .floor { position:absolute; inset:0; z-index:8; }
+    .part { position:absolute; transform:translate(-50%,-50%); border:0; background:transparent; padding:0; display:block; touch-action:manipulation; }
+    .part img { display:block; width:100%; height:auto; object-fit:contain; filter:drop-shadow(0 20px 18px rgba(0,0,0,.58)); transition:transform .22s ease, filter .28s ease, opacity .28s ease; }
+    .part.repaired img { filter:drop-shadow(0 0 12px rgba(167,255,104,.36)) drop-shadow(0 20px 18px rgba(0,0,0,.58)); }
+    .part:active img { transform:scale(.965); }
+    .part:focus-visible img { outline:2px solid var(--green); outline-offset:8px; border-radius:10px; }
+
+    .home-copy { position:absolute; left:20px; right:20px; bottom:max(104px,calc(env(safe-area-inset-bottom) + 96px)); z-index:14; text-align:center; font-size:12px; line-height:1.35; color:rgba(245,237,216,.78); text-shadow:0 2px 12px rgba(0,0,0,.95); }
+    .scan-cta { position:absolute; left:50%; bottom:max(18px,env(safe-area-inset-bottom)); z-index:22; transform:translateX(-50%); border:0; background:transparent; color:var(--green); display:grid; place-items:center; gap:3px; text-transform:uppercase; letter-spacing:.16em; font-weight:950; text-shadow:0 0 14px rgba(167,255,104,.45); }
+    .scan-target { width:70px; height:70px; border-radius:50%; display:grid; place-items:center; background:radial-gradient(circle,rgba(167,255,104,.20),rgba(167,255,104,0) 64%); border:1px solid rgba(167,255,104,.20); box-shadow:0 0 30px rgba(167,255,104,.20); }
+    .scan-target svg { width:44px; height:44px; }
+
+    .drawer { position:absolute; inset:0; z-index:80; background:linear-gradient(180deg,rgba(8,7,5,.95),rgba(8,7,5,.985)); transform:translateX(-105%); transition:transform .22s ease; padding:max(26px,env(safe-area-inset-top)) 18px max(22px,env(safe-area-inset-bottom)); overflow:auto; }
+    .drawer.open { transform:translateX(0); }
+    .drawer-top { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .drawer h2 { margin:0; text-transform:uppercase; letter-spacing:.14em; font-size:22px; }
+    .drawer p { color:rgba(245,237,216,.73); line-height:1.45; }
+    .route-list { display:grid; gap:10px; margin:18px 0; }
+    .route-item { width:100%; border:1px solid rgba(245,237,216,.12); border-radius:18px; background:rgba(255,255,255,.045); color:var(--cream); display:grid; grid-template-columns:58px 1fr; gap:12px; align-items:center; padding:11px; text-align:left; }
+    .route-item.done { border-color:rgba(167,255,104,.26); background:rgba(167,255,104,.065); }
+    .route-item img { width:58px; height:45px; object-fit:contain; filter:drop-shadow(0 8px 9px rgba(0,0,0,.54)); }
+    .route-item strong { display:block; font-size:14px; }
+    .route-item span { display:block; color:rgba(245,237,216,.66); font-size:12px; margin-top:2px; }
+
+    .btn { border:1px solid rgba(245,237,216,.16); background:rgba(0,0,0,.16); color:inherit; border-radius:15px; min-height:44px; padding:10px 14px; display:inline-flex; align-items:center; justify-content:center; text-align:center; text-decoration:none; font-weight:850; letter-spacing:.025em; }
+    .btn.green { color:var(--green); border-color:rgba(167,255,104,.34); background:rgba(75,168,58,.17); }
+    .btn.gold { color:#f5d38c; border-color:rgba(217,180,99,.35); background:rgba(217,180,99,.14); }
+    .btn.danger { color:#ff9a86; border-color:rgba(255,109,84,.35); background:rgba(255,109,84,.12); }
+    .btn.full { grid-column:1/-1; }
+    .btn.small { min-height:36px; padding:7px 11px; font-size:13px; }
+    .drawer-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+    .service-img { position:absolute; inset:0; width:100%; height:100%; object-fit:fill; object-position:top center; user-select:none; pointer-events:none; }
+    .book-layer { position:absolute; inset:0; z-index:5; color:var(--ink); font-family:Georgia,'Times New Roman',serif; }
+    .back-book { position:absolute; left:8.5%; top:max(2.1%,env(safe-area-inset-top)); z-index:8; color:#2c2118; border:0; background:transparent; font-weight:900; font-family:Inter,system-ui,sans-serif; font-size:14px; padding:10px 0; }
+    .book-field { position:absolute; color:#2d231a; text-shadow:0 1px rgba(255,255,255,.24); }
+    .book-field .label { display:block; font-family:Inter,system-ui,sans-serif; font-size:10px; text-transform:uppercase; letter-spacing:.12em; color:rgba(43,33,24,.52); font-weight:900; margin-bottom:2px; }
+    .book-venue { left:15%; top:14.1%; width:46%; font-size:clamp(17px,4.7vw,26px); font-weight:800; line-height:1.05; }
+    .book-date { left:15%; top:18.6%; width:46%; font-size:clamp(13px,3.6vw,17px); }
+    .book-part { left:15%; top:22.8%; width:46%; font-size:clamp(13px,3.6vw,17px); }
+    .book-code { left:15%; top:27.0%; width:46%; font-size:clamp(11px,3.2vw,15px); font-family:Inter,system-ui,sans-serif; }
+    .book-stamp { right:12%; top:17%; width:25%; height:11%; display:grid; place-items:center; transform:rotate(-8deg); border:3px double rgba(111,54,43,.34); border-radius:50%; text-align:center; font-family:Inter,system-ui,sans-serif; font-weight:950; text-transform:uppercase; letter-spacing:.12em; font-size:clamp(11px,3.1vw,16px); color:rgba(111,54,43,.40); opacity:.22; }
+    .book-stamp.done { opacity:1; color:rgba(91,115,45,.62); border-color:rgba(91,115,45,.45); }
+    .book-work { left:9.5%; top:34%; width:81%; height:18%; font-size:clamp(13px,3.65vw,17px); line-height:1.35; }
+    .book-parts { left:10%; top:56.4%; width:38%; font-size:clamp(12px,3.4vw,16px); line-height:1.52; }
+    .book-checks { left:56%; top:56.4%; width:35%; font-family:Inter,system-ui,sans-serif; font-size:clamp(10px,3vw,14px); line-height:1.78; }
+    .book-notes { left:10%; top:75.5%; width:53%; font-size:clamp(12px,3.3vw,16px); line-height:1.43; }
+    .book-actions { position:absolute; z-index:10; left:8%; right:8%; bottom:max(18px,env(safe-area-inset-bottom)); display:grid; grid-template-columns:1fr 1fr; gap:8px; font-family:Inter,system-ui,sans-serif; }
+    .book-actions .btn { color:#2d2117; background:rgba(244,224,184,.62); border-color:rgba(58,37,21,.18); backdrop-filter:blur(4px); }
+    .book-actions .btn.green { color:#1e4219; background:rgba(167,255,104,.34); border-color:rgba(56,93,29,.25); }
+
+    .scanner { position:absolute; inset:0; z-index:100; display:none; background:#050504; color:var(--cream); }
+    .scanner.open { display:block; }
+    .scanner video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .scanner-shade { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.18),rgba(0,0,0,.72)); }
+    .scan-box { position:absolute; left:50%; top:44%; transform:translate(-50%,-50%); width:min(72vw,330px); aspect-ratio:1; border:2px solid rgba(167,255,104,.8); border-radius:24px; box-shadow:0 0 0 999px rgba(0,0,0,.35),0 0 30px rgba(167,255,104,.28); }
+    .scanner-panel { position:absolute; left:16px; right:16px; bottom:max(18px,env(safe-area-inset-bottom)); display:grid; gap:10px; }
+    .scanner-panel input { width:100%; border:1px solid rgba(245,237,216,.22); border-radius:14px; min-height:44px; padding:10px 12px; color:var(--cream); background:rgba(0,0,0,.48); }
+    .scanner-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .scanner-status { font-size:13px; color:rgba(245,237,216,.78); text-align:center; min-height:18px; }
+
+    .toast { position:absolute; left:18px; right:18px; bottom:max(94px,calc(env(safe-area-inset-bottom) + 86px)); z-index:120; transform:translateY(160%); opacity:0; transition:.24s ease; background:rgba(6,6,5,.88); color:var(--cream); border:1px solid rgba(167,255,104,.26); border-radius:18px; padding:13px 14px; text-align:center; box-shadow:var(--shadow); }
+    .toast.show { transform:translateY(0); opacity:1; }
+
+    .modal { position:absolute; inset:0; z-index:110; display:none; place-items:center; padding:22px; background:rgba(0,0,0,.62); backdrop-filter:blur(7px); }
+    .modal.open { display:grid; }
+    .modal-card { width:min(440px,100%); border-radius:26px; background:linear-gradient(180deg,rgba(21,18,13,.96),rgba(8,7,5,.98)); border:1px solid rgba(245,237,216,.16); padding:22px; text-align:center; box-shadow:var(--shadow); }
+    .modal-card h2 { margin:0 0 8px; text-transform:uppercase; letter-spacing:.1em; }
+    .modal-card p { color:rgba(245,237,216,.76); line-height:1.45; }
+    .modal-actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+    .confetti { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+    .confetti i { position:absolute; top:-12px; width:7px; height:14px; animation:fall 1300ms ease-in forwards; }
+    @keyframes fall { to { transform:translateY(110vh) rotate(680deg); opacity:.2; } }
+
+    @media (min-width: 720px) {
+      .app { left:50%; transform:translateX(-50%); width:min(100vw,520px); box-shadow:0 0 0 1px rgba(255,255,255,.08), 0 0 80px rgba(0,0,0,.8); }
+      .brand .big { font-size:52px; }
+    }
+    @media (max-height:700px) {
+      .brand .big { font-size:34px; }
+      .brand .route { font-size:16px; }
+      .progress { top:max(94px,calc(env(safe-area-inset-top) + 84px)); }
+      .home-copy { display:none; }
+    }
+  </style>
+</head>
+<body>
+<div class="app" id="app">
+  <section class="screen active" id="homeScreen" aria-label="Workshop home screen">
+    <img class="bg-img" src="assets/workshop-bg.jpg" alt="" />
+    <div class="home-shade"></div>
+    <div class="topbar">
+      <button class="icon-btn menu-lines" id="menuBtn" aria-label="Open route menu"><span></span><span></span><span></span></button>
+      <div class="brand"><span class="small">The</span><span class="big">Restoration</span><span class="route">Route</span></div>
+      <button class="icon-btn horn" id="hornBtn" aria-label="Bonus horn"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 31h10l22-12v26L19 33H9z"/><path d="M42 22c7 0 12 5 12 10s-5 10-12 10"/><path d="M19 33v10c0 3-2 5-5 5h-1"/></svg><small>Bonus</small></button>
+    </div>
+    <div class="progress"><span class="wrench-mark">✦</span><strong id="progressDone">0</strong><span>/ 8 repaired</span></div>
+    <div class="floor" id="partsFloor"></div>
+    <div class="home-copy">Tap a part to open its service-book page. Scan the venue QR to swap the damaged part for its repaired version.</div>
+    <button class="scan-cta" id="scanBtn" aria-label="Scan QR"><span class="scan-target"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M20 8H10a2 2 0 0 0-2 2v10M44 8h10a2 2 0 0 1 2 2v10M20 56H10a2 2 0 0 1-2-2V44M56 44v10a2 2 0 0 1-2 2H44"/><circle cx="32" cy="32" r="8"/><path d="M32 18v6M32 40v6M18 32h6M40 32h6"/></svg></span><span>Scan QR</span></button>
+  </section>
+
+  <section class="screen" id="venueScreen" aria-label="Venue service book page">
+    <img class="service-img" src="assets/service-book-bg.jpg" alt="" />
+    <button class="back-book" id="backBookBtn">← Workshop</button>
+    <div class="book-layer" id="bookLayer"></div>
+  </section>
+
+  <aside class="drawer" id="drawer" aria-label="Route menu">
+    <div class="drawer-top"><h2>Route Log</h2><button class="icon-btn" id="closeDrawer" aria-label="Close menu">×</button></div>
+    <p>Each stop repairs one part. The workshop floor only shows the part itself: broken first, repaired after the QR is claimed.</p>
+    <div class="route-list" id="routeList"></div>
+    <div class="drawer-actions">
+      <button class="btn green" id="openScannerFromMenu">Scan QR</button>
+      <button class="btn gold" id="copyQrLinks">Copy QR Links</button>
+      <button class="btn danger full" id="resetBtn">Reset This Device</button>
+    </div>
+  </aside>
+
+  <section class="scanner" id="scanner" aria-label="QR scanner">
+    <video id="scanVideo" playsinline muted></video>
+    <div class="scanner-shade"></div>
+    <div class="scan-box"></div>
+    <div class="scanner-panel">
+      <div class="scanner-status" id="scannerStatus">Opening camera…</div>
+      <input id="manualInput" autocomplete="off" placeholder="Manual venue code / token" />
+      <div class="scanner-actions"><button class="btn green" id="manualClaim">Claim Repair</button><button class="btn" id="closeScanner">Close</button></div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"><span id="toastText"></span></div>
+  <section class="modal" id="completion">
+    <div class="confetti" id="confetti"></div>
+    <div class="modal-card">
+      <h2>Restoration Complete</h2>
+      <p>You repaired all eight parts. That is one complete Restoration Route vehicle logged on this device.</p>
+      <div class="modal-actions"><button class="btn green" id="newVehicleBtn">Start Another</button><button class="btn" id="closeCompletion">Close</button></div>
+    </div>
+  </section>
+</div>
+<script>
+const VENUES = [{"name": "The Piston Club", "quip": "Where the pistons fire and the engine comes alive.", "website": "https://thepistonclub.co.uk/", "websiteLabel": "thepistonclub.co.uk", "partKey": "engine", "partLabel": "Engine", "claimToken": "rr-eng-4a9k1", "visual": "sparkplugs", "aliases": ["engine", "piston-club", "the-piston-club"], "opening": {"Monday": "7:30 AM – 10:00 PM", "Tuesday": "7:30 AM – 10:00 PM", "Wednesday": "7:30 AM – 10:00 PM", "Thursday": "7:30 AM – 10:00 PM", "Friday": "7:30 AM – 10:00 PM", "Saturday": "7:30 AM – 10:00 PM", "Sunday": "7:30 AM – 8:00 PM"}, "food": {"Monday": "Food: 7:30 AM – 8:30 PM", "Tuesday": "Food: 7:30 AM – 8:30 PM", "Wednesday": "Food: 7:30 AM – 8:30 PM", "Thursday": "Food: 7:30 AM – 8:30 PM", "Friday": "Food: 7:30 AM – 8:30 PM", "Saturday": "Food: 7:30 AM – 8:30 PM", "Sunday": "Food: 7:30 AM – 5:00 PM"}, "address": ["The Piston Club @ The Stag", "Alcester Road", "Redhill", "Stratford upon Avon", "Warwickshire", "B49 6NQ"], "phone": "01789 764634", "email": "info@thepistonclub.co.uk", "mapQuery": "The Piston Club @ The Stag, Alcester Road, Redhill, Stratford upon Avon, Warwickshire, B49 6NQ", "socials": {"facebook": "https://www.facebook.com/ThePistonClubUK", "instagram": "https://www.instagram.com/thepistonclubhq/"}}, {"name": "Gilks’ Garage Café", "quip": "Topping up the tank for the miles ahead.", "website": "https://gilksgaragecafe.com/", "websiteLabel": "gilksgaragecafe.com", "partKey": "fuel-system", "partLabel": "Fuel System", "claimToken": "rr-fuel-8m2p3", "visual": "airfilter", "aliases": ["fuel-system", "gilks", "gilks-garage-cafe"], "opening": {"Monday": "Closed", "Tuesday": "Closed", "Wednesday": "9:00 AM – 3:00 PM", "Thursday": "9:00 AM – 3:00 PM", "Friday": "9:00 AM – 3:00 PM", "Saturday": "9:00 AM – 3:00 PM", "Sunday": "9:00 AM – 3:00 PM"}, "food": {"Wednesday": "Kitchen closes at 2:00 PM", "Thursday": "Kitchen closes at 2:00 PM", "Friday": "Kitchen closes at 2:00 PM", "Saturday": "Kitchen closes at 2:00 PM", "Sunday": "Kitchen closes at 2:00 PM"}, "address": ["Banbury Road", "Kineton", "Warwickshire", "CV35 0JZ"], "phone": "01926 640539", "email": "keith@gilksgaragecafe.com", "mapQuery": "Gilks Garage Cafe, Banbury Road, Kineton, Warwickshire, CV35 0JZ", "socials": {"facebook": "https://www.facebook.com/gilksgaragecafe/", "instagram": "https://www.instagram.com/gilksgaragecafe/"}}, {"name": "Mr Watsons Cafe", "quip": "Double-decker charm with the shell shining bright.", "website": "https://www.mrwatsonscafe.com/", "websiteLabel": "mrwatsonscafe.com", "partKey": "bodywork", "partLabel": "Bodywork", "claimToken": "rr-body-1q7x6", "visual": "headlight", "aliases": ["bodywork", "mr-watsons", "mr-watsons-cafe", "mr-watsons-cafe-blockley"], "opening": {"Monday": "10:30 AM – 3:00 PM", "Tuesday": "8:30 AM – 3:00 PM", "Wednesday": "8:30 AM – 3:00 PM", "Thursday": "8:30 AM – 3:00 PM", "Friday": "8:30 AM – 3:00 PM", "Saturday": "Check Facebook", "Sunday": "Closed"}, "food": {}, "address": ["72 Northwick Business Centre", "Blockley", "GL56 9RF"], "phone": "—", "email": "Mrwatsonscafe@gmail.com", "mapQuery": "72 Northwick Business Centre, Blockley, GL56 9RF", "socials": {"facebook": "https://www.facebook.com/p/Mr-Watsons-Cafe-100091805952631/", "instagram": "https://www.instagram.com/mrwatsonscafe/"}}, {"name": "Seven Mile", "quip": "A strong chassis for every mile ahead.", "website": "https://www.sevenmile.co.uk/", "websiteLabel": "sevenmile.co.uk", "partKey": "chassis", "partLabel": "Chassis", "claimToken": "rr-chas-6v4d2", "visual": "brakepads", "aliases": ["chassis", "seven-mile", "sevenmile"], "opening": {"Monday": "Closed", "Tuesday": "Closed", "Wednesday": "Closed", "Thursday": "Closed", "Friday": "Closed", "Saturday": "Closed", "Sunday": "Closed"}, "food": {}, "address": ["Bell Cottage", "Mill Road", "Stratton Audley", "OX27 9AR"], "phone": "07807 939952", "email": "hello@sevenmile.co.uk", "mapQuery": "Bell Cottage, Mill Road, Stratton Audley, OX27 9AR", "socials": {"facebook": "https://www.facebook.com/sevenmilecande", "instagram": "https://www.instagram.com/sevenmilecande/"}}, {"name": "Oily Rag", "quip": "Smooth running starts where the good stuff flows.", "website": "https://www.oilyrag.com/", "websiteLabel": "oilyrag.com", "partKey": "lubrication", "partLabel": "Lubrication", "claimToken": "rr-lube-5n8r4", "visual": "oilfilter", "aliases": ["lubrication", "oily-rag", "oilyrag"], "opening": {"Monday": "Closed", "Tuesday": "Closed", "Wednesday": "Closed", "Thursday": "Closed", "Friday": "10:00 AM – 2:00 PM", "Saturday": "10:00 AM – 4:00 PM", "Sunday": "10:00 AM – 2:30 PM"}, "food": {}, "address": ["Unit 9 Rockhaven Industrial Estate", "Triangle Park", "Gloucester", "GL1 1AJ"], "phone": "—", "email": "info@oilyrag.com", "mapQuery": "Unit 9 Rockhaven Industrial Estate, Triangle Park, Gloucester, GL1 1AJ", "socials": {"facebook": "https://www.facebook.com/OilyRagClothing/", "instagram": "https://www.instagram.com/oilyragco/"}}, {"name": "The Blue Lias", "quip": "Keeping the whole build cool under pressure.", "website": "https://thebluelias.com/", "websiteLabel": "thebluelias.com", "partKey": "cooling", "partLabel": "Cooling", "claimToken": "rr-cool-9t3w7", "visual": "battery", "aliases": ["cooling", "the-blue-lias", "blue-lias"], "opening": {"Monday": "12:00 PM – 10:00 PM", "Tuesday": "12:00 PM – 10:00 PM", "Wednesday": "12:00 PM – 10:00 PM", "Thursday": "12:00 PM – 10:00 PM", "Friday": "12:00 PM – 11:00 PM", "Saturday": "12:00 PM – 11:00 PM", "Sunday": "12:00 PM – 10:00 PM"}, "food": {"Monday": "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM", "Tuesday": "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM", "Wednesday": "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM", "Thursday": "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM", "Friday": "Food: 12:00 PM – 2:30 PM, 5:30 PM – 8:00 PM", "Saturday": "Food: 12:00 PM – 8:00 PM", "Sunday": "Food: 12:00 PM – 6:00 PM"}, "address": ["Stockton Road", "Stockton", "Southam", "CV47 8LD"], "phone": "01926 812249", "email": "enquiries@thebluelias.com", "mapQuery": "The Blue Lias, Stockton Road, Stockton, Southam, CV47 8LD", "socials": {"facebook": "https://www.facebook.com/bluelias", "instagram": "https://www.instagram.com/thebluelias/"}}, {"name": "The Long Itch Diner", "quip": "Keeping the gears sweet for the road ahead.", "website": "https://www.longitchdiner.co.uk/", "websiteLabel": "longitchdiner.co.uk", "partKey": "transmission", "partLabel": "Transmission", "claimToken": "rr-trans-2h6m8", "visual": "drivebelt", "aliases": ["transmission", "long-itch-diner", "the-long-itch-diner"], "opening": {"Monday": "8:30 AM – 2:30 PM", "Tuesday": "8:30 AM – 2:30 PM", "Wednesday": "8:30 AM – 2:30 PM", "Thursday": "8:30 AM – 2:30 PM", "Friday": "8:30 AM – 2:30 PM", "Saturday": "8:30 AM – 2:30 PM", "Sunday": "9:00 AM – 2:30 PM"}, "food": {}, "address": ["Southam Road", "Long Itchington", "Southam", "CV47 9QZ"], "phone": "01926 819096", "email": "Use website contact form", "mapQuery": "Southam Road, Long Itchington, Southam, CV47 9QZ", "socials": {"facebook": "https://www.facebook.com/thelongitchdiner/", "instagram": ""}}, {"name": "Cotswold Cafe / Pats Baps", "quip": "Fresh grip for the road and the ride ahead.", "website": "https://www.cotswoldcafe-patsbaps.co.uk/", "websiteLabel": "cotswoldcafe-patsbaps.co.uk", "partKey": "tyres", "partLabel": "Tyres", "claimToken": "rr-tyres-7c5p9", "visual": "tyre", "aliases": ["tyres", "cotswold-cafe", "pats-baps", "cotswold-cafe-pats-baps"], "opening": {"Monday": "9:00 AM – 3:00 PM", "Tuesday": "9:00 AM – 3:00 PM", "Wednesday": "9:00 AM – 3:00 PM", "Thursday": "9:00 AM – 3:00 PM", "Friday": "9:00 AM – 3:00 PM", "Saturday": "9:00 AM – 1:00 PM", "Sunday": "Closed"}, "food": {"Sunday": "Open every 3rd Sunday for bike meets: 9:00 AM – 1:00 PM"}, "address": ["Unit 4, London Road", "Little Compton", "Moreton-in-Marsh", "GL56 0RR"], "phone": "01608 674729", "email": "cotswoldcafe@hotmail.com", "mapQuery": "Unit 4 London Road, Little Compton, Moreton-in-Marsh, GL56 0RR", "socials": {"facebook": "https://www.facebook.com/CotswoldCafepatsbaps/", "instagram": "https://www.instagram.com/cotswoldcafepatsbaps"}}];
+const DAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const STORAGE_KEY = 'trr.scale-fixed.app.v3';
+// Scale pass: keep the approved floor positions, but make the parts read as one-car scale.
+// Tyre is the visual anchor. Everything else is sized against that, not against the crop size.
+const PART_POSITIONS = {
+  engine:        { x: 27, y: 39.5, w: 10.8 }, // spark plugs: deliberately small
+  'fuel-system':{ x: 72, y: 39.5, w: 20.5 }, // air filter: medium, not tyre-sized
+  bodywork:     { x: 28, y: 52.0, w: 25.0 }, // headlight: large, but below tyre scale
+  cooling:      { x: 72, y: 52.0, w: 22.0 }, // battery: medium-large
+  lubrication:  { x: 28, y: 65.0, w: 15.5 }, // oil filter: compact canister scale
+  chassis:      { x: 72, y: 65.0, w: 17.0 }, // brake pads: smaller set
+  transmission: { x: 28, y: 78.0, w: 27.0 }, // drive belt: long/flat but not dominant
+  tyres:        { x: 72, y: 79.5, w: 34.0 }  // wheel/tyre: largest component
+};
+const VISUAL_NAME = { sparkplugs:'Spark plugs', airfilter:'Air filter', headlight:'Headlight', brakepads:'Brake pads', oilfilter:'Oil filter', battery:'Battery', drivebelt:'Drive belt', tyre:'Wheel / tyre' };
+let state = loadState();
+let currentVenue = null;
+let scanStream = null;
+let scanLoop = null;
+const aliasMap = buildAliasMap();
+
+function buildAliasMap() {
+  const map = {};
+  VENUES.forEach(v => {
+    [v.partKey, v.claimToken, v.name, ...(v.aliases || [])].forEach(item => map[normalize(item)] = v.partKey);
+  });
+  return map;
+}
+function normalize(value) { return String(value || '').toLowerCase().trim().replace(/&/g,'and').replace(/[’']/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+function loadState() { try { return Object.assign({ repaired:[], completedVehicles:0, completionClaimed:false }, JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}')); } catch { return { repaired:[], completedVehicles:0, completionClaimed:false }; } }
+function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+function isDone(partKey) { return state.repaired.includes(partKey); }
+function repairedCount() { return state.repaired.length; }
+function byPart(partKey) { return VENUES.find(v => v.partKey === partKey); }
+function assetFor(v) { return `assets/parts/${v.visual}-${isDone(v.partKey) ? 'repaired' : 'broken'}.png`; }
+function escapeHtml(s) { return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+
+function render() {
+  document.getElementById('progressDone').textContent = repairedCount();
+  renderParts();
+  renderRouteList();
+  maybeComplete();
+}
+function renderParts() {
+  const floor = document.getElementById('partsFloor');
+  floor.innerHTML = '';
+  VENUES.forEach(v => {
+    const pos = PART_POSITIONS[v.partKey];
+    const btn = document.createElement('button');
+    btn.className = `part ${isDone(v.partKey) ? 'repaired' : 'damaged'}`;
+    btn.style.left = pos.x + '%';
+    btn.style.top = pos.y + '%';
+    btn.style.width = pos.w + '%';
+    btn.setAttribute('aria-label', `${v.partLabel} at ${v.name} — ${isDone(v.partKey) ? 'repaired' : 'damaged'}`);
+    btn.innerHTML = `<img src="${assetFor(v)}" alt="" draggable="false">`;
+    btn.addEventListener('click', () => openVenue(v.partKey));
+    floor.appendChild(btn);
+  });
+}
+function renderRouteList() {
+  const list = document.getElementById('routeList');
+  list.innerHTML = '';
+  VENUES.forEach(v => {
+    const btn = document.createElement('button');
+    btn.className = `route-item ${isDone(v.partKey) ? 'done' : ''}`;
+    btn.innerHTML = `<img src="${assetFor(v)}" alt=""><div><strong>${escapeHtml(v.name)}</strong><span>${escapeHtml(v.partLabel)} · ${isDone(v.partKey) ? 'Repaired' : 'Awaiting repair'}</span></div>`;
+    btn.addEventListener('click', () => { closeDrawer(); openVenue(v.partKey); });
+    list.appendChild(btn);
+  });
+}
+
+function openVenue(partKey) {
+  const v = byPart(partKey); if (!v) return;
+  currentVenue = v;
+  document.getElementById('homeScreen').classList.remove('active');
+  document.getElementById('venueScreen').classList.add('active');
+  renderVenue(v);
+}
+function closeVenue() {
+  document.getElementById('venueScreen').classList.remove('active');
+  document.getElementById('homeScreen').classList.add('active');
+  currentVenue = null;
+}
+function renderVenue(v) {
+  const today = DAYS[new Date().getDay()];
+  const openText = v.opening?.[today] || 'Check with venue';
+  const foodText = v.food?.[today] || '';
+  const address = (v.address || []).join(', ');
+  const notes = `${v.quip} Once you have made a purchase, ask a member of staff to show you the repair QR code for this stop.`;
+  const done = isDone(v.partKey);
+  const buttons = [];
+  buttons.push(`<a class="btn" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v.mapQuery || address)}" target="_blank" rel="noopener">Map</a>`);
+  if (v.website) buttons.push(`<a class="btn" href="${escapeHtml(v.website)}" target="_blank" rel="noopener">Website</a>`);
+  if (v.phone && v.phone !== '—') buttons.push(`<a class="btn" href="tel:${v.phone.replace(/\s+/g,'')}">Call</a>`);
+  buttons.push(`<button class="btn green full" onclick="openScanner()">Scan Venue QR</button>`);
+  document.getElementById('bookLayer').innerHTML = `
+    <div class="book-field book-venue"><span class="label">Venue</span>${escapeHtml(v.name)}</div>
+    <div class="book-field book-date"><span class="label">Today</span>${escapeHtml(openText)}</div>
+    <div class="book-field book-part"><span class="label">Repair</span>${escapeHtml(v.partLabel)} · ${escapeHtml(VISUAL_NAME[v.visual] || v.visual)}</div>
+    <div class="book-field book-code"><span class="label">Claim code</span>${escapeHtml(v.claimToken)}</div>
+    <div class="book-stamp ${done ? 'done' : ''}">${done ? 'Service<br>Stamped' : 'Awaiting<br>Stamp'}</div>
+    <div class="book-field book-work">${escapeHtml(notes)}<br><br><b>Address:</b> ${escapeHtml(address)}</div>
+    <div class="book-field book-parts">${escapeHtml(v.partLabel)}<br>${escapeHtml(VISUAL_NAME[v.visual] || v.visual)}<br>${done ? 'Repaired and logged' : 'Damaged part awaiting service'}</div>
+    <div class="book-field book-checks">☐ Purchase made<br>☐ Venue QR scanned<br>${done ? '☑ Repair logged' : '☐ Repair logged'}<br>${done ? '☑ Stamp issued' : '☐ Stamp issued'}</div>
+    <div class="book-field book-notes">${foodText ? escapeHtml(foodText) + '<br>' : ''}${v.websiteLabel ? 'Website: ' + escapeHtml(v.websiteLabel) : ''}</div>
+    <div class="book-actions">${buttons.join('')}</div>`;
+}
+
+function repairPart(partKey) {
+  const v = byPart(partKey); if (!v) return false;
+  if (!isDone(partKey)) {
+    state.repaired.push(partKey);
+    state.completionClaimed = false;
+    saveState();
+    render();
+    if (currentVenue && currentVenue.partKey === partKey) renderVenue(v);
+    showToast(`${v.name} repaired your ${v.partLabel}.`);
+    playRepairSound();
+  } else { showToast(`${v.partLabel} is already repaired.`); }
+  return true;
+}
+function parseRepairValue(value) {
+  const raw = String(value || '').trim();
+  let candidates = [raw];
+  try {
+    const u = new URL(raw, location.href);
+    ['venue','part','repair','token','code'].forEach(k => { if (u.searchParams.get(k)) candidates.push(u.searchParams.get(k)); });
+    const lastPath = u.pathname.split('/').filter(Boolean).pop(); if (lastPath) candidates.push(lastPath);
+  } catch {}
+  for (const item of candidates) { const key = aliasMap[normalize(item)]; if (key) return key; }
+  return null;
+}
+function claimFromValue(value) {
+  const partKey = parseRepairValue(value);
+  if (!partKey) { setScannerStatus('Code not recognised. Use the venue slug or claim token.'); return false; }
+  repairPart(partKey);
+  setScannerStatus('Repair claimed. Returning to the workshop.');
+  setTimeout(() => { closeScanner(); closeVenue(); }, 850);
+  return true;
+}
+function handleInitialClaim() {
+  const params = new URLSearchParams(location.search);
+  const value = params.get('venue') || params.get('part') || params.get('repair') || params.get('token') || params.get('code');
+  if (value) { claimFromValue(value); history.replaceState({}, document.title, location.pathname + location.hash); }
+}
+
+function openScanner() { document.getElementById('scanner').classList.add('open'); setScannerStatus('Opening camera…'); startCameraScanner(); }
+function closeScanner() { document.getElementById('scanner').classList.remove('open'); stopScanner(); }
+function setScannerStatus(msg) { document.getElementById('scannerStatus').textContent = msg; }
+async function startCameraScanner() {
+  const video = document.getElementById('scanVideo');
+  try {
+    if (!navigator.mediaDevices?.getUserMedia) throw new Error('Camera access is not available in this browser.');
+    scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal:'environment' } }, audio:false });
+    video.srcObject = scanStream; await video.play();
+    if ('BarcodeDetector' in window) {
+      const detector = new BarcodeDetector({ formats:['qr_code'] });
+      setScannerStatus('Camera ready. Point it at the venue QR code.');
+      const loop = async () => {
+        if (!document.getElementById('scanner').classList.contains('open')) return;
+        try { const codes = await detector.detect(video); if (codes?.[0]?.rawValue) { claimFromValue(codes[0].rawValue); return; } } catch {}
+        scanLoop = requestAnimationFrame(loop);
+      };
+      loop();
+    } else { setScannerStatus('Camera opened, but this browser cannot decode QR codes itself. Use the manual code field below.'); }
+  } catch (err) { setScannerStatus(err.message + ' Use the manual code field below.'); }
+}
+function stopScanner() {
+  if (scanLoop) cancelAnimationFrame(scanLoop); scanLoop = null;
+  if (scanStream) scanStream.getTracks().forEach(t => t.stop()); scanStream = null;
+  const video = document.getElementById('scanVideo'); video.pause(); video.srcObject = null;
+}
+
+function showToast(text) { const el = document.getElementById('toast'); document.getElementById('toastText').textContent = text; el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 2400); }
+function maybeComplete() {
+  if (repairedCount() === VENUES.length && !state.completionClaimed) {
+    state.completedVehicles = (state.completedVehicles || 0) + 1; state.completionClaimed = true; saveState(); setTimeout(openCompletion, 550);
+  }
+}
+function openCompletion() { document.getElementById('completion').classList.add('open'); spawnConfetti(); playCompletionSound(); }
+function closeCompletion() { document.getElementById('completion').classList.remove('open'); }
+function startAnother() { state.repaired = []; state.completionClaimed = false; saveState(); closeCompletion(); closeVenue(); render(); }
+function resetAll() { if (!confirm('Reset this restoration on this device?')) return; state = { repaired:[], completedVehicles:0, completionClaimed:false }; saveState(); closeCompletion(); closeVenue(); closeScanner(); render(); showToast('Restoration reset.'); }
+function copyQrLinks() {
+  const base = location.href.split('?')[0].split('#')[0];
+  const lines = VENUES.map(v => `${v.name} — ${base}?venue=${encodeURIComponent(v.partKey)} — token: ${v.claimToken}`).join('\n');
+  navigator.clipboard?.writeText(lines).then(() => showToast('QR link list copied.'), () => alert(lines));
+}
+function spawnConfetti() { const c = document.getElementById('confetti'); c.innerHTML=''; for (let i=0;i<46;i++) { const el=document.createElement('i'); el.style.left=Math.random()*100+'%'; el.style.animationDelay=(Math.random()*450)+'ms'; el.style.background = i%3===0 ? '#f5c25a' : i%3===1 ? '#a7ff68' : '#ffffff'; c.appendChild(el); } }
+function playHorn() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const now = ctx.currentTime; const gain = ctx.createGain(); gain.connect(ctx.destination); gain.gain.setValueAtTime(0.0001, now); gain.gain.exponentialRampToValueAtTime(0.22, now+.03); gain.gain.exponentialRampToValueAtTime(0.0001, now+.55); [220,294].forEach((freq,i)=>{const o=ctx.createOscillator(); o.type='sawtooth'; o.frequency.setValueAtTime(freq,now); o.frequency.linearRampToValueAtTime(freq*.94,now+.5); o.connect(gain); o.start(now+i*.015); o.stop(now+.58);}); } catch {} }
+function playRepairSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const now=ctx.currentTime; const gain=ctx.createGain(); gain.connect(ctx.destination); gain.gain.setValueAtTime(.0001, now); gain.gain.exponentialRampToValueAtTime(.16, now+.02); gain.gain.exponentialRampToValueAtTime(.0001, now+.34); [420,640,900].forEach((f,i)=>{const o=ctx.createOscillator(); o.type='triangle'; o.frequency.setValueAtTime(f,now+i*.055); o.connect(gain); o.start(now+i*.055); o.stop(now+.32);}); } catch {} }
+function playCompletionSound() { try { const ctx = new (window.AudioContext || window.webkitAudioContext)(); const now=ctx.currentTime; const gain=ctx.createGain(); gain.connect(ctx.destination); gain.gain.setValueAtTime(.0001, now); gain.gain.exponentialRampToValueAtTime(.18, now+.04); gain.gain.exponentialRampToValueAtTime(.0001, now+1.15); [330,415,523,659,784].forEach((f,i)=>{const o=ctx.createOscillator(); o.type='sine'; o.frequency.value=f; o.connect(gain); o.start(now+i*.12); o.stop(now+i*.12+.25);}); } catch {} }
+function openDrawer() { document.getElementById('drawer').classList.add('open'); }
+function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
+
+window.openScanner = openScanner;
+document.getElementById('menuBtn').addEventListener('click', openDrawer);
+document.getElementById('closeDrawer').addEventListener('click', closeDrawer);
+document.getElementById('openScannerFromMenu').addEventListener('click', () => { closeDrawer(); openScanner(); });
+document.getElementById('scanBtn').addEventListener('click', openScanner);
+document.getElementById('backBookBtn').addEventListener('click', closeVenue);
+document.getElementById('hornBtn').addEventListener('click', playHorn);
+document.getElementById('copyQrLinks').addEventListener('click', copyQrLinks);
+document.getElementById('resetBtn').addEventListener('click', resetAll);
+document.getElementById('closeScanner').addEventListener('click', closeScanner);
+document.getElementById('manualClaim').addEventListener('click', () => claimFromValue(document.getElementById('manualInput').value));
+document.getElementById('manualInput').addEventListener('keydown', e => { if (e.key === 'Enter') claimFromValue(e.target.value); });
+document.getElementById('newVehicleBtn').addEventListener('click', startAnother);
+document.getElementById('closeCompletion').addEventListener('click', closeCompletion);
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('./service-worker.js').catch(() => {});
+render();
+handleInitialClaim();
+</script>
+</body>
+</html>
