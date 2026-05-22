@@ -1,0 +1,10 @@
+{
+  "name": "The Restoration Route",
+  "short_name": "Restoration Route",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#090704",
+  "theme_color": "#0c0905",
+  "orientation": "portrait-primary",
+  "icons": []
+}

@@ -1,0 +1,10 @@
+Fixes in this build:
+- Mobile scaling now fills the phone width instead of sitting up-left with black right/bottom gaps.
+- Garage Directory and venue popups use the same full-width stage scale.
+- Clicking the wall map now opens a Google Maps route instead of opening a duplicate map image.
+- Clicking the Banter Box now opens https://www.doitforthebanter.com/ instead of a text popup.
+- Scanner home button no longer uses the service-book home button; it is rendered as a rubber-style HOME button.
+- Scanner tool home-screen asset has its white background keyed out.
+- Visible tab labels/buttons are drawn on the service book pages again where the tab assets are available.
+- Garage Directory text font sizes are reduced so it no longer explodes outside the row boxes.
+- Venue pages have fewer "To confirm" placeholders and contain the best available route venue details currently in the project.

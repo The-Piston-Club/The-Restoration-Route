@@ -1,0 +1,9 @@
+UPLOAD THIS ZERO-COST VERSION, NOT THE OLD ZIP.
+
+1. Unzip this package.
+2. Upload the CONTENTS of the unzipped folder to the repository root.
+3. Do not upload the ZIP file itself.
+4. Do not upload the private QR folder. QR links and QR images are kept separately in Private-QR-Assets-v37.
+5. Deploy the included Firestore rules in Firebase Console.
+6. Keep the Firebase project on Spark/free plan. Do not enable Blaze/pay-as-you-go if zero cost is required.
+7. This version converts large PNG assets to WebP/JPG while keeping the same pixel dimensions for the JSON layout.
